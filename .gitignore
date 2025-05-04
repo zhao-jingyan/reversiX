@@ -1,0 +1,50 @@
+# Maven target directory
+/target/
+
+# IntelliJ IDEA files
+/.idea/
+/*.iml
+
+# VS Code files
+/.vscode/
+
+# MacOS system files
+.DS_Store
+
+# Logs
+*.log
+
+# Compiled class files
+*.class
+
+# Package files
+*.jar
+*.war
+*.ear
+
+# Generated files
+*.class
+*.project
+*.classpath
+*.settings/
+*.factorypath
+
+# Maven specific
+.mvn/
+!/.mvn/wrapper/maven-wrapper.jar
+**/mvnw
+**/mvnw.cmd
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*.swo
+*.swn
+
+# Thumbnails
+Thumbs.db
+
+# Other IDEs
+*.idea/
+*.eclipse/
