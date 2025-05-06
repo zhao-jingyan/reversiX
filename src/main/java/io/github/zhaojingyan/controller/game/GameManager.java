@@ -5,7 +5,6 @@ import java.util.Map;
 
 import io.github.zhaojingyan.model.enums.GameErrorCode;
 import io.github.zhaojingyan.model.enums.GameMode;
-import io.github.zhaojingyan.model.game.Board;
 import io.github.zhaojingyan.model.input.InputInformation;
 
 /**
@@ -62,8 +61,6 @@ public final class GameManager {
     // Getters
     public static GameManager getInstance() { return instance; }
     public Game getCurrentGame() { return currentGame; }
-    public Board getCurrentBoard() { return currentGame.getBoard(); }
-    public int getCurrentGameNumber() { return currentGame.getGameNumber(); }
     public boolean isCurrentGameOver() { return currentGame.isOver(); }
     public boolean isAllGamesOver() { return games.values().stream().allMatch(game -> game.isOver()); }
     public int getTotalGames() { return games.size(); }

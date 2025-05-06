@@ -138,23 +138,7 @@ public class ConOutput implements OutputInterface {
 
     @Override
     public void printError(GameException e, OutputInformation output) {
-        switch (e.getCode()) {
-            case GAME_ALREADY_OVER -> {
-                System.err.println(e.getMessage());
-            }
-            case GAME_NOT_FOUND -> {
-                System.err.println(e.getMessage());
-            }
-            case ILLEGAL_MOVE -> {
-                System.err.println(e.getMessage());
-            }
-            case INVALID_INPUT -> {
-                System.err.println(e.getMessage());
-            }
-            default -> {
-                System.err.println(e.getMessage());
-            }
-        }
+        System.err.println(e.getMessage());
         System.out.printf(
             "\n< Coordinates(A1-H8) | Game Num(1-%d) | New Game(peace,reversi,gomoku) | Pass(pass) | Quit(quit) >\n",
             output.getGlobalInfo().getGameList().length);

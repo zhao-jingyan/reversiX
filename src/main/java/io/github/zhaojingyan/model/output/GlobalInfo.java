@@ -11,7 +11,7 @@ public class GlobalInfo {
 
     public GlobalInfo(GameManager gameManagerInstance) {
         this.gameList = gameManagerInstance.getGameList();
-        this.currentGameNumber = gameManagerInstance.getCurrentGameNumber();
+        this.currentGameNumber = gameManagerInstance.getCurrentGame().getGameNumber();
         this.currentGameMode = gameManagerInstance.getCurrentGame().getGameMode();
         this.totalGamesNumber = gameManagerInstance.getTotalGames();
     }
