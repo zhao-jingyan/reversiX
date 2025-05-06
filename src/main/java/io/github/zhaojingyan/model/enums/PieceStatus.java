@@ -2,6 +2,7 @@ package io.github.zhaojingyan.model.enums;
 
 public enum PieceStatus {
     EMPTY,
+    OBSTACLE,
     BLACK,
     WHITE;
 

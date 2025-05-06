@@ -3,6 +3,7 @@ package io.github.zhaojingyan.controller.rule.imple;
 import io.github.zhaojingyan.controller.rule.Rule;
 import io.github.zhaojingyan.model.enums.GameMode;
 import io.github.zhaojingyan.model.enums.PieceStatus;
+import io.github.zhaojingyan.model.enums.PlayerSymbol;
 import io.github.zhaojingyan.model.game.Board;
 import io.github.zhaojingyan.model.input.InputInformation;
 import io.github.zhaojingyan.model.input.imple.MoveInformation;
@@ -27,14 +28,15 @@ public class ReversiRule implements Rule {
         int midRow = board.getRow() / 2;
         int midCol = board.getCol() / 2;
 
-        board.addPiece(new int[]{midRow - 1, midCol - 1}, PieceStatus.WHITE);
-        board.addPiece(new int[]{midRow - 1, midCol}, PieceStatus.BLACK);
-        board.addPiece(new int[]{midRow, midCol - 1}, PieceStatus.BLACK);
-        board.addPiece(new int[]{midRow, midCol}, PieceStatus.WHITE);
+        board.setPiece(new int[]{midRow - 1, midCol - 1}, PieceStatus.WHITE);
+        board.setPiece(new int[]{midRow - 1, midCol}, PieceStatus.BLACK);
+        board.setPiece(new int[]{midRow, midCol - 1}, PieceStatus.BLACK);
+        board.setPiece(new int[]{midRow, midCol}, PieceStatus.WHITE);
         refreshValid(board, PieceStatus.BLACK);
     }
     @Override
-    public void updateBoard(Board board, InputInformation information,PieceStatus currentPiece) {
+    public void updateBoard(Board board, InputInformation information,PlayerSymbol currentSymbol) {
+        PieceStatus currentPiece = currentSymbol.SymbolToStatus();
         int []coordinates = ((MoveInformation) information).getInfo();
         flip(board, coordinates, currentPiece);
         refreshValid(board, currentPiece.opp());

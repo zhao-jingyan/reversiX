@@ -22,11 +22,11 @@ public class Game {
     private boolean isWaitingForPass;
     private PieceStatus winner;
 
-    protected Game(int gameNumber,GameMode gameMode, String p1, String p2, int boardSize) {
+    protected Game(int gameNumber,GameMode gameMode, String p1, String p2) {
         this.gameNumber = gameNumber;
         this.gamerule = RuleFactory.createRule(gameMode);
         this.playerController = new PlayerController(p1, p2);
-        this.board = new Board(boardSize);
+        this.board = new Board(gameMode.getSize());
         this.isOver = false;
         this.isWaitingForPass = false;
         this.winner = PieceStatus.EMPTY;
@@ -56,12 +56,13 @@ public class Game {
             if (!board.isEmpty(coordinate))
                 throw new GameException(GameErrorCode.CONFLICTING_MOVE, "Conflicting move! ["
                         + (char) ('A' + coordinate[1]) + (coordinate[0] + 1) + "] is already occupied");
+                    
             else
                 throw new GameException(GameErrorCode.ILLEGAL_MOVE, "Illegal move! [" + (char) ('A' + coordinate[1])
                         + (coordinate[0] + 1) + "] is not a valid position");
         } 
         else {
-            board.addPiece(coordinate, playerController.getCurrentPiece());
+            board.setPiece(coordinate, playerController.getCurrentSymbol().SymbolToStatus());
             ruleUpdate(board,moveInformation);
             playerController.changeSpot();
         }
@@ -78,7 +79,7 @@ public class Game {
 
     //extracted ruleUpdate
     private void ruleUpdate(Board board, InputInformation inputInformation) {
-        gamerule.updateBoard(board,inputInformation,playerController.getCurrentPiece());
+        gamerule.updateBoard(board,inputInformation,playerController.getCurrentSymbol());
         isWaitingForPass = gamerule.shouldPass();
         isOver = gamerule.isOver(board);
         winner = gamerule.getWinner(board);

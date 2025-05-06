@@ -2,6 +2,7 @@ package io.github.zhaojingyan.model.output;
 
 import io.github.zhaojingyan.controller.game.Game;
 import io.github.zhaojingyan.model.enums.PieceStatus;
+import io.github.zhaojingyan.model.enums.PlayerSymbol;
 import io.github.zhaojingyan.model.game.Board;
 import io.github.zhaojingyan.model.game.Player;
 
@@ -41,6 +42,6 @@ public class GameInfo {
     public int getBlack() { return black; }
     public PieceStatus getWinner() { return winner; }
     public String getChargePlayerName() { return chargePlayer.getName(); }
-    public PieceStatus getChargePieceType() { return chargePlayer.getPiecetype(); }
+    public PlayerSymbol getChargeSymbol() { return chargePlayer.getSymbol(); }
     public boolean isWaitingForPass() { return isWaitingForPass;}
 }

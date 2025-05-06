@@ -1,6 +1,6 @@
 package io.github.zhaojingyan.controller.game;
 
-import io.github.zhaojingyan.model.enums.PieceStatus;
+import io.github.zhaojingyan.model.enums.PlayerSymbol;
 import io.github.zhaojingyan.model.game.Player;
 
 public class PlayerController {
@@ -14,14 +14,14 @@ public class PlayerController {
      * @param p2Name 玩家2名称
      */
     public PlayerController(String p1Name, String p2Name) {
-        this.p1 = new Player(p1Name, PieceStatus.BLACK);
-        this.p2 = new Player(p2Name, PieceStatus.WHITE);
+        this.p1 = new Player(p1Name, PlayerSymbol.BLACK);
+        this.p2 = new Player(p2Name, PlayerSymbol.WHITE);
         this.currentPlayer = p1;
     }
 
     // Getters
     public Player getChargePlayer() { return currentPlayer; }
-    public PieceStatus getCurrentPiece() { return currentPlayer.getPiecetype();}
+    public PlayerSymbol getCurrentSymbol() { return currentPlayer.getSymbol();}
     public Player getPlayer1() { return p1; }
     public Player getPlayer2() { return p2; }
 

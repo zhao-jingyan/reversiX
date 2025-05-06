@@ -32,7 +32,7 @@ public final class GameManager {
 
     // 游戏管理
     public void createGame(String p1Name, String p2Name, GameMode gameMode) {
-        Game game = new Game(games.size() + 1,gameMode, p1Name, p2Name, 8);
+        Game game = new Game(games.size() + 1,gameMode, p1Name, p2Name);
         games.put(game.getGameNumber(), game);
     }
 
@@ -51,18 +51,14 @@ public final class GameManager {
      * @throws GameException 如果游戏已经结束
      */
     public void updateCurrentGame(InputInformation info) throws GameException {
-        try {
-            currentGame.update(info);
-        } catch (GameException e) {
-            throw e;
-        }
+        currentGame.update(info);
     }
 
     // Getters
     public static GameManager getInstance() { return instance; }
     public Game getCurrentGame() { return currentGame; }
     public boolean isCurrentGameOver() { return currentGame.isOver(); }
-    public boolean isAllGamesOver() { return games.values().stream().allMatch(game -> game.isOver()); }
+    public boolean isAllGamesOver() { return games.values().stream().allMatch(Game::isOver); }
     public int getTotalGames() { return games.size(); }
     public GameMode[] getGameList() {
         GameMode[] gameModes = new GameMode[games.size()];

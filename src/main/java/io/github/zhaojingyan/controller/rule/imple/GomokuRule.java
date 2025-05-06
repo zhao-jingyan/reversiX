@@ -1,8 +1,11 @@
 package io.github.zhaojingyan.controller.rule.imple;
 
+import java.util.Random;
+
 import io.github.zhaojingyan.controller.rule.Rule;
 import io.github.zhaojingyan.model.enums.GameMode;
 import io.github.zhaojingyan.model.enums.PieceStatus;
+import io.github.zhaojingyan.model.enums.PlayerSymbol;
 import io.github.zhaojingyan.model.game.Board;
 import io.github.zhaojingyan.model.input.InputInformation;
 import io.github.zhaojingyan.model.input.imple.MoveInformation;
@@ -22,7 +25,8 @@ public class GomokuRule implements Rule {
     }
 
     @Override
-    public void updateBoard(Board board, InputInformation information, PieceStatus currentPiece) {
+    public void updateBoard(Board board, InputInformation information, PlayerSymbol currentSymbol) {
+        PieceStatus currentPiece = currentSymbol.SymbolToStatus();
         int[] coordinates = ((MoveInformation) information).getInfo();
         if (fiveInARow(board, coordinates, currentPiece)) {
             isOver = true;
@@ -79,6 +83,19 @@ public class GomokuRule implements Rule {
         for (int i = 0; i < board.getRow(); i++)
             for (int j = 0; j < board.getCol(); j++)
                 board.setValid(new int[] { i, j }, true);
+        Random random = new Random();
+        int obstacles = 0;
+
+        while (obstacles < 4) {
+            int x = random.nextInt(board.getRow());
+            int y = random.nextInt(board.getCol());
+            int[] position = {x, y};
+
+            if (board.getPieceStatus(position) == PieceStatus.EMPTY) {
+                board.setPiece(position, PieceStatus.OBSTACLE);
+                obstacles++;
+            }
+        }
     }
 
     @Override

@@ -24,13 +24,15 @@ public class Board {
         }
     }
 
-    public void addPiece(int[] coordinates, PieceStatus status) {
-        this.board[coordinates[0]][coordinates[1]].setPiece(status);
+    public void setPiece(int[] coordinates, PieceStatus pieceStatus) {
+        board[coordinates[0]][coordinates[1]].setPiece(pieceStatus);
         this.valid[coordinates[0]][coordinates[1]] = false;
-        if (status == PieceStatus.WHITE)
-            this.white++;
-        else if (status == PieceStatus.BLACK) 
-            this.black++;
+        switch (pieceStatus) {
+            case WHITE -> this.white++;
+            case BLACK -> this.black++;
+            case EMPTY -> this.valid[coordinates[0]][coordinates[1]] = true;
+            case OBSTACLE -> {}
+        } 
     }
 
     public void setValid(int[] coordinates, boolean isValid) {

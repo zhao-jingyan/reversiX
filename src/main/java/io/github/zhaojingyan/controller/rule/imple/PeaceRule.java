@@ -3,6 +3,7 @@ package io.github.zhaojingyan.controller.rule.imple;
 import io.github.zhaojingyan.controller.rule.Rule;
 import io.github.zhaojingyan.model.enums.GameMode;
 import io.github.zhaojingyan.model.enums.PieceStatus;
+import io.github.zhaojingyan.model.enums.PlayerSymbol;
 import io.github.zhaojingyan.model.game.Board;
 import io.github.zhaojingyan.model.input.InputInformation;
 
@@ -29,7 +30,7 @@ public class PeaceRule implements Rule {
     }
 
     @Override
-    public void updateBoard(Board board, InputInformation information,PieceStatus currentPiece) {
+    public void updateBoard(Board board, InputInformation information, PlayerSymbol currentSymbol) {
         
     }
 
