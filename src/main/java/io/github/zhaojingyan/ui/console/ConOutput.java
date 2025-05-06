@@ -11,12 +11,12 @@ import io.github.zhaojingyan.ui.interfaces.OutputInterface;
 
 public class ConOutput implements OutputInterface {
 
-public ConOutput() {
+    public ConOutput() {
     }
 
     // 打印信息
-@Override
-public void print(OutputInformation output) {
+    @Override
+    public void print(OutputInformation output) {
         switch (output.getOutputType()) {
             case REFRESH -> {
                 clear();
