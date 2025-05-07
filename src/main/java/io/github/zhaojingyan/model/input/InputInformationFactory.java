@@ -1,6 +1,7 @@
 package io.github.zhaojingyan.model.input;
 
 import io.github.zhaojingyan.model.enums.InputType;
+import io.github.zhaojingyan.model.input.imple.BombInformation;
 import io.github.zhaojingyan.model.input.imple.InvalidInformation;
 import io.github.zhaojingyan.model.input.imple.MoveInformation;
 import io.github.zhaojingyan.model.input.imple.NewGameInformation;
@@ -14,6 +15,7 @@ public class InputInformationFactory {
         input = input.toUpperCase();
         return switch (type) {
             case COORDINATES -> MoveInformation.create(input);
+            case BOMB -> BombInformation.create(input);
             case PASS -> PassInformation.create();
             case NEWGAME -> NewGameInformation.create(input);
             case BOARDNUM -> SwitchBoardInformation.create(input);

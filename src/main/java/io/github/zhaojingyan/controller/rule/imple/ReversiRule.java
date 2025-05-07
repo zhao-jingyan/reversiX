@@ -28,10 +28,10 @@ public class ReversiRule implements Rule {
         int midRow = board.getRow() / 2;
         int midCol = board.getCol() / 2;
 
-        board.setPiece(new int[]{midRow - 1, midCol - 1}, PieceStatus.WHITE);
-        board.setPiece(new int[]{midRow - 1, midCol}, PieceStatus.BLACK);
-        board.setPiece(new int[]{midRow, midCol - 1}, PieceStatus.BLACK);
-        board.setPiece(new int[]{midRow, midCol}, PieceStatus.WHITE);
+        board.setPiece(new int[]{midRow - 1, midCol - 1}, PieceStatus.WHITE,null);
+        board.setPiece(new int[]{midRow - 1, midCol}, PieceStatus.BLACK,null);
+        board.setPiece(new int[]{midRow, midCol - 1}, PieceStatus.BLACK,null);
+        board.setPiece(new int[]{midRow, midCol}, PieceStatus.WHITE,null);
         refreshValid(board, PieceStatus.BLACK);
     }
     @Override
@@ -64,22 +64,22 @@ public class ReversiRule implements Rule {
         int dy = direction[1];
 
         // flip the pieces
-        while (isInBoard(8,xp + dx, yp + dy)  // in boarder
-                && board.getPieceBoard()[xp + dx][yp + dy].getStatus() == opp) {  // do not meet same piece
+        while (isInBoard(8, xp + dx, yp + dy)  // in boarder
+                && board.getPieceAt(xp + dx, yp + dy).getStatus() == opp) {  // do not meet same piece
             xp += dx;
             yp += dy;
             // going back and flip the pieces
             if (isInBoard(8, xp + dx, yp + dy)
-                    && board.getPieceBoard()[xp + dx][yp + dy].getStatus() == piece) {
+                    && board.getPieceAt(xp + dx, yp + dy).getStatus() == piece) {
                 while (xp != x || yp != y) {
-                    if (board.getPieceBoard()[xp][yp].getStatus() == PieceStatus.BLACK) {
+                    if (board.getPieceAt(xp, yp).getStatus() == PieceStatus.BLACK) {
                         board.black--;
                         board.white++;
-                    } else if (board.getPieceBoard()[xp][yp].getStatus() == PieceStatus.WHITE) {
+                    } else if (board.getPieceAt(xp, yp).getStatus() == PieceStatus.WHITE) {
                         board.black++;
                         board.white--;
                     }
-                    board.getPieceBoard()[xp][yp].flip();
+                    board.getPieceAt(xp, yp).flip();
                     xp -= dx;
                     yp -= dy;
                 }
@@ -100,13 +100,13 @@ public class ReversiRule implements Rule {
     }
 
     @Override
-    public PieceStatus getWinner(Board board) {
+    public PlayerSymbol getWinner(Board board) {
         if(board.getBlack() > board.getWhite())
-            return PieceStatus.BLACK;
+            return PlayerSymbol.BLACK;
         else if(board.getBlack() < board.getWhite())
-            return PieceStatus.WHITE;
+            return PlayerSymbol.WHITE;
         else
-            return PieceStatus.EMPTY;
+            return PlayerSymbol.TIE;
     }
 
     private void refreshValid(Board board,PieceStatus type) {
@@ -141,7 +141,7 @@ public class ReversiRule implements Rule {
     }
 
     private boolean isValidPosition(Board board, PieceStatus type, int x, int y) {
-        if (!isInBoard(8, x, y) || board.getPieceBoard()[x][y].getStatus() != PieceStatus.EMPTY) {
+        if (!isInBoard(8, x, y) || board.getPieceAt(x, y).getStatus() != PieceStatus.EMPTY) {
             return false;
         }
         int[][] directions = {
@@ -164,18 +164,17 @@ public class ReversiRule implements Rule {
         int dy = direction[1];
         PieceStatus piece = type;
         PieceStatus opp = type.opp();
-
-        if (!isInBoard(8, xp + dx, yp + dy) || board.getPieceBoard()[xp + dx][yp + dy].getStatus() != opp)  // not in board or no opp
+        if (!isInBoard(8, xp + dx, yp + dy) || board.getPieceAt(xp + dx, yp + dy).getStatus() != opp)  // not in board or no opp
             return false;
         else {
             xp += dx;
             yp += dy;
             while (isInBoard(8, xp, yp)  // in boarder
-                    && board.getPieceBoard()[xp][yp].getStatus() != PieceStatus.EMPTY) {  // do not meet empty or valid
-                if (board.getPieceBoard()[xp][yp].getStatus() == piece)
-                    return true;
-                else if (board.getPieceBoard()[xp][yp].getStatus() == opp) {
-                    xp += dx;
+                && board.getPieceAt(xp, yp).getStatus() != PieceStatus.EMPTY) {  // do not meet empty or valid
+            if (board.getPieceAt(xp, yp).getStatus() == piece)
+                return true;
+            else if (board.getPieceAt(xp, yp).getStatus() == opp) {
+                xp += dx;
                     yp += dy;
                 }
             }

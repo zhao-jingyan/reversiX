@@ -2,7 +2,9 @@ package io.github.zhaojingyan.model.enums;
 
 public enum PlayerSymbol {
     BLACK,
-    WHITE;
+    WHITE,
+    TIE,
+    VOID;
 
     public PieceStatus SymbolToStatus(){
         switch (this) {
@@ -12,7 +14,7 @@ public enum PlayerSymbol {
             case WHITE -> {
                 return PieceStatus.WHITE;
             }
-            default -> throw new IllegalArgumentException("Unknown PlayerSymbol: " + this);
+            default -> throw new IllegalArgumentException("UnSupported PlayerSymbol: " + this);
         }
     }
 }

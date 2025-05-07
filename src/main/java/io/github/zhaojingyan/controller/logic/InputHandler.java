@@ -10,7 +10,7 @@ import io.github.zhaojingyan.model.input.InputInformation;
 public class InputHandler {
     private static OutputType outputType;
     
-    protected  static OutputType handleInput(InputInformation input) throws GameException {
+    protected static OutputType handleInput(InputInformation input) throws GameException {
         switch (input.getInputType()) {
             case QUIT -> {
                 outputType = OutputType.QUIT;
@@ -30,7 +30,7 @@ public class InputHandler {
                 GameManager.getInstance().createGame("Bill_Black", "Walt_White", (GameMode) input.getInfo());
                 outputType = OutputType.REFRESH;
             }
-            case COORDINATES, PASS-> {
+            case COORDINATES, PASS, BOMB-> {
                 GameManager.getInstance().updateCurrentGame(input);
                 outputType = OutputType.REFRESH;
             }

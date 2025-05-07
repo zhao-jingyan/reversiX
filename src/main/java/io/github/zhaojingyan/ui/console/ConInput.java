@@ -31,7 +31,10 @@ public class ConInput implements InputInterface {
     // 判断输入类型
     private static InputType determineType(String input) {
         // 检查是否是坐标
-        if (isCoordinate(input)) {
+        if(input.charAt(0) == '@' && input.length() == 3 && isCoordinate(input.substring(1))) {
+            return InputType.BOMB;
+        }
+        else if (isCoordinate(input)) {
             return InputType.COORDINATES;
         }
         // 检查是否是pass
@@ -63,8 +66,10 @@ public class ConInput implements InputInterface {
 
     private static boolean isCoordinate(String input) {
         return input.length() == 2 &&
-                ((input.charAt(0) >= 'A' && input.charAt(0) <= 'H') ||
-                (input.charAt(0) >= 'a' && input.charAt(0) <= 'h')) &&
-                (input.charAt(1) >= '1' && input.charAt(1) <= '8');
+            ((input.charAt(1) >= 'A' && input.charAt(1) <= 'O') ||
+            (input.charAt(1) >= 'a' && input.charAt(1) <= 'o')) &&
+            ((input.charAt(0) >= '1' && input.charAt(0) <= '9') ||
+            (input.charAt(0) >= 'A' && input.charAt(0) <= 'F') ||
+            (input.charAt(0) >= 'a' && input.charAt(0) <= 'f'));
     }
 }

@@ -13,10 +13,12 @@ import io.github.zhaojingyan.model.input.imple.MoveInformation;
 public class GomokuRule implements Rule {
     private final GameMode gamemode;
     private boolean isOver;
-    private PieceStatus winner;
+    private PlayerSymbol winner;
 
     public GomokuRule() {
         this.gamemode = GameMode.GOMOKU;
+        this.isOver = false;
+        this.winner = PlayerSymbol.TIE;
     }
 
     @Override
@@ -27,28 +29,30 @@ public class GomokuRule implements Rule {
     @Override
     public void updateBoard(Board board, InputInformation information, PlayerSymbol currentSymbol) {
         PieceStatus currentPiece = currentSymbol.SymbolToStatus();
-        int[] coordinates = ((MoveInformation) information).getInfo();
-        if (fiveInARow(board, coordinates, currentPiece)) {
-            isOver = true;
-            winner = currentPiece;
+        if (information instanceof MoveInformation moveInformation) {
+            int[] coordinates = moveInformation.getInfo();
+            if (fiveInARow(board, coordinates, currentPiece)) {
+                isOver = true;
+                winner = currentSymbol;
+            }
         }
     }
 
     private boolean fiveInARow(Board board, int[] coordinates, PieceStatus currentPiece) {
-            // 四个方向: 水平、垂直、两个对角线
-            int[][] directions = {{0, 1}, {1, 0}, {1, 1}, {1, -1}};  // 水平、垂直、主对角线、副对角线
-            
-            // 检查每个方向
-            for (int[] dir : directions) {
-                if (checkDirection(board, coordinates[0], coordinates[1], dir, currentPiece)) {
-                    return true;
-                }
+        // 四个方向: 水平、垂直、两个对角线
+        int[][] directions = { { 0, 1 }, { 1, 0 }, { 1, 1 }, { 1, -1 } }; // 水平、垂直、主对角线、副对角线
+
+        // 检查每个方向
+        for (int[] dir : directions) {
+            if (checkDirection(board, coordinates[0], coordinates[1], dir, currentPiece)) {
+                return true;
             }
-            return false;
         }
+        return false;
+    }
 
     // 检查某个方向是否五子连珠
-    private boolean checkDirection(Board board,int x, int y, int[] dir, PieceStatus currentPiece) {
+    private boolean checkDirection(Board board, int x, int y, int[] dir, PieceStatus currentPiece) {
         int count = 1;
         int dx = dir[0];
         int dy = dir[1];
@@ -83,19 +87,11 @@ public class GomokuRule implements Rule {
         for (int i = 0; i < board.getRow(); i++)
             for (int j = 0; j < board.getCol(); j++)
                 board.setValid(new int[] { i, j }, true);
-        Random random = new Random();
-        int obstacles = 0;
-
-        while (obstacles < 4) {
-            int x = random.nextInt(board.getRow());
-            int y = random.nextInt(board.getCol());
-            int[] position = {x, y};
-
-            if (board.getPieceStatus(position) == PieceStatus.EMPTY) {
-                board.setPiece(position, PieceStatus.OBSTACLE);
-                obstacles++;
-            }
-        }
+        // randomInit(board);
+        board.setPiece(new int[] { 5, 2 }, PieceStatus.OBSTACLE, null); // 3f
+        board.setPiece(new int[] { 6, 7 }, PieceStatus.OBSTACLE, null); // 8g
+        board.setPiece(new int[] { 5, 8 }, PieceStatus.OBSTACLE, null); // 9f
+        board.setPiece(new int[] { 10, 12 }, PieceStatus.OBSTACLE, null); // ck
     }
 
     @Override
@@ -111,9 +107,24 @@ public class GomokuRule implements Rule {
     }
 
     @Override
-    public PieceStatus getWinner(Board board) {
-        if (winner != null) 
-            return winner;
-        return PieceStatus.EMPTY;
+    public PlayerSymbol getWinner(Board board) {
+        return winner;
+    }
+
+    @SuppressWarnings("unused")
+    private void randomInit(Board board) {
+        Random random = new Random();
+        int obstacles = 0;
+
+        while (obstacles < 4) {
+            int x = random.nextInt(board.getRow());
+            int y = random.nextInt(board.getCol());
+            int[] position = { x, y };
+
+            if (board.getPieceStatus(position) == PieceStatus.EMPTY) {
+                board.setPiece(position, PieceStatus.OBSTACLE, null);
+                obstacles++;
+            }
+        }
     }
 }
