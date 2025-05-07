@@ -4,7 +4,7 @@ import io.github.zhaojingyan.model.enums.GameMode;
 import io.github.zhaojingyan.model.enums.PlayerSymbol;
 import io.github.zhaojingyan.model.game.Piece;
 import io.github.zhaojingyan.model.output.OutputInformation;
-import io.github.zhaojingyan.model.screen.Screen;
+import io.github.zhaojingyan.model.output.Screen;
 
 public class ScreenBuilder {
 
@@ -54,22 +54,8 @@ public class ScreenBuilder {
         return centerPanel;
     }
 
-    protected Screen constructGameListPanel(OutputInformation output) {
-        int rows = output.getGlobalInfo().getGameList().length + 2;
-        Screen rightPanel = new Screen(30, rows);
-        rightPanel.setRow(1, "  Game List");
-        for (int i = 0; i < output.getGlobalInfo().getGameList().length; i++) {
-            rightPanel.setRow(i + 2, String.format("  %d. %s", i + 1, output.getGlobalInfo().getGameList()[i]));
-        }
-        return rightPanel;
-    }
-
     protected Screen constructGameInfoPanel(OutputInformation output) {
-
         switch (output.getGameInfo().getGameMode()) {
-            case PEACE -> {
-                return new Screen(0, 0);
-            }
             case REVERSI -> {
                 Screen panel = new Screen(10, 3);
                 panel.setRow(0, String.format("Count"));
@@ -88,5 +74,15 @@ public class ScreenBuilder {
                 return new Screen(0, 0);
             }
         }
+    }
+    
+    protected Screen constructGameListPanel(OutputInformation output) {
+        int rows = output.getGlobalInfo().getGameList().length + 2;
+        Screen rightPanel = new Screen(30, rows);
+        rightPanel.setRow(1, "  Game List");
+        for (int i = 0; i < output.getGlobalInfo().getGameList().length; i++) {
+            rightPanel.setRow(i + 2, String.format("  %d. %s", i + 1, output.getGlobalInfo().getGameList()[i]));
+        }
+        return rightPanel;
     }
 }
