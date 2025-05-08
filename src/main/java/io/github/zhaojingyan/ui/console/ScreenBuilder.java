@@ -2,7 +2,7 @@ package io.github.zhaojingyan.ui.console;
 
 import io.github.zhaojingyan.model.enums.GameMode;
 import io.github.zhaojingyan.model.enums.PlayerSymbol;
-import io.github.zhaojingyan.model.game.Piece;
+import io.github.zhaojingyan.model.game.Cell;
 import io.github.zhaojingyan.model.output.OutputInformation;
 import io.github.zhaojingyan.model.output.Screen;
 
@@ -12,26 +12,13 @@ public class ScreenBuilder {
     }
 
     protected Screen constructBoardPanel(OutputInformation output) {
-        int boardSize = output.getGameInfo().getBoard().getSize();
+        int boardSize = output.getGameInfo().getCellBoard().size();
         Screen rawScreen = new Screen(boardSize + 1, boardSize + 1);
-        for (Piece[] row : output.getGameInfo().getBoard().getPieceBoard()) {
-            for (Piece piece : row) {
-                switch (piece.getStatus()) {
-                    case BLACK -> rawScreen.setPixel(piece.getX() + 1, piece.getY() + 1, '○');
-                    case WHITE -> rawScreen.setPixel(piece.getX() + 1, piece.getY() + 1, '●');
-                    case EMPTY -> {
-                        if (output.getGameInfo().getBoard().isValid(new int[] { piece.getX(), piece.getY() })
-                                && output.getGameInfo().getGameMode() == GameMode.REVERSI) {
-                            rawScreen.setPixel(piece.getX() + 1, piece.getY() + 1, '+');
-                        } else {
-                            rawScreen.setPixel(piece.getX() + 1, piece.getY() + 1, '·');
-                        }
-                    }
-                    case OBSTACLE -> rawScreen.setPixel(piece.getX() + 1, piece.getY() + 1, '#');
-                    case BOMB -> rawScreen.setPixel(piece.getX() + 1, piece.getY() + 1, '@');
-                }
+       for(Cell cell : output.getGameInfo().getCellBoard()) {
+                char symbol = cell.getStatus().getSymbol(cell, output.getGameInfo().getGameMode());
+                rawScreen.setPixel(cell.getX() + 1, cell.getY() + 1, symbol);
             }
-        }
+        
         rawScreen.setPixel(0, 0, ' ');
         for (int i = 0; i < boardSize; i++) {
             rawScreen.setPixel(i + 1, 0, (char) ('A' + i));
@@ -57,23 +44,25 @@ public class ScreenBuilder {
     protected Screen constructGameInfoPanel(OutputInformation output) {
         switch (output.getGameInfo().getGameMode()) {
             case REVERSI -> {
-                Screen panel = new Screen(10, 3);
-                panel.setRow(0, String.format("Count"));
-                panel.setRow(1, String.format("  %d", output.getGameInfo().getBlack()));
-                panel.setRow(2, String.format("  %d", output.getGameInfo().getWhite()));
-                return panel;
+                return middlePanel(10, 4, "Score", output.getGameInfo().getBlack(),
+                        output.getGameInfo().getWhite());
             }
             case GOMOKU -> {
-                Screen panel = new Screen(10, 4);
-                panel.setRow(0, String.format("Bombs"));
-                panel.setRow(1, String.format("  %d", output.getGameInfo().getBlackBomb()));
-                panel.setRow(2, String.format("  %d", output.getGameInfo().getWhiteBomb()));
-                return panel;
+                return middlePanel(10, 4, "Bomb", output.getGameInfo().getBlackBomb(),
+                        output.getGameInfo().getWhiteBomb());
             }
             default -> {
                 return new Screen(0, 0);
             }
         }
+    }
+
+    private Screen middlePanel(int width, int height,String title, int num1, int num2) {
+        Screen panel = new Screen(width, height);
+        panel.setRow(0, String.format(title));
+        panel.setRow(1, String.format("  %d", num1));
+        panel.setRow(2, String.format("  %d", num2));
+        return panel;
     }
     
     protected Screen constructGameListPanel(OutputInformation output) {

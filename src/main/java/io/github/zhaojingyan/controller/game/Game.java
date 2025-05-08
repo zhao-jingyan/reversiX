@@ -2,9 +2,9 @@ package io.github.zhaojingyan.controller.game;
 
 import io.github.zhaojingyan.controller.rule.Rule;
 import io.github.zhaojingyan.controller.rule.RuleFactory;
+import io.github.zhaojingyan.model.enums.CellStatus;
 import io.github.zhaojingyan.model.enums.GameErrorCode;
 import io.github.zhaojingyan.model.enums.GameMode;
-import io.github.zhaojingyan.model.enums.PieceStatus;
 import io.github.zhaojingyan.model.enums.PlayerSymbol;
 import io.github.zhaojingyan.model.game.Board;
 import io.github.zhaojingyan.model.game.Player;
@@ -92,7 +92,7 @@ public class Game{
                 + (char) ('A' + y) + "] is not a valid target");
         } 
         else {
-            board.setPiece(coordinate, PieceStatus.BOMB, playerController.getCurrentSymbol());
+            board.setPiece(coordinate, CellStatus.BOMB, playerController.getCurrentSymbol());
             ruleUpdate(board,bombInformation);
         }
     }

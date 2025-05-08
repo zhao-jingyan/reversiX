@@ -1,9 +1,11 @@
 package io.github.zhaojingyan.controller.rule.imple;
 
 import io.github.zhaojingyan.controller.rule.Rule;
+import io.github.zhaojingyan.model.enums.CellStatus;
 import io.github.zhaojingyan.model.enums.GameMode;
 import io.github.zhaojingyan.model.enums.PlayerSymbol;
 import io.github.zhaojingyan.model.game.Board;
+import io.github.zhaojingyan.model.game.Cell;
 import io.github.zhaojingyan.model.input.InputInformation;
 
 public class PeaceRule implements Rule {
@@ -21,10 +23,9 @@ public class PeaceRule implements Rule {
 
     @Override
     public void initializeBoard(Board board) {
-        for (int i = 0; i < board.getRow(); i++) {
-            for (int j = 0; j < board.getCol(); j++) {
-                board.setValid(new int[]{i,j}, true);
-            }
+        for(Cell cell : board.getCellBoard()) {
+            cell.setPiece(CellStatus.EMPTY);
+            cell.setValid(true);
         }
     }
 

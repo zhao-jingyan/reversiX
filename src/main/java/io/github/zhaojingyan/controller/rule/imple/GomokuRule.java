@@ -4,7 +4,7 @@ import java.util.Random;
 
 import io.github.zhaojingyan.controller.rule.Rule;
 import io.github.zhaojingyan.model.enums.GameMode;
-import io.github.zhaojingyan.model.enums.PieceStatus;
+import io.github.zhaojingyan.model.enums.CellStatus;
 import io.github.zhaojingyan.model.enums.PlayerSymbol;
 import io.github.zhaojingyan.model.game.Board;
 import io.github.zhaojingyan.model.input.InputInformation;
@@ -28,7 +28,7 @@ public class GomokuRule implements Rule {
 
     @Override
     public void updateBoard(Board board, InputInformation information, PlayerSymbol currentSymbol) {
-        PieceStatus currentPiece = currentSymbol.SymbolToStatus();
+        CellStatus currentPiece = currentSymbol.SymbolToStatus();
         if (information instanceof MoveInformation moveInformation) {
             int[] coordinates = moveInformation.getInfo();
             if (fiveInARow(board, coordinates, currentPiece)) {
@@ -38,7 +38,7 @@ public class GomokuRule implements Rule {
         }
     }
 
-    private boolean fiveInARow(Board board, int[] coordinates, PieceStatus currentPiece) {
+    private boolean fiveInARow(Board board, int[] coordinates, CellStatus currentPiece) {
         // 四个方向: 水平、垂直、两个对角线
         int[][] directions = { { 0, 1 }, { 1, 0 }, { 1, 1 }, { 1, -1 } }; // 水平、垂直、主对角线、副对角线
 
@@ -52,7 +52,7 @@ public class GomokuRule implements Rule {
     }
 
     // 检查某个方向是否五子连珠
-    private boolean checkDirection(Board board, int x, int y, int[] dir, PieceStatus currentPiece) {
+    private boolean checkDirection(Board board, int x, int y, int[] dir, CellStatus currentPiece) {
         int count = 1;
         int dx = dir[0];
         int dy = dir[1];
@@ -67,13 +67,13 @@ public class GomokuRule implements Rule {
     }
 
     // 计算某个方向上相同颜色的棋子数量
-    private int countPieces(Board board, int x, int y, int dx, int dy, PieceStatus currentPiece) {
+    private int countPieces(Board board, int x, int y, int dx, int dy, CellStatus currentPiece) {
         int count = 0;
         int newX = x + dx;
         int newY = y + dy;
 
         while (newX >= 0 && newX < board.getRow() && newY >= 0 && newY < board.getCol()
-                && board.getPieceStatus(new int[] { newX, newY }) == currentPiece) {
+                && board.getCellAt(newX, newY).getStatus() == currentPiece) {
             count++;
             newX += dx;
             newY += dy;
@@ -88,10 +88,10 @@ public class GomokuRule implements Rule {
             for (int j = 0; j < board.getCol(); j++)
                 board.setValid(new int[] { i, j }, true);
         // randomInit(board);
-        board.setPiece(new int[] { 5, 2 }, PieceStatus.OBSTACLE, null); // 3f
-        board.setPiece(new int[] { 6, 7 }, PieceStatus.OBSTACLE, null); // 8g
-        board.setPiece(new int[] { 5, 8 }, PieceStatus.OBSTACLE, null); // 9f
-        board.setPiece(new int[] { 10, 11 }, PieceStatus.OBSTACLE, null); // ck
+        board.setPiece(new int[] { 5, 2 }, CellStatus.OBSTACLE, null); // 3f
+        board.setPiece(new int[] { 6, 7 }, CellStatus.OBSTACLE, null); // 8g
+        board.setPiece(new int[] { 5, 8 }, CellStatus.OBSTACLE, null); // 9f
+        board.setPiece(new int[] { 10, 11 }, CellStatus.OBSTACLE, null); // ck
     }
 
     @Override
@@ -120,9 +120,8 @@ public class GomokuRule implements Rule {
             int x = random.nextInt(board.getRow());
             int y = random.nextInt(board.getCol());
             int[] position = { x, y };
-
-            if (board.getPieceStatus(position) == PieceStatus.EMPTY) {
-                board.setPiece(position, PieceStatus.OBSTACLE, null);
+            if (board.getCellAt(x,y).getStatus() == CellStatus.EMPTY) {
+                board.setPiece(position, CellStatus.OBSTACLE, null);
                 obstacles++;
             }
         }

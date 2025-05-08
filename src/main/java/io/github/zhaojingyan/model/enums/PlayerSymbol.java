@@ -6,13 +6,13 @@ public enum PlayerSymbol {
     TIE,
     VOID;
 
-    public PieceStatus SymbolToStatus(){
+    public CellStatus SymbolToStatus(){
         switch (this) {
             case BLACK -> {
-                return PieceStatus.BLACK;
+                return CellStatus.BLACK;
             }
             case WHITE -> {
-                return PieceStatus.WHITE;
+                return CellStatus.WHITE;
             }
             default -> throw new IllegalArgumentException("UnSupported PlayerSymbol: " + this);
         }

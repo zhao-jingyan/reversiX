@@ -1,42 +1,62 @@
 package io.github.zhaojingyan.model.game;
 
-import io.github.zhaojingyan.model.enums.PieceStatus;
+import java.util.ArrayList;
+
+import io.github.zhaojingyan.model.enums.CellStatus;
 import io.github.zhaojingyan.model.enums.PlayerSymbol;
 
 public class Board {
     // 棋盘属性
-    private final Piece[][] board;   // 存储棋子信息
-    private final boolean[][] valid; // 存储有效位置
+    private final ArrayList<Cell> board;   // 存储棋子信息
     public int white;         // 白子数量
     public int black;         // 黑子数量
     public int size;
     public int whiteBomb;   // 白子炸弹数量
     public int blackBomb;   // 黑子炸弹数量
+    private int emptyNum;
 
     public Board(int size) {
         this.size = size;
-        board = new Piece[size][size];
-        valid = new boolean[size][size];
+        this.emptyNum = size * size;
+        board = new ArrayList<>(size * size);
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                board.add(new Cell(i, j, true));
+            }
+        }
         white = 0;
         black = 0;
         whiteBomb = 3;
         blackBomb = 2;
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                board[i][j] = new Piece(i,j);
-                valid[i][j] = false;
-            }
-        }
     }
 
-    public void setPiece(int[] coordinates, PieceStatus pieceStatus, PlayerSymbol playerSymbol) {
-        board[coordinates[0]][coordinates[1]].setPiece(pieceStatus);
-        this.valid[coordinates[0]][coordinates[1]] = false;
+    private Cell getCell(int x, int y) {
+        if (x <0 || x >= size || y <0 || y >= size) {
+        throw new IndexOutOfBoundsException("坐标超出范围");
+        }
+        int index = y * size + x;
+        return board.get(index);
+    }
+
+    public void setPiece(int[] coordinates, CellStatus pieceStatus, PlayerSymbol playerSymbol) {
+        int x = coordinates[0];
+        int y = coordinates[1];
+        getCell(x,y).setPiece(pieceStatus);
+        getCell(x,y).setValid(false);
+
         switch (pieceStatus) {
-            case WHITE -> this.white++;
-            case BLACK -> this.black++;
-            case EMPTY -> this.valid[coordinates[0]][coordinates[1]] = true;
-            case OBSTACLE -> {}
+            case WHITE -> {
+                this.white++;
+                this.emptyNum--;
+            }
+            case BLACK -> {
+                this.black++;
+                this.emptyNum--;
+            }
+            case EMPTY -> getCell(x,y).setValid(true);
+            case OBSTACLE -> {
+                this.emptyNum--;
+            }
             case BOMB -> {
                 if (playerSymbol == PlayerSymbol.WHITE) {
                     this.whiteBomb--;
@@ -48,7 +68,19 @@ public class Board {
     }
 
     public void setValid(int[] coordinates, boolean isValid) {
-        this.valid[coordinates[0]][coordinates[1]] = isValid;
+        int x = coordinates[0];
+        int y = coordinates[1];
+        getCell(x,y).setValid(isValid);
+    }
+
+    public void adjustPieceCount(CellStatus flippedPiece) {
+        if (flippedPiece == CellStatus.BLACK) {
+            black++;
+            white--;
+        } else if (flippedPiece == CellStatus.WHITE) {
+            black--;
+            white++;
+        }
     }
 
     // Getters
@@ -57,26 +89,18 @@ public class Board {
     public int getBlack() { return black; }
     public int getWhiteBomb() { return whiteBomb; }
     public int getBlackBomb() { return blackBomb; }
-    public Piece getPieceAt(int x, int y) { return board[x][y]; }
-    public Piece[][] getPieceBoard() { return board; }
-    public boolean[][] getValidBoard() { return valid; }
+    public Cell getCellAt(int x, int y) { return getCell(x,y); }
+    public ArrayList<Cell> getCellBoard() { return board; }
     public int getRow() { return size; }
     public int getCol() { return size; }
-    public PieceStatus getPieceStatus(int[] coordinates) { return board[coordinates[0]][coordinates[1]].getStatus(); }
-    public boolean isValid(int[] coordinates) { return valid[coordinates[0]][coordinates[1]]; }
-    public boolean isEmpty(int[] coordinates) { return board[coordinates[0]][coordinates[1]].getStatus() == PieceStatus.EMPTY; }
-    public boolean isFull(){
-        for (Piece[] row : board)
-            for (Piece item : row)
-                if (item.getStatus() == PieceStatus.EMPTY)
-                    return false;
-        return true;
-    }
+    public boolean isValid(int[] coordinates) { return getCell(coordinates[0], coordinates[1]).getValid(); }
+    public boolean isEmpty(int[] coordinates) { return getCell(coordinates[0], coordinates[1]).getStatus() == CellStatus.EMPTY; }
+
     public boolean isOutOfBoard(int[] coordinates) {
         return coordinates[0] < 0 || coordinates[0] >= size || coordinates[1] < 0 || coordinates[1] >= size;
     }
-    public boolean isOpp(PieceStatus type, int[] coordinates) {
-        return board[coordinates[0]][coordinates[1]].getStatus() == type.opp();
+    public boolean isOpp(CellStatus type, int[] coordinates) {
+        return getCell(coordinates[0], coordinates[1]).getStatus() == type.opp();
     }
     public boolean haveBomb(PlayerSymbol type) {
         if (type == PlayerSymbol.WHITE) {
@@ -85,5 +109,8 @@ public class Board {
             return blackBomb > 0;
         }
         return false;
+    }
+    public boolean isFull() {
+        return emptyNum == 0;
     }
 }

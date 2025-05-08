@@ -1,21 +1,22 @@
 package io.github.zhaojingyan.controller.rule.imple;
 
 import io.github.zhaojingyan.controller.rule.Rule;
+import io.github.zhaojingyan.model.enums.CellStatus;
 import io.github.zhaojingyan.model.enums.GameMode;
-import io.github.zhaojingyan.model.enums.PieceStatus;
 import io.github.zhaojingyan.model.enums.PlayerSymbol;
 import io.github.zhaojingyan.model.game.Board;
+import io.github.zhaojingyan.model.game.Cell;
 import io.github.zhaojingyan.model.input.InputInformation;
 import io.github.zhaojingyan.model.input.imple.MoveInformation;
 
 public class ReversiRule implements Rule {
-    private final GameMode gamemode;
+    private final GameMode gamemode = GameMode.REVERSI;
     private boolean isOver;
     private boolean isWaitingForPass;
-
-    public ReversiRule() {
-        this.gamemode = GameMode.REVERSI;
-    }
+    private static final int[][] DIRECTIONS = {
+            {1, 0}, {-1, 0}, {0, 1}, {0, -1},
+            {1, 1}, {-1, -1}, {1, -1}, {-1, 1}
+    };
 
     @Override
     public GameMode getGameMode() {
@@ -24,167 +25,114 @@ public class ReversiRule implements Rule {
 
     @Override
     public void initializeBoard(Board board) {
-        // Initialize the board for Reversi
         int midRow = board.getRow() / 2;
         int midCol = board.getCol() / 2;
 
-        board.setPiece(new int[]{midRow - 1, midCol - 1}, PieceStatus.WHITE,null);
-        board.setPiece(new int[]{midRow - 1, midCol}, PieceStatus.BLACK,null);
-        board.setPiece(new int[]{midRow, midCol - 1}, PieceStatus.BLACK,null);
-        board.setPiece(new int[]{midRow, midCol}, PieceStatus.WHITE,null);
-        refreshValid(board, PieceStatus.BLACK);
+        board.setPiece(new int[]{midRow - 1, midCol - 1}, CellStatus.WHITE, null);
+        board.setPiece(new int[]{midRow - 1, midCol}, CellStatus.BLACK, null);
+        board.setPiece(new int[]{midRow, midCol - 1}, CellStatus.BLACK, null);
+        board.setPiece(new int[]{midRow, midCol}, CellStatus.WHITE, null);
+        refreshValid(board, CellStatus.BLACK);
     }
+
     @Override
-    public void updateBoard(Board board, InputInformation information,PlayerSymbol currentSymbol) {
-        PieceStatus currentPiece = currentSymbol.SymbolToStatus();
-        if(information instanceof MoveInformation moveInformation){
-            int []coordinates = moveInformation.getInfo();
-            flip(board, coordinates, currentPiece);
-        }
-        refreshValid(board, currentPiece.opp());
+    public void updateBoard(Board board, InputInformation information, PlayerSymbol currentSymbol) {
+        if (!(information instanceof MoveInformation moveInfo)) return;
+
+        int[] coordinates = moveInfo.getInfo();
+        flip(board, coordinates, currentSymbol.SymbolToStatus());
+        refreshValid(board, currentSymbol.SymbolToStatus().opp());
     }
 
-    private void flip(Board board, int[] input, PieceStatus currentPiece) {
-        int x = input[0];
-        int y = input[1];
-        int[][] directions = {
-            {1, 0}, {-1, 0}, {0, 1}, {0, -1},
-            {1, 1}, {-1, -1}, {1, -1}, {-1, 1}
-        };
-        for (int[] dir : directions) {
-            this.flipbeam(board, dir, x, y, currentPiece);
+    private void flip(Board board, int[] input, CellStatus currentPiece) {
+        for (int[] direction : DIRECTIONS) {
+            flipOrCheckInDirection(board, direction, input[0], input[1], currentPiece, true);
         }
     }
 
-    private void flipbeam(Board board, int[] direction, int x, int y, PieceStatus currentPiece) {
-        // set the variables
-        int xp = x;
-        int yp = y;
-        PieceStatus piece = currentPiece;
-        PieceStatus opp = currentPiece.opp();
-        int dx = direction[0];
-        int dy = direction[1];
-
-        // flip the pieces
-        while (isInBoard(8, xp + dx, yp + dy)  // in boarder
-                && board.getPieceAt(xp + dx, yp + dy).getStatus() == opp) {  // do not meet same piece
-            xp += dx;
-            yp += dy;
-            // going back and flip the pieces
-            if (isInBoard(8, xp + dx, yp + dy)
-                    && board.getPieceAt(xp + dx, yp + dy).getStatus() == piece) {
-                while (xp != x || yp != y) {
-                    if (board.getPieceAt(xp, yp).getStatus() == PieceStatus.BLACK) {
-                        board.black--;
-                        board.white++;
-                    } else if (board.getPieceAt(xp, yp).getStatus() == PieceStatus.WHITE) {
-                        board.black++;
-                        board.white--;
-                    }
-                    board.getPieceAt(xp, yp).flip();
-                    xp -= dx;
-                    yp -= dy;
-                }
-                break;
-            }
-        }
-    }
     @Override
     public boolean shouldPass() {
-        // Implement logic to determine if the turn should be passed
         return isWaitingForPass;
     }
 
     @Override
     public boolean isOver(Board board) {
-        // Implement logic to check if the game is over
         return isOver || board.isFull();
     }
 
     @Override
     public PlayerSymbol getWinner(Board board) {
-        if(board.getBlack() > board.getWhite())
-            return PlayerSymbol.BLACK;
-        else if(board.getBlack() < board.getWhite())
-            return PlayerSymbol.WHITE;
-        else
-            return PlayerSymbol.TIE;
+        return board.getBlack() > board.getWhite() ? PlayerSymbol.BLACK :
+               board.getBlack() < board.getWhite() ? PlayerSymbol.WHITE :
+               PlayerSymbol.TIE;
     }
 
-    private void refreshValid(Board board,PieceStatus type) {
-        // 先清除所有有效位置标记
-        for (int i = 0; i < 8; i++)
-            for (int j = 0; j < 8; j++) 
-                board.getValidBoard()[i][j] = false;
+    private void refreshValid(Board board, CellStatus type) {
+        // Clear all valid positions
+        board.getCellBoard().forEach(cell -> cell.setValid(false));
 
-        // 检查当前玩家是否有合法位置
-        isWaitingForPass = true;
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                if (isValidPosition(board, type, i, j)) {
-                    board.getValidBoard()[i][j] = true;
-                    isWaitingForPass = false;
-                }
-            }
-        }
+        // Check if current player has any valid moves
+        boolean hasValidMove = board.getCellBoard().stream()
+                .anyMatch(cell -> isValidPosition(board, cell, type));
 
-        // 如果当前玩家没有合法位置
+        isWaitingForPass = !hasValidMove;
+
+        // If no moves, check if the game should end
         if (isWaitingForPass) {
-            for (int i = 0; i < 8; i++) {
-                for (int j = 0; j < 8; j++) {
-                    if (isValidPosition(board, type.opp(), i, j)) {
-                        return;
-                    }
-                }
+            boolean opponentHasMove = board.getCellBoard().stream()
+                    .anyMatch(cell -> isValidPosition(board, cell, type.opp()));
+            if (!opponentHasMove) {
+                isWaitingForPass = false;
+                isOver = true;
             }
-            isWaitingForPass = false;
-            isOver = true;
         }
     }
 
-    private boolean isValidPosition(Board board, PieceStatus type, int x, int y) {
-        if (!isInBoard(8, x, y) || board.getPieceAt(x, y).getStatus() != PieceStatus.EMPTY) {
-            return false;
-        }
-        int[][] directions = {
-            {1, 0}, {-1, 0}, {0, 1}, {0, -1},
-            {1, 1}, {-1, -1}, {1, -1}, {-1, 1}
-        };
-        for (int[] dir : directions) {
-            if (canFlipInDirection(board, type, x, y, dir)) {
+    private boolean isValidPosition(Board board, Cell cell, CellStatus currentPiece) {
+        if (cell.getStatus() != CellStatus.EMPTY) return false;
+
+        for (int[] direction : DIRECTIONS) {
+            if (flipOrCheckInDirection(board, direction, cell.getX(), cell.getY(), currentPiece, false)) {
                 return true;
             }
         }
         return false;
     }
 
-    private boolean canFlipInDirection(Board board, PieceStatus type, int x, int y, int[] direction) {
-        // set the variables
-        int xp = x;
-        int yp = y;
-        int dx = direction[0];
-        int dy = direction[1];
-        PieceStatus piece = type;
-        PieceStatus opp = type.opp();
-        if (!isInBoard(8, xp + dx, yp + dy) || board.getPieceAt(xp + dx, yp + dy).getStatus() != opp)  // not in board or no opp
-            return false;
-        else {
-            xp += dx;
-            yp += dy;
-            while (isInBoard(8, xp, yp)  // in boarder
-                && board.getPieceAt(xp, yp).getStatus() != PieceStatus.EMPTY) {  // do not meet empty or valid
-            if (board.getPieceAt(xp, yp).getStatus() == piece)
-                return true;
-            else if (board.getPieceAt(xp, yp).getStatus() == opp) {
-                xp += dx;
-                    yp += dy;
-                }
-            }
-            return false;
-        }
-    }
-
     private boolean isInBoard(int size, int x, int y) {
         return x >= 0 && x < size && y >= 0 && y < size;
+    }
+
+    private boolean flipOrCheckInDirection(Board board, int[] direction, int x, int y,
+                                          CellStatus currentPiece, boolean flipMode) {
+        int dx = direction[0], dy = direction[1];
+        int xp = x + dx, yp = y + dy;
+
+        // Must start with an opponent's piece
+        if (!isInBoard(8, xp, yp) || board.getCellAt(xp, yp).getStatus() != currentPiece.opp()) {
+            return false;
+        }
+
+        // Traverse in direction until we find a matching piece or an empty cell
+        while (isInBoard(8, xp += dx, yp += dy)) {
+            CellStatus status = board.getCellAt(xp, yp).getStatus();
+
+            if (status == CellStatus.EMPTY) return false;
+            if (status != currentPiece) continue;
+
+            // If in check mode, return true
+            if (!flipMode) return true;
+
+            // Flip all pieces back to the original position
+            while (xp != x || yp != y) {
+                xp -= dx;
+                yp -= dy;
+                Cell cell = board.getCellAt(xp, yp);
+                cell.flip();
+                board.adjustPieceCount(cell.getStatus() == CellStatus.BLACK ? CellStatus.BLACK : CellStatus.WHITE);
+            }
+            return true;
+        }
+        return false;
     }
 }
