@@ -6,6 +6,7 @@ import io.github.zhaojingyan.model.input.imple.InvalidInformation;
 import io.github.zhaojingyan.model.input.imple.MoveInformation;
 import io.github.zhaojingyan.model.input.imple.NewGameInformation;
 import io.github.zhaojingyan.model.input.imple.PassInformation;
+import io.github.zhaojingyan.model.input.imple.PlaybackInformation;
 import io.github.zhaojingyan.model.input.imple.QuitInformation;
 import io.github.zhaojingyan.model.input.imple.SwitchBoardInformation;
 
@@ -21,6 +22,7 @@ public class InputInformationFactory {
             case BOARDNUM -> SwitchBoardInformation.create(input);
             case QUIT -> QuitInformation.create();
             case INVALID -> InvalidInformation.create();
+            case PLAYBACK -> PlaybackInformation.create();
         };
     }
 }

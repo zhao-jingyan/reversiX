@@ -37,8 +37,10 @@ public class ReversiRule implements Rule {
     @Override
     public void updateBoard(Board board, InputInformation information,PlayerSymbol currentSymbol) {
         PieceStatus currentPiece = currentSymbol.SymbolToStatus();
-        int []coordinates = ((MoveInformation) information).getInfo();
-        flip(board, coordinates, currentPiece);
+        if(information instanceof MoveInformation moveInformation){
+            int []coordinates = moveInformation.getInfo();
+            flip(board, coordinates, currentPiece);
+        }
         refreshValid(board, currentPiece.opp());
     }
 
@@ -90,7 +92,7 @@ public class ReversiRule implements Rule {
     @Override
     public boolean shouldPass() {
         // Implement logic to determine if the turn should be passed
-        return false;
+        return isWaitingForPass;
     }
 
     @Override
@@ -131,12 +133,12 @@ public class ReversiRule implements Rule {
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
                     if (isValidPosition(board, type.opp(), i, j)) {
-                        isWaitingForPass = false;
-                        isOver = true;
-                        break;
+                        return;
                     }
                 }
             }
+            isWaitingForPass = false;
+            isOver = true;
         }
     }
 

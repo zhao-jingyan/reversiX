@@ -34,6 +34,9 @@ public class InputHandler {
                 GameManager.getInstance().updateCurrentGame(input);
                 outputType = OutputType.REFRESH;
             }
+            case PLAYBACK ->{
+                outputType = OutputType.REFRESH;//clear screen, reprint
+            }
             default -> {
                 throw new GameException(GameErrorCode.INVALID_INPUT,
                         "Invalid input");

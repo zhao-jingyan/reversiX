@@ -7,5 +7,6 @@ public enum InputType {
     NEWGAME, 
     BOARDNUM, 
     QUIT, 
-    INVALID
+    INVALID,
+    PLAYBACK
 }

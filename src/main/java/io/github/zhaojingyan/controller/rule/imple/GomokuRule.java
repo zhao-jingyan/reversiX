@@ -91,7 +91,7 @@ public class GomokuRule implements Rule {
         board.setPiece(new int[] { 5, 2 }, PieceStatus.OBSTACLE, null); // 3f
         board.setPiece(new int[] { 6, 7 }, PieceStatus.OBSTACLE, null); // 8g
         board.setPiece(new int[] { 5, 8 }, PieceStatus.OBSTACLE, null); // 9f
-        board.setPiece(new int[] { 10, 12 }, PieceStatus.OBSTACLE, null); // ck
+        board.setPiece(new int[] { 10, 11 }, PieceStatus.OBSTACLE, null); // ck
     }
 
     @Override

@@ -12,6 +12,7 @@ import io.github.zhaojingyan.model.input.InputInformation;
 import io.github.zhaojingyan.model.input.imple.BombInformation;
 import io.github.zhaojingyan.model.input.imple.MoveInformation;
 import io.github.zhaojingyan.model.input.imple.PassInformation;
+import io.github.zhaojingyan.ui.console.Audio;
 
 
 public class Game{
@@ -73,10 +74,9 @@ public class Game{
         else {
             board.setPiece(coordinate, playerController.getCurrentSymbol().SymbolToStatus(),null);
             ruleUpdate(board,moveInformation);
-            playerController.changeSpot();
+            sound("piece");
         }
     }
-
 
     private void handleBombInformation(BombInformation bombInformation)
             throws GameException {
@@ -96,15 +96,25 @@ public class Game{
         else {
             board.setPiece(coordinate, PieceStatus.BOMB, playerController.getCurrentSymbol());
             ruleUpdate(board,bombInformation);
-            playerController.changeSpot();
+            sound("bomb");
         }
+    }
+
+    private static void sound(String sound) {
+        Thread audioThread = new Thread(() -> {
+                Audio player = new Audio();
+                try{
+                player.playSound(sound);// 调用之前的 AudioPlayer.play()
+                } catch(Exception e){
+                }
+        });
+        audioThread.start();
     }
 
     private void handlePassInformation(InputInformation inputInformation) throws GameException {
         if (!isWaitingForPass)
             throw new GameException(GameErrorCode.MAY_NOT_PASS, "Cannot pass when there are valid moves");
         else {
-            playerController.changeSpot();
             ruleUpdate(board,inputInformation);
         }
     }
@@ -115,6 +125,7 @@ public class Game{
         isWaitingForPass = gamerule.shouldPass();
         isOver = gamerule.isOver(board);
         winner = gamerule.getWinner(board);
+        playerController.changeSpot();
     }
 
     //Getters
