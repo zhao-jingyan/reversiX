@@ -12,8 +12,8 @@ public class MoveInformation implements InputInformation {
 
     public static MoveInformation create(String input) {
         int[] coordinates = new int[2];
-        coordinates[0] = input.charAt(1) - '1';
-        coordinates[1] = input.charAt(0) - 'A';
+        coordinates[1] = Integer.parseInt(String.valueOf(input.charAt(0)), 16) - 1;
+        coordinates[0] = input.charAt(1) - 'A';
         return new MoveInformation(coordinates);
     }
 

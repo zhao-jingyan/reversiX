@@ -1,7 +1,8 @@
 package io.github.zhaojingyan.model.output;
 
 import io.github.zhaojingyan.controller.game.Game;
-import io.github.zhaojingyan.model.enums.PieceStatus;
+import io.github.zhaojingyan.model.enums.GameMode;
+import io.github.zhaojingyan.model.enums.PlayerSymbol;
 import io.github.zhaojingyan.model.game.Board;
 import io.github.zhaojingyan.model.game.Player;
 
@@ -11,14 +12,16 @@ public class GameInfo {
     private final String player1Name;
     private final String player2Name;
     private final Player chargePlayer;
-    private final PieceStatus winner;
+    private final PlayerSymbol winner;
     private final int currentGameNumber;
     private final int currentRound;
     private final int white;
     private final int black;
     private final boolean isWaitingForPass;
+    private final GameMode gameMode;
 
     public GameInfo(Game game) {
+        this.gameMode = game.getGameMode();
         this.board = game.getBoard();
         this.player1Name = game.getP1Name();
         this.player2Name = game.getP2Name();
@@ -39,8 +42,12 @@ public class GameInfo {
     public int getCurrentRound() { return currentRound; }
     public int getWhite() { return white; }
     public int getBlack() { return black; }
-    public PieceStatus getWinner() { return winner; }
+    public int getWhiteBomb() { return board.getWhiteBomb(); }
+    public int getBlackBomb() { return board.getBlackBomb(); }
+    public PlayerSymbol getWinner() { return winner; }
     public String getChargePlayerName() { return chargePlayer.getName(); }
-    public PieceStatus getChargePieceType() { return chargePlayer.getPiecetype(); }
+    public PlayerSymbol getChargeSymbol() { return chargePlayer.getSymbol(); }
     public boolean isWaitingForPass() { return isWaitingForPass;}
+    public GameMode getGameMode() { return gameMode; }
+
 }

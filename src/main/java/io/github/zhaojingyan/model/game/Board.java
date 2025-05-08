@@ -1,6 +1,7 @@
 package io.github.zhaojingyan.model.game;
 
 import io.github.zhaojingyan.model.enums.PieceStatus;
+import io.github.zhaojingyan.model.enums.PlayerSymbol;
 
 public class Board {
     // 棋盘属性
@@ -9,6 +10,8 @@ public class Board {
     public int white;         // 白子数量
     public int black;         // 黑子数量
     public int size;
+    public int whiteBomb;   // 白子炸弹数量
+    public int blackBomb;   // 黑子炸弹数量
 
     public Board(int size) {
         this.size = size;
@@ -16,21 +19,32 @@ public class Board {
         valid = new boolean[size][size];
         white = 0;
         black = 0;
+        whiteBomb = 3;
+        blackBomb = 2;
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                board[i][j] = new Piece();
+                board[i][j] = new Piece(i,j);
                 valid[i][j] = false;
             }
         }
     }
 
-    public void addPiece(int[] coordinates, PieceStatus status) {
-        this.board[coordinates[0]][coordinates[1]].setPiece(status);
+    public void setPiece(int[] coordinates, PieceStatus pieceStatus, PlayerSymbol playerSymbol) {
+        board[coordinates[0]][coordinates[1]].setPiece(pieceStatus);
         this.valid[coordinates[0]][coordinates[1]] = false;
-        if (status == PieceStatus.WHITE)
-            this.white++;
-        else if (status == PieceStatus.BLACK) 
-            this.black++;
+        switch (pieceStatus) {
+            case WHITE -> this.white++;
+            case BLACK -> this.black++;
+            case EMPTY -> this.valid[coordinates[0]][coordinates[1]] = true;
+            case OBSTACLE -> {}
+            case BOMB -> {
+                if (playerSymbol == PlayerSymbol.WHITE) {
+                    this.whiteBomb--;
+                } else if (playerSymbol == PlayerSymbol.BLACK) {
+                    this.blackBomb--;
+                }
+            }
+        } 
     }
 
     public void setValid(int[] coordinates, boolean isValid) {
@@ -38,8 +52,12 @@ public class Board {
     }
 
     // Getters
+    public int getSize() { return size; }
     public int getWhite() { return white; }
     public int getBlack() { return black; }
+    public int getWhiteBomb() { return whiteBomb; }
+    public int getBlackBomb() { return blackBomb; }
+    public Piece getPieceAt(int x, int y) { return board[x][y]; }
     public Piece[][] getPieceBoard() { return board; }
     public boolean[][] getValidBoard() { return valid; }
     public int getRow() { return size; }
@@ -47,12 +65,25 @@ public class Board {
     public PieceStatus getPieceStatus(int[] coordinates) { return board[coordinates[0]][coordinates[1]].getStatus(); }
     public boolean isValid(int[] coordinates) { return valid[coordinates[0]][coordinates[1]]; }
     public boolean isEmpty(int[] coordinates) { return board[coordinates[0]][coordinates[1]].getStatus() == PieceStatus.EMPTY; }
-
     public boolean isFull(){
         for (Piece[] row : board)
             for (Piece item : row)
                 if (item.getStatus() == PieceStatus.EMPTY)
                     return false;
         return true;
+    }
+    public boolean isOutOfBoard(int[] coordinates) {
+        return coordinates[0] < 0 || coordinates[0] >= size || coordinates[1] < 0 || coordinates[1] >= size;
+    }
+    public boolean isOpp(PieceStatus type, int[] coordinates) {
+        return board[coordinates[0]][coordinates[1]].getStatus() == type.opp();
+    }
+    public boolean haveBomb(PlayerSymbol type) {
+        if (type == PlayerSymbol.WHITE) {
+            return whiteBomb > 0;
+        } else if (type == PlayerSymbol.BLACK) {
+            return blackBomb > 0;
+        }
+        return false;
     }
 }
