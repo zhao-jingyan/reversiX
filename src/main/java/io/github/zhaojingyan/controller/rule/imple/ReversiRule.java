@@ -14,8 +14,8 @@ public class ReversiRule implements Rule {
     private boolean isOver;
     private boolean isWaitingForPass;
     private static final int[][] DIRECTIONS = {
-            {1, 0}, {-1, 0}, {0, 1}, {0, -1},
-            {1, 1}, {-1, -1}, {1, -1}, {-1, 1}
+            { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 },
+            { 1, 1 }, { -1, -1 }, { 1, -1 }, { -1, 1 }
     };
 
     @Override
@@ -28,16 +28,17 @@ public class ReversiRule implements Rule {
         int midRow = board.getRow() / 2;
         int midCol = board.getCol() / 2;
 
-        board.setPiece(new int[]{midRow - 1, midCol - 1}, CellStatus.WHITE, null);
-        board.setPiece(new int[]{midRow - 1, midCol}, CellStatus.BLACK, null);
-        board.setPiece(new int[]{midRow, midCol - 1}, CellStatus.BLACK, null);
-        board.setPiece(new int[]{midRow, midCol}, CellStatus.WHITE, null);
+        board.setPiece(new int[] { midRow - 1, midCol - 1 }, CellStatus.WHITE, null);
+        board.setPiece(new int[] { midRow - 1, midCol }, CellStatus.BLACK, null);
+        board.setPiece(new int[] { midRow, midCol - 1 }, CellStatus.BLACK, null);
+        board.setPiece(new int[] { midRow, midCol }, CellStatus.WHITE, null);
         refreshValid(board, CellStatus.BLACK);
     }
 
     @Override
     public void updateBoard(Board board, InputInformation information, PlayerSymbol currentSymbol) {
-        if (!(information instanceof MoveInformation moveInfo)) return;
+        if (!(information instanceof MoveInformation moveInfo))
+            return;
 
         int[] coordinates = moveInfo.getInfo();
         flip(board, coordinates, currentSymbol.SymbolToStatus());
@@ -62,25 +63,35 @@ public class ReversiRule implements Rule {
 
     @Override
     public PlayerSymbol getWinner(Board board) {
-        return board.getBlack() > board.getWhite() ? PlayerSymbol.BLACK :
-               board.getBlack() < board.getWhite() ? PlayerSymbol.WHITE :
-               PlayerSymbol.TIE;
+        return board.getBlack() > board.getWhite() ? PlayerSymbol.BLACK
+                : board.getBlack() < board.getWhite() ? PlayerSymbol.WHITE : PlayerSymbol.TIE;
     }
 
     private void refreshValid(Board board, CellStatus type) {
         // Clear all valid positions
-        board.getCellBoard().forEach(cell -> cell.setValid(false));
+        for (Cell cell : board.getCellBoard()) {
+            if (isValidPosition(board, cell, type)) {
+                cell.setValid(false);
+            }
+        }
 
         // Check if current player has any valid moves
-        boolean hasValidMove = board.getCellBoard().stream()
-                .anyMatch(cell -> isValidPosition(board, cell, type));
-
+        boolean hasValidMove = false;
+        for (Cell cell : board.getCellBoard()) {
+            if (hasValidMove = isValidPosition(board, cell, type)) {
+                cell.setValid(true);
+            }
+        }
         isWaitingForPass = !hasValidMove;
 
         // If no moves, check if the game should end
         if (isWaitingForPass) {
-            boolean opponentHasMove = board.getCellBoard().stream()
-                    .anyMatch(cell -> isValidPosition(board, cell, type.opp()));
+            boolean opponentHasMove = false;
+            for (Cell cell : board.getCellBoard()) {
+                if (opponentHasMove = isValidPosition(board, cell, type.opp())) {
+                    cell.setValid(true);
+                }
+            }
             if (!opponentHasMove) {
                 isWaitingForPass = false;
                 isOver = true;
@@ -89,7 +100,8 @@ public class ReversiRule implements Rule {
     }
 
     private boolean isValidPosition(Board board, Cell cell, CellStatus currentPiece) {
-        if (cell.getStatus() != CellStatus.EMPTY) return false;
+        if (cell.getStatus() != CellStatus.EMPTY)
+            return false;
 
         for (int[] direction : DIRECTIONS) {
             if (flipOrCheckInDirection(board, direction, cell.getX(), cell.getY(), currentPiece, false)) {
@@ -104,7 +116,7 @@ public class ReversiRule implements Rule {
     }
 
     private boolean flipOrCheckInDirection(Board board, int[] direction, int x, int y,
-                                          CellStatus currentPiece, boolean flipMode) {
+            CellStatus currentPiece, boolean flipMode) {
         int dx = direction[0], dy = direction[1];
         int xp = x + dx, yp = y + dy;
 
@@ -117,11 +129,14 @@ public class ReversiRule implements Rule {
         while (isInBoard(8, xp += dx, yp += dy)) {
             CellStatus status = board.getCellAt(xp, yp).getStatus();
 
-            if (status == CellStatus.EMPTY) return false;
-            if (status != currentPiece) continue;
+            if (status == CellStatus.EMPTY)
+                return false;
+            if (status != currentPiece)
+                continue;
 
             // If in check mode, return true
-            if (!flipMode) return true;
+            if (!flipMode)
+                return true;
 
             // Flip all pieces back to the original position
             while (xp != x || yp != y) {
