@@ -12,7 +12,7 @@ public class ScreenBuilder {
     }
 
     protected Screen constructBoardPanel(OutputInformation output) {
-        int boardSize = output.getGameInfo().getCellBoard().size();
+        int boardSize = output.getGameInfo().getBoardSize();
         Screen rawScreen = new Screen(boardSize + 1, boardSize + 1);
        for(Cell cell : output.getGameInfo().getCellBoard()) {
                 char symbol = cell.getStatus().getSymbol(cell, output.getGameInfo().getGameMode());
@@ -44,7 +44,7 @@ public class ScreenBuilder {
     protected Screen constructGameInfoPanel(OutputInformation output) {
         switch (output.getGameInfo().getGameMode()) {
             case REVERSI -> {
-                return middlePanel(10, 4, "Score", output.getGameInfo().getBlack(),
+                return middlePanel(10, 3, "Score", output.getGameInfo().getBlack(),
                         output.getGameInfo().getWhite());
             }
             case GOMOKU -> {
