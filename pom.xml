@@ -33,7 +33,6 @@
          <directory>src/main/resources</directory>
           <includes>
           <include>**/*.cmd</include>
-          <include>**/*.wav</include>
           </includes>
       </resource>
     </resources>
