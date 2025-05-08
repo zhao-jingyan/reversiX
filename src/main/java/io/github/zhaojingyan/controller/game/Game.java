@@ -12,7 +12,6 @@ import io.github.zhaojingyan.model.input.InputInformation;
 import io.github.zhaojingyan.model.input.imple.BombInformation;
 import io.github.zhaojingyan.model.input.imple.MoveInformation;
 import io.github.zhaojingyan.model.input.imple.PassInformation;
-import io.github.zhaojingyan.ui.console.Audio;
 
 
 public class Game{
@@ -74,7 +73,6 @@ public class Game{
         else {
             board.setPiece(coordinate, playerController.getCurrentSymbol().SymbolToStatus(),null);
             ruleUpdate(board,moveInformation);
-            sound("piece");
         }
     }
 
@@ -96,20 +94,9 @@ public class Game{
         else {
             board.setPiece(coordinate, PieceStatus.BOMB, playerController.getCurrentSymbol());
             ruleUpdate(board,bombInformation);
-            sound("bomb");
         }
     }
 
-    private static void sound(String sound) {
-        Thread audioThread = new Thread(() -> {
-                Audio player = new Audio();
-                try{
-                player.playSound(sound);// 调用之前的 AudioPlayer.play()
-                } catch(Exception e){
-                }
-        });
-        audioThread.start();
-    }
 
     private void handlePassInformation(InputInformation inputInformation) throws GameException {
         if (!isWaitingForPass)

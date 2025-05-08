@@ -6,7 +6,7 @@
 
   <groupId>io.github.zhaojingyan</groupId>
   <artifactId>reversi</artifactId>
-  <version>1.2.1</version>
+  <version>1.2.0</version>
 
   <name>reversi</name>
   <!-- FIXME change it to the project's website -->
@@ -33,7 +33,6 @@
          <directory>src/main/resources</directory>
           <includes>
           <include>**/*.cmd</include>
-          <include>**/*.wav</include>
           </includes>
       </resource>
     </resources>
