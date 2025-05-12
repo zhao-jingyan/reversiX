@@ -1,6 +1,9 @@
 package io.github.zhaojingyan.model.input.imple;
 
+import io.github.zhaojingyan.model.enums.GameMode;
 import io.github.zhaojingyan.model.enums.InputType;
+import io.github.zhaojingyan.model.enums.PlayerSymbol;
+import io.github.zhaojingyan.model.game.Board;
 import io.github.zhaojingyan.model.input.InputInformation;
 
 public class InvalidInformation implements InputInformation {
@@ -19,5 +22,9 @@ public class InvalidInformation implements InputInformation {
     @Override
     public Object getInfo() {
         return null;
+    }
+
+    @Override
+    public void handle(boolean isWaitingForPass, Board board, PlayerSymbol currentSymbol, GameMode gameMode) {
     }
 }
