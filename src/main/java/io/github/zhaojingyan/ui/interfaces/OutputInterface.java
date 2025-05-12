@@ -1,6 +1,6 @@
 package io.github.zhaojingyan.ui.interfaces;
 
-import io.github.zhaojingyan.controller.game.GameException;
+import io.github.zhaojingyan.model.service.GameException;
 import io.github.zhaojingyan.model.output.OutputInformation;
 
 

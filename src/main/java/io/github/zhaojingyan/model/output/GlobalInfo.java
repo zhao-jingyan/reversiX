@@ -1,7 +1,7 @@
 package io.github.zhaojingyan.model.output;
 
-import io.github.zhaojingyan.controller.game.GameManager;
 import io.github.zhaojingyan.model.enums.GameMode;
+import io.github.zhaojingyan.model.service.GameManager;
 
 public class GlobalInfo {
         private final GameMode[] gameList;

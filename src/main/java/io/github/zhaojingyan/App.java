@@ -1,6 +1,6 @@
 package io.github.zhaojingyan;
 
-import io.github.zhaojingyan.controller.logic.MainController;
+import io.github.zhaojingyan.model.service.MainController;
 import io.github.zhaojingyan.ui.console.ConInput;
 import io.github.zhaojingyan.ui.console.ConOutput;
 

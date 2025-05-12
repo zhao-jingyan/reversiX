@@ -1,10 +1,10 @@
 package io.github.zhaojingyan.model.output;
 
-import io.github.zhaojingyan.controller.game.Game;
+import io.github.zhaojingyan.model.entities.Board;
+import io.github.zhaojingyan.model.entities.Player;
 import io.github.zhaojingyan.model.enums.GameMode;
 import io.github.zhaojingyan.model.enums.PlayerSymbol;
-import io.github.zhaojingyan.model.game.Board;
-import io.github.zhaojingyan.model.game.Player;
+import io.github.zhaojingyan.model.service.Game;
 
 public class GameInfo {
 

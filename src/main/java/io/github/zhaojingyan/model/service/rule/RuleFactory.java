@@ -1,9 +1,9 @@
-package io.github.zhaojingyan.controller.rule;
+package io.github.zhaojingyan.model.service.rule;
 
-import io.github.zhaojingyan.controller.rule.imple.GomokuRule;
-import io.github.zhaojingyan.controller.rule.imple.PeaceRule;
-import io.github.zhaojingyan.controller.rule.imple.ReversiRule;
 import io.github.zhaojingyan.model.enums.GameMode;
+import io.github.zhaojingyan.model.service.rule.imple.GomokuRule;
+import io.github.zhaojingyan.model.service.rule.imple.PeaceRule;
+import io.github.zhaojingyan.model.service.rule.imple.ReversiRule;
 
 public class RuleFactory {
     public static Rule createRule(GameMode mode) {

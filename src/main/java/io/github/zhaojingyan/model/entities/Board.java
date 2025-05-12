@@ -1,4 +1,4 @@
-package io.github.zhaojingyan.model.game;
+package io.github.zhaojingyan.model.entities;
 
 import io.github.zhaojingyan.model.enums.PieceStatus;
 import io.github.zhaojingyan.model.enums.PlayerSymbol;

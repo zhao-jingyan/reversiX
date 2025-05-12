@@ -1,9 +1,9 @@
 package io.github.zhaojingyan.ui.console;
 
-import io.github.zhaojingyan.controller.game.GameException;
+
 import io.github.zhaojingyan.model.output.OutputInformation;
-import io.github.zhaojingyan.model.output.Screen;
 import io.github.zhaojingyan.ui.interfaces.OutputInterface;
+import io.github.zhaojingyan.model.service.GameException;
 
 public class ConOutput implements OutputInterface {
     private final ScreenBuilder screenBuilder = new ScreenBuilder();

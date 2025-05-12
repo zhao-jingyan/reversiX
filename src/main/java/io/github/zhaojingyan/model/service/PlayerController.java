@@ -1,7 +1,7 @@
-package io.github.zhaojingyan.controller.game;
+package io.github.zhaojingyan.model.service;
 
+import io.github.zhaojingyan.model.entities.Player;
 import io.github.zhaojingyan.model.enums.PlayerSymbol;
-import io.github.zhaojingyan.model.game.Player;
 
 public class PlayerController {
     private final Player p1;          // 玩家1

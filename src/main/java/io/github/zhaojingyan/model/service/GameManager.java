@@ -1,4 +1,4 @@
-package io.github.zhaojingyan.controller.game;
+package io.github.zhaojingyan.model.service;
 
 import java.util.HashMap;
 import java.util.Map;

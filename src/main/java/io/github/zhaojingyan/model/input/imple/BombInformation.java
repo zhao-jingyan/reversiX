@@ -1,12 +1,12 @@
 package io.github.zhaojingyan.model.input.imple;
-import io.github.zhaojingyan.controller.game.GameException;
+import io.github.zhaojingyan.model.entities.Board;
 import io.github.zhaojingyan.model.enums.GameErrorCode;
 import io.github.zhaojingyan.model.enums.GameMode;
 import io.github.zhaojingyan.model.enums.InputType;
 import io.github.zhaojingyan.model.enums.PieceStatus;
 import io.github.zhaojingyan.model.enums.PlayerSymbol;
-import io.github.zhaojingyan.model.game.Board;
 import io.github.zhaojingyan.model.input.InputInformation;
+import io.github.zhaojingyan.model.service.GameException;
 
 public class BombInformation implements InputInformation {
     private final int[] bomb;

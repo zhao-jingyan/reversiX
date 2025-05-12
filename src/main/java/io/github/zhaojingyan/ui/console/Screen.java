@@ -1,4 +1,4 @@
-package io.github.zhaojingyan.model.output;
+package io.github.zhaojingyan.ui.console;
 
 import java.io.IOException;
 

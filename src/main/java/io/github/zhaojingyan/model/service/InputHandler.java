@@ -1,7 +1,5 @@
-package io.github.zhaojingyan.controller.logic;
+package io.github.zhaojingyan.model.service;
 
-import io.github.zhaojingyan.controller.game.GameException;
-import io.github.zhaojingyan.controller.game.GameManager;
 import io.github.zhaojingyan.model.enums.GameErrorCode;
 import io.github.zhaojingyan.model.enums.GameMode;
 import io.github.zhaojingyan.model.enums.OutputType;

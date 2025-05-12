@@ -1,4 +1,4 @@
-package io.github.zhaojingyan.controller.game;
+package io.github.zhaojingyan.model.service;
 
 import io.github.zhaojingyan.model.enums.GameErrorCode;
 

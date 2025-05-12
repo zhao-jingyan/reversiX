@@ -1,10 +1,9 @@
 package io.github.zhaojingyan.ui.console;
 
+import io.github.zhaojingyan.model.entities.Piece;
 import io.github.zhaojingyan.model.enums.GameMode;
 import io.github.zhaojingyan.model.enums.PlayerSymbol;
-import io.github.zhaojingyan.model.game.Piece;
 import io.github.zhaojingyan.model.output.OutputInformation;
-import io.github.zhaojingyan.model.output.Screen;
 
 public class ScreenBuilder {
 

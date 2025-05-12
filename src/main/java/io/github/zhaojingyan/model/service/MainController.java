@@ -1,10 +1,10 @@
-package io.github.zhaojingyan.controller.logic;
+package io.github.zhaojingyan.model.service;
 
-import io.github.zhaojingyan.controller.game.GameException;
-import io.github.zhaojingyan.controller.game.GameManager;
 import io.github.zhaojingyan.model.enums.OutputType;
 import io.github.zhaojingyan.ui.interfaces.InputInterface;
 import io.github.zhaojingyan.ui.interfaces.OutputInterface;
+
+
 
 public class MainController {
     private static final MainController instance = new MainController();

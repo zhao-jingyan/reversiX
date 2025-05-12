@@ -1,13 +1,13 @@
-package io.github.zhaojingyan.controller.game;
+package io.github.zhaojingyan.model.service;
 
-import io.github.zhaojingyan.controller.rule.Rule;
-import io.github.zhaojingyan.controller.rule.RuleFactory;
+import io.github.zhaojingyan.model.entities.Board;
+import io.github.zhaojingyan.model.entities.Player;
 import io.github.zhaojingyan.model.enums.GameErrorCode;
 import io.github.zhaojingyan.model.enums.GameMode;
 import io.github.zhaojingyan.model.enums.PlayerSymbol;
-import io.github.zhaojingyan.model.game.Board;
-import io.github.zhaojingyan.model.game.Player;
 import io.github.zhaojingyan.model.input.InputInformation;
+import io.github.zhaojingyan.model.service.rule.Rule;
+import io.github.zhaojingyan.model.service.rule.RuleFactory;
 
 
 public class Game{
