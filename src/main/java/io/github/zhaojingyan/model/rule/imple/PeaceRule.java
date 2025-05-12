@@ -1,10 +1,10 @@
-package io.github.zhaojingyan.model.service.rule.imple;
+package io.github.zhaojingyan.model.rule.imple;
 
 import io.github.zhaojingyan.model.entities.Board;
 import io.github.zhaojingyan.model.enums.GameMode;
 import io.github.zhaojingyan.model.enums.PlayerSymbol;
 import io.github.zhaojingyan.model.input.InputInformation;
-import io.github.zhaojingyan.model.service.rule.Rule;
+import io.github.zhaojingyan.model.rule.Rule;
 
 public class PeaceRule implements Rule {
     private final GameMode gamemode;

@@ -1,4 +1,4 @@
-package io.github.zhaojingyan.model.service.rule;
+package io.github.zhaojingyan.model.rule;
 
 import io.github.zhaojingyan.model.entities.Board;
 import io.github.zhaojingyan.model.enums.GameMode;
