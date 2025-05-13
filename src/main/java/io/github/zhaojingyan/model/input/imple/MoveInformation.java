@@ -3,10 +3,11 @@ package io.github.zhaojingyan.model.input.imple;
 import io.github.zhaojingyan.model.entities.Board;
 import io.github.zhaojingyan.model.enums.GameErrorCode;
 import io.github.zhaojingyan.model.enums.GameMode;
-import io.github.zhaojingyan.model.enums.InputType;
+import io.github.zhaojingyan.model.enums.OutputType;
 import io.github.zhaojingyan.model.enums.PlayerSymbol;
 import io.github.zhaojingyan.model.input.InputInformation;
 import io.github.zhaojingyan.model.service.GameException;
+import io.github.zhaojingyan.model.service.GameManager;
 
 public class MoveInformation implements InputInformation {
     private final int[] move;
@@ -23,8 +24,8 @@ public class MoveInformation implements InputInformation {
     }
 
     @Override
-    public InputType getInputType() {
-        return InputType.COORDINATES;
+    public OutputType getOutputType() {
+        return OutputType.REFRESH;
     }
 
     @Override
@@ -52,4 +53,10 @@ public class MoveInformation implements InputInformation {
             board.setPiece(coordinate, currentSymbol.SymbolToStatus(),null);
         }
     }
+
+    @Override
+    public void preHandle() throws GameException {
+        GameManager.getInstance().updateCurrentGame(this);
+    }
+
 }

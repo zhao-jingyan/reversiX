@@ -2,7 +2,7 @@ package io.github.zhaojingyan.model.input.imple;
 
 import io.github.zhaojingyan.model.entities.Board;
 import io.github.zhaojingyan.model.enums.GameMode;
-import io.github.zhaojingyan.model.enums.InputType;
+import io.github.zhaojingyan.model.enums.OutputType;
 import io.github.zhaojingyan.model.enums.PlayerSymbol;
 import io.github.zhaojingyan.model.input.InputInformation;
 import io.github.zhaojingyan.model.service.GameException;
@@ -18,8 +18,8 @@ public class PlaybackInformation implements InputInformation{
     }
 
     @Override
-    public InputType getInputType() {
-        return InputType.PLAYBACK;
+    public OutputType getOutputType() {
+        return OutputType.REFRESH;
     }
 
     @Override
@@ -29,5 +29,10 @@ public class PlaybackInformation implements InputInformation{
 
     @Override
     public void handle(boolean isWaitingForPass, Board board, PlayerSymbol currentSymbol, GameMode gameMode) throws GameException{
+    }
+
+    @Override
+    public void preHandle() throws GameException {
+        // No action needed for playback
     }
 }

@@ -2,11 +2,12 @@ package io.github.zhaojingyan.model.input.imple;
 import io.github.zhaojingyan.model.entities.Board;
 import io.github.zhaojingyan.model.enums.GameErrorCode;
 import io.github.zhaojingyan.model.enums.GameMode;
-import io.github.zhaojingyan.model.enums.InputType;
+import io.github.zhaojingyan.model.enums.OutputType;
 import io.github.zhaojingyan.model.enums.PieceStatus;
 import io.github.zhaojingyan.model.enums.PlayerSymbol;
 import io.github.zhaojingyan.model.input.InputInformation;
 import io.github.zhaojingyan.model.service.GameException;
+import io.github.zhaojingyan.model.service.GameManager;
 
 public class BombInformation implements InputInformation {
     private final int[] bomb;
@@ -23,8 +24,8 @@ public class BombInformation implements InputInformation {
     }
 
     @Override
-    public InputType getInputType() {
-        return InputType.BOMB;
+    public OutputType getOutputType() {
+        return OutputType.REFRESH;
     }
 
     @Override
@@ -50,5 +51,10 @@ public class BombInformation implements InputInformation {
         else {
             board.setPiece(coordinate, PieceStatus.BOMB, currentSymbol);
         }
+    }
+
+    @Override
+    public void preHandle() throws GameException {
+        GameManager.getInstance().updateCurrentGame(this);
     }
 }

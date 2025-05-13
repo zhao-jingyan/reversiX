@@ -44,12 +44,6 @@ public final class GameManager {
         currentGame = games.get(gameNum);
     }
 
-    /**
-     * 更新当前游戏状态
-     * 注意：如果游戏已经结束，此方法会抛出GameException
-     * @param info 输入信息
-     * @throws GameException 如果游戏已经结束
-     */
     public void updateCurrentGame(InputInformation info) throws GameException {
         currentGame.update(info);
     }

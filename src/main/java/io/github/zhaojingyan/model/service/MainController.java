@@ -1,6 +1,7 @@
 package io.github.zhaojingyan.model.service;
 
 import io.github.zhaojingyan.model.enums.OutputType;
+import io.github.zhaojingyan.model.input.InputInformation;
 import io.github.zhaojingyan.ui.interfaces.InputInterface;
 import io.github.zhaojingyan.ui.interfaces.OutputInterface;
 
@@ -30,7 +31,9 @@ public class MainController {
         output.print(OutputBuilder.create(outputType, GameManager.getInstance()));
         while (logicShouldContinue()) {
             try {
-                outputType = InputHandler.handleInput(input.getInput());
+                InputInformation inputInfo = input.getInput();
+                outputType = inputInfo.getOutputType();
+                inputInfo.preHandle();
                 checkGameOver();
                 output.print(OutputBuilder.create(outputType, GameManager.getInstance()));
             } catch (GameException e) {

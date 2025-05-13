@@ -1,11 +1,13 @@
 package io.github.zhaojingyan.model.input.imple;
 
 import io.github.zhaojingyan.model.entities.Board;
+import io.github.zhaojingyan.model.enums.GameErrorCode;
 import io.github.zhaojingyan.model.enums.GameMode;
-import io.github.zhaojingyan.model.enums.InputType;
+import io.github.zhaojingyan.model.enums.OutputType;
 import io.github.zhaojingyan.model.enums.PlayerSymbol;
 import io.github.zhaojingyan.model.input.InputInformation;
 import io.github.zhaojingyan.model.service.GameException;
+import io.github.zhaojingyan.model.service.GameManager;
 
 public class SwitchBoardInformation implements InputInformation {
     private final int boardNumber;
@@ -19,8 +21,8 @@ public class SwitchBoardInformation implements InputInformation {
     }
 
     @Override
-    public InputType getInputType() {
-        return InputType.BOARDNUM;
+    public OutputType getOutputType() {
+        return OutputType.REFRESH;
     }
 
     @Override
@@ -29,6 +31,18 @@ public class SwitchBoardInformation implements InputInformation {
     }
 
     @Override
-    public void handle(boolean isWaitingForPass, Board board, PlayerSymbol currentSymbol, GameMode gameMode) throws GameException{
+    public void handle(boolean isWaitingForPass, Board board, PlayerSymbol currentSymbol, GameMode gameMode)
+            throws GameException {
+    }
+
+    @Override
+    public void preHandle() throws GameException {
+        try {
+            int gameNum = (int) this.getInfo();
+            GameManager.getInstance().switchToGame(gameNum);
+        } catch (GameException e) {
+            throw new GameException(GameErrorCode.GAME_NOT_FOUND,
+                    "Game " + this.getInfo() + " does not exist");
+        }
     }
 }
