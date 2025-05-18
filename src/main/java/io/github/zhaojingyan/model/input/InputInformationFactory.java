@@ -18,7 +18,7 @@ public class InputInformationFactory {
             return PlaybackInformation.create();
         }
         // 检查是否是坐标
-        if (input.length() == 3 && input.charAt(0) == '@' && isCoordinate(input.substring(1))) {
+        else if (input.length() == 3 && input.charAt(0) == '@' && isCoordinate(input.substring(1))) {
             return BombInformation.create(input);
         } else if (isCoordinate(input)) {
             return MoveInformation.create(input);

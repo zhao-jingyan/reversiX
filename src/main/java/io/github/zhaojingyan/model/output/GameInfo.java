@@ -29,7 +29,7 @@ public class GameInfo {
         this.currentGameNumber = game.getGameNumber();
         this.currentRound = game.getRound();
         this.white = game.getBoard().getWhite();
-        this.black = game.getBoard().getBlack(); // Updated to use getBoard().getBlack()
+        this.black = game.getBoard().getBlack(); 
         this.isWaitingForPass = game.isWaitingForPass();
         this.winner = game.getWinner();
     }
@@ -38,6 +38,7 @@ public class GameInfo {
     public Board getBoard() { return board; }
     public String getPlayer1Name() { return player1Name; }
     public String getPlayer2Name() { return player2Name; }
+    public String getChargePlayerName() { return chargePlayer.getName(); }
     public int getCurrentGameNumber() { return currentGameNumber; }
     public int getCurrentRound() { return currentRound; }
     public int getWhite() { return white; }
@@ -45,7 +46,6 @@ public class GameInfo {
     public int getWhiteBomb() { return board.getWhiteBomb(); }
     public int getBlackBomb() { return board.getBlackBomb(); }
     public PlayerSymbol getWinner() { return winner; }
-    public String getChargePlayerName() { return chargePlayer.getName(); }
     public PlayerSymbol getChargeSymbol() { return chargePlayer.getSymbol(); }
     public boolean isWaitingForPass() { return isWaitingForPass;}
     public GameMode getGameMode() { return gameMode; }
