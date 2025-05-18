@@ -6,7 +6,6 @@ import io.github.zhaojingyan.model.enums.OutputType;
 import io.github.zhaojingyan.model.enums.PlayerSymbol;
 import io.github.zhaojingyan.model.input.InputInformation;
 import io.github.zhaojingyan.model.service.GameException;
-import io.github.zhaojingyan.model.service.GameManager;
 
 public class QuitInformation implements InputInformation {
     private QuitInformation() {
@@ -32,6 +31,6 @@ public class QuitInformation implements InputInformation {
 
     @Override
     public void preHandle() throws GameException {
-        GameManager.getInstance().save();
+        // No action needed for quit
     }
 }
