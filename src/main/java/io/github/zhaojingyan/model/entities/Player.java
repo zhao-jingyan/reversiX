@@ -1,8 +1,11 @@
 package io.github.zhaojingyan.model.entities;
 
+import java.io.Serializable;
+
 import io.github.zhaojingyan.model.enums.PlayerSymbol;
 
-public class Player {
+public class Player implements Serializable {
+    private static final long serialVersionUID = 1L;
     private final String name;            // 玩家名称
     private final PlayerSymbol symbol;  // 执棋
 

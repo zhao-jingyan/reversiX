@@ -1,9 +1,13 @@
 package io.github.zhaojingyan.model.entities;
 
+import java.io.Serializable;
+
 import io.github.zhaojingyan.model.enums.PieceStatus;
 import io.github.zhaojingyan.model.enums.PlayerSymbol;
 
-public class Board {
+public class Board implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     // 棋盘属性
     private final Piece[][] board;   // 存储棋子信息
     private final boolean[][] valid; // 存储有效位置

@@ -34,10 +34,10 @@ public class ConInput implements InputInterface {
         }
         else{
             try{
-                TimeUnit.MILLISECONDS.sleep(1000);
+                TimeUnit.MILLISECONDS.sleep(100);
                 rawInput = fileReader.getOneRawString();
                 System.out.println(rawInput);   //在控制台上显示这个输入
-                TimeUnit.MILLISECONDS.sleep(300);
+                TimeUnit.MILLISECONDS.sleep(30);
                 isReadingFromFile = !fileReader.isEndOfFile();
             } catch(InterruptedException e) {
                 System.err.println("Thread sleep err! Exiting...");

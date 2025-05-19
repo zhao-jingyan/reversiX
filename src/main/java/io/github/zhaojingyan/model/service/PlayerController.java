@@ -1,9 +1,12 @@
 package io.github.zhaojingyan.model.service;
 
+import java.io.Serializable;
+
 import io.github.zhaojingyan.model.entities.Player;
 import io.github.zhaojingyan.model.enums.PlayerSymbol;
 
-public class PlayerController {
+public class PlayerController implements Serializable {
+    private static final long serialVersionUID = 1L;
     private final Player p1;          // 玩家1
     private final Player p2;          // 玩家2
     private Player currentPlayer;      // 当前行动玩家

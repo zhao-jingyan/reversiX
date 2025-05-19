@@ -1,5 +1,7 @@
 package io.github.zhaojingyan.model.service;
 
+import java.io.Serializable;
+
 import io.github.zhaojingyan.model.entities.Board;
 import io.github.zhaojingyan.model.entities.Player;
 import io.github.zhaojingyan.model.enums.GameErrorCode;
@@ -9,8 +11,9 @@ import io.github.zhaojingyan.model.input.InputInformation;
 import io.github.zhaojingyan.model.rule.Rule;
 import io.github.zhaojingyan.model.rule.RuleFactory;
 
+public class Game implements Serializable {
+    private static final long serialVersionUID = 1L;
 
-public class Game{
     private final int gameNumber;
     private final Rule gamerule;
     private final Board board;

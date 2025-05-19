@@ -1,18 +1,20 @@
 package io.github.zhaojingyan.model.rule.imple;
 
+import java.io.Serializable;
+
 import io.github.zhaojingyan.model.entities.Board;
 import io.github.zhaojingyan.model.enums.GameMode;
 import io.github.zhaojingyan.model.enums.PlayerSymbol;
 import io.github.zhaojingyan.model.input.InputInformation;
 import io.github.zhaojingyan.model.rule.Rule;
 
-public class PeaceRule implements Rule {
+public class PeaceRule implements Rule, Serializable {
+    private static final long serialVersionUID = 1L;
     private final GameMode gamemode;
 
     public PeaceRule() {
         this.gamemode = GameMode.PEACE;
     }
-
 
     @Override
     public GameMode getGameMode() {

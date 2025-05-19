@@ -1,9 +1,13 @@
 package io.github.zhaojingyan.model.entities;
 
+import java.io.Serializable;
+
 import io.github.zhaojingyan.model.enums.PieceStatus;
 
-public class Piece {
-        // 棋子属性
+public class Piece implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    // 棋子属性
     private PieceStatus status;
     private final int x;
     private final int y;

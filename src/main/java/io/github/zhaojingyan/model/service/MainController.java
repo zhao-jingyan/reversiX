@@ -28,6 +28,7 @@ public class MainController {
 
     // 游戏循环
     public static void gameLoop() {
+        checkGameOver(); // 修复：首次进入时先判断游戏是否结束
         output.print(OutputBuilder.create(outputType, GameManager.getInstance()));
         while (logicShouldContinue()) {
             try {

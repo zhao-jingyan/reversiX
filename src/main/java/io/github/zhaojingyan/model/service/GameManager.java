@@ -1,5 +1,6 @@
 package io.github.zhaojingyan.model.service;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,7 +11,9 @@ import io.github.zhaojingyan.model.input.InputInformation;
 /**
  * 游戏管理器，管理所有游戏实例
  */
-public final class GameManager {
+public final class GameManager implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     // 单例相关
     private static final GameManager instance = new GameManager();
     private final Map<Integer, Game> games;
@@ -19,6 +22,10 @@ public final class GameManager {
     // 构造函数
     private GameManager() {
         games = new HashMap<>();
+        initialize();
+    }
+
+    private void initialize() {
         createGame("Bill_Black", "Walt_White", GameMode.PEACE);
         createGame("Bill_Black", "Walt_White", GameMode.REVERSI);
         createGame("Bill_Black", "Walt_White", GameMode.GOMOKU);
@@ -46,6 +53,41 @@ public final class GameManager {
 
     public void updateCurrentGame(InputInformation info) throws GameException {
         currentGame.update(info);
+    }
+
+    public void save(String resourcePath) {
+        try (java.io.ObjectOutputStream out = new java.io.ObjectOutputStream(
+                new java.io.FileOutputStream(resourcePath))) {
+            out.writeObject(games);
+            int currentNum = (currentGame == null) ? -1 : currentGame.getGameNumber();
+            out.writeInt(currentNum);
+            System.out.println("Game state saved successfully.");
+        } catch (Exception e) {
+            System.err.println("Failed to save game state: " + e.getMessage());
+            System.err.println("Please check file permissions or object serializability. The program will continue running.");
+        }
+    }
+
+    public void load(String resourcePath) {
+        try (java.io.ObjectInputStream in = new java.io.ObjectInputStream(
+                new java.io.FileInputStream(resourcePath))) {
+            @SuppressWarnings("unchecked")
+            Map<Integer, Game> loadedGames = (Map<Integer, Game>) in.readObject();
+            games.clear();
+            games.putAll(loadedGames);
+            int currentNum = in.readInt();
+            if (currentNum != -1) {
+                currentGame = games.get(currentNum);
+            } else {
+                currentGame = null;
+            }
+            System.out.println("Game state loaded successfully.");
+        } catch (Exception e) {
+            System.err.println("Failed to load game state: " + e.getMessage());
+            System.err.println("Initializing to default state.");
+            games.clear();
+            initialize();
+        }
     }
 
     // Getters
