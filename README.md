@@ -91,65 +91,9 @@ public InputInformation getInput() {
 ## 4. 项目管理
 使用了maven来管理项目，pom.xml中包含了所有的依赖项和插件配置。现在通过run.sh脚本可以直接编译，打包，运行项目。
 ```bash
+# 在reversi目录下运行
 mvn clean install
 java -jar target/*.jar
 ```
 
-## 5. uml图表示类关系
-```
-package "model" {
-     package "entities" {
-          class Board
-          class Piece
-          class Player
-     }
-     package "enums" {
-          enum PieceColor
-          enum GameStatus
-     }
-     package "input" {
-          class InputInformation
-          class InputInformationFactory
-          class FileReader
-     }
-     package "output" {
-          class OutputInformation
-          class OutputInterface
-          class ConOutput
-          class Screen
-          class ScreenBuilder
-          class PromptBuilder
-     }
-     package "service" {
-          class GameService
-          class RuleChecker
-     }
-}
-
-package "ui" {
-     package "console" {
-          class ConsoleUI
-     }
-     package "interfaces" {
-          interface UIInterface
-     }
-}
-
-App --> ConsoleUI
-ConsoleUI ..|> UIInterface
-ConsoleUI --> OutputInterface
-ConsoleUI --> InputInformation
-ConOutput ..|> OutputInterface
-ConOutput --> ScreenBuilder
-ConOutput --> PromptBuilder
-ScreenBuilder --> Screen
-GameService --> Board
-GameService --> Player
-GameService --> RuleChecker
-Board --> Piece
-Player --> PieceColor
-GameService --> OutputInformation
-GameService --> InputInformation
-InputInformationFactory --> InputInformation
-FileReader --> InputInformation
-OutputInformation --> Screen
+现在非常容易可以通过playback指令进行测试，不再附上截图

@@ -8,7 +8,6 @@ import io.github.zhaojingyan.model.input.InputInformation;
 import io.github.zhaojingyan.model.input.InputInformationFactory;
 import io.github.zhaojingyan.ui.interfaces.InputInterface;
 
-
 public class ConInput implements InputInterface {
 
     private String rawInput;
