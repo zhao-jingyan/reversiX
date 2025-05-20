@@ -5,5 +5,4 @@ public enum OutputType {
     REFRESH,
     INVALID_INPUT,
     GAME_OVER,
-    ALL_GAMES_OVER,
 }

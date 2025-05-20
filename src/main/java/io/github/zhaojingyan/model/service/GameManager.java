@@ -94,7 +94,6 @@ public final class GameManager implements Serializable {
     public static GameManager getInstance() { return instance; }
     public Game getCurrentGame() { return currentGame; }
     public boolean isCurrentGameOver() { return currentGame.isOver(); }
-    public boolean isAllGamesOver() { return games.values().stream().allMatch(Game::isOver); }
     public int getTotalGames() { return games.size(); }
     public GameMode[] getGameList() {
         GameMode[] gameModes = new GameMode[games.size()];

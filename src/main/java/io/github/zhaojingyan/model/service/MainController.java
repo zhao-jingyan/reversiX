@@ -49,14 +49,12 @@ public class MainController {
             if (GameManager.getInstance().isCurrentGameOver()) {
                 outputType = OutputType.GAME_OVER;
             }
-            if (GameManager.getInstance().isAllGamesOver()) {
-                outputType = OutputType.ALL_GAMES_OVER;
-            }
+            // outputType = OutputType.ALL_GAMES_OVER; // 已移除 ALL_GAMES_OVER
         }
     }
 
     private static boolean logicShouldContinue() {
-        return outputType != OutputType.QUIT && outputType != OutputType.ALL_GAMES_OVER;
+        return outputType != OutputType.QUIT;
     }
 
 }

@@ -1,7 +1,6 @@
 package io.github.zhaojingyan.ui.gui.panels;
 
 import io.github.zhaojingyan.model.output.OutputInformation;
-import io.github.zhaojingyan.ui.gui.buttons.ButtonManager;
 import io.github.zhaojingyan.ui.gui.buttons.CellButton;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -15,7 +14,7 @@ public class BoardPanel extends GridPane implements GamePanel {
     private final int cellSize;
     private final CellButton[][] cellButtons;
 
-    public BoardPanel(int boardSize, ButtonManager buttonManager) {
+    public BoardPanel(int boardSize) {
         this.boardSize = boardSize;
         if (boardSize == 8) {
             this.cellSize = 45; // 8x8棋盘格子更大
@@ -30,14 +29,14 @@ public class BoardPanel extends GridPane implements GamePanel {
         setMinSize(totalSize, totalSize);
         setPrefSize(totalSize, totalSize);
         setMaxSize(totalSize, totalSize);
-        drawBoard(buttonManager);
+        drawBoard();
     }
 
     public int getBoardSize() {
         return boardSize;
     }
 
-    private void drawBoard(ButtonManager buttonManager) {
+    private void drawBoard() {
         this.getChildren().clear();
         this.getColumnConstraints().clear();
         this.getRowConstraints().clear();
@@ -89,7 +88,7 @@ public class BoardPanel extends GridPane implements GamePanel {
                 rect.setStroke(Color.web("#000"));
                 rect.setStrokeWidth(1);
                 cell.getChildren().add(rect);
-                CellButton btn = CellButton.create(row, col, buttonManager);
+                CellButton btn = new CellButton(row, col);
                 btn.setMinSize(cellSize, cellSize);
                 btn.setMaxSize(cellSize, cellSize);
                 btn.setPrefSize(cellSize, cellSize);

@@ -6,6 +6,8 @@ import io.github.zhaojingyan.ui.console.ConInput;
 import io.github.zhaojingyan.ui.console.ConOutput;
 
 public class App {
+
+
     public static void main( String[] args ){
         String savePath = System.getProperty("user.dir") + java.io.File.separator + "pj.game";
         GameManager.getInstance().load(savePath);
@@ -13,4 +15,11 @@ public class App {
         MainController.gameLoop();
         GameManager.getInstance().save(savePath);
     }
+
+    public static void Gui(String[] args) {
+        // Launch the GUI application
+        // Application.launch(ReversiGUI.class, args);
+    }
+
+    
 }

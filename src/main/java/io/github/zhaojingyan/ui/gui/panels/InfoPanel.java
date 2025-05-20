@@ -2,12 +2,12 @@ package io.github.zhaojingyan.ui.gui.panels;
 
 import io.github.zhaojingyan.model.output.OutputInformation;
 import io.github.zhaojingyan.ui.gui.buttons.BombButton;
-import io.github.zhaojingyan.ui.gui.buttons.ButtonManager;
 import io.github.zhaojingyan.ui.gui.buttons.PassButton;
 import io.github.zhaojingyan.ui.gui.buttons.PlayBackButton;
 import io.github.zhaojingyan.ui.gui.buttons.QuitButton;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 public class InfoPanel extends VBox implements GamePanel {
@@ -26,7 +26,6 @@ public class InfoPanel extends VBox implements GamePanel {
         setMinWidth(150); // 允许更小宽度，便于HBox动态分配
         setPrefWidth(170);
         setMaxWidth(Double.MAX_VALUE); // 允许最大宽度自适应
-        VBox.setVgrow(this, javafx.scene.layout.Priority.ALWAYS);
         gameIdLabel = new Label();
         gameIdLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #333; -fx-font-family: 'monospaced', 'Consolas', 'Menlo', 'Courier', monospace;");
         blackInfoLabel = new Label();
@@ -35,17 +34,15 @@ public class InfoPanel extends VBox implements GamePanel {
         whiteInfoLabel.setStyle("-fx-font-size: 13px; -fx-text-fill: #111; -fx-font-family: 'monospaced', 'Consolas', 'Menlo', 'Courier', monospace;");
         roundLabel = new Label();
         roundLabel.setStyle("-fx-font-size: 13px; -fx-text-fill: #444; -fx-font-family: 'monospaced', 'Consolas', 'Menlo', 'Courier', monospace;");
-        playBackButton = PlayBackButton.create();
-        playBackButton.setStyle("-fx-font-size: 13px; -fx-background-color: #f55; -fx-text-fill: #fff; -fx-font-weight: bold; -fx-font-family: 'monospaced', 'Consolas', 'Menlo', 'Courier', monospace;");
-        bombButton = BombButton.create(ButtonManager.getInstance());
-        bombButton.setStyle("-fx-font-size: 13px; -fx-background-color: #f55; -fx-text-fill: #fff; -fx-font-weight: bold; -fx-font-family: 'monospaced', 'Consolas', 'Menlo', 'Courier', monospace;");
-        bombButton.setVisible(false);
-        passButton = PassButton.create(ButtonManager.getInstance());
-        passButton.setStyle("-fx-font-size: 13px; -fx-background-color: #888; -fx-text-fill: #fff; -fx-font-weight: bold; -fx-font-family: 'monospaced', 'Consolas', 'Menlo', 'Courier', monospace;");
-        passButton.setVisible(false);
-        quitButton = QuitButton.create(ButtonManager.getInstance());
-        quitButton.setStyle("-fx-font-size: 13px; -fx-font-weight: bold; -fx-font-family: 'monospaced', 'Consolas', 'Menlo', 'Courier', monospace;");
+        playBackButton = new PlayBackButton();
+        bombButton = new BombButton();
+        passButton = new PassButton();
+        quitButton = new QuitButton();
         getChildren().addAll(gameIdLabel, blackInfoLabel, whiteInfoLabel, roundLabel, playBackButton, bombButton, passButton, quitButton);
+    }
+
+    public void init() {
+        setVgrow(this, Priority.ALWAYS); // 构造完成后再调用
     }
 
     public void setGameId(String gameId) {

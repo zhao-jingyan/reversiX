@@ -13,10 +13,6 @@ public class PromptBuilder {
         StringBuilder prompt = new StringBuilder();
         switch (output.getOutputType()) {
             case QUIT -> prompt.append(buildGoodbye());
-            case ALL_GAMES_OVER -> {
-                prompt.append("All games are over!\n");
-                prompt.append(buildGoodbye());
-            }
             case GAME_OVER -> {
                 prompt.append(buildGameOver(output));
                 prompt.append(buildIndicator(output));

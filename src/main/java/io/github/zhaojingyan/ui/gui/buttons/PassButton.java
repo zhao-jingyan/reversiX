@@ -1,32 +1,16 @@
 package io.github.zhaojingyan.ui.gui.buttons;
 
 import io.github.zhaojingyan.ui.gui.GuiInput;
+import javafx.scene.control.Button;
 
-public final class PassButton extends CustomButton {
-    private PassButton(ButtonManager buttonManager) {
+public final class PassButton extends Button {
+    public PassButton() {
         super("pass");
         setMinWidth(80);
-
+        setStyle("-fx-font-size: 13px; -fx-font-weight: bold; -fx-font-family: 'monospaced', 'Consolas', 'Menlo', 'Courier', monospace; -fx-background-insets: 0; -fx-background-radius: 6; -fx-cursor: hand;");
+        setVisible(false);
         setOnAction(event -> {
             GuiInput.handleButtonInput("pass");
-            buttonManager.refreshAllButtons();
         });
-    }
-
-    public static PassButton create(ButtonManager buttonManager) {
-        PassButton button = new PassButton(buttonManager);
-        buttonManager.addButton(button);
-        return button;
-    }
-
-    @Override
-    public void updateAppearance() {
-        boolean canPass = io.github.zhaojingyan.ui.gui.GuiInput.getInstance().isWaitingForPass();
-        setDisable(!canPass);
-        if (canPass) {
-            setStyle("-fx-background-color: #ffe066; -fx-border-color: #333; -fx-border-width: 2; -fx-font-weight: bold; -fx-background-insets: 0; -fx-background-radius: 6; -fx-cursor: hand;");
-        } else {
-            setStyle("-fx-background-insets: 0; -fx-background-radius: 6; -fx-cursor: not-allowed; -fx-opacity: 0.5;");
-        }
     }
 }

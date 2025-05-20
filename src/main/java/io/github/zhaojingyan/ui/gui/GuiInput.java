@@ -1,5 +1,7 @@
 package io.github.zhaojingyan.ui.gui;
 
+import java.util.Queue;
+
 import io.github.zhaojingyan.model.enums.InputType;
 import io.github.zhaojingyan.model.input.InputInformation;
 import io.github.zhaojingyan.model.input.InputInformationFactory;
@@ -7,17 +9,12 @@ import io.github.zhaojingyan.ui.interfaces.InputInterface;
 import io.github.zhaojingyan.ui.util.InputParseUtil;
 
 public class GuiInput implements InputInterface {
-    private String rawInput;
-    private boolean isReadingFromFile;
+    private final Queue<String> pendingQueue = new java.util.LinkedList<>();
+    private static boolean isBombMode = false;
+    private boolean isReadingFromFile = false;
     private final io.github.zhaojingyan.ui.util.FileReader fileReader = new io.github.zhaojingyan.ui.util.FileReader();
 
-    // 输入相关字段
-    private static boolean isBombMode = false;
-    // 字段isWaitingForPass可以为final的警告无需处理，因为它会被修改
-    private boolean isWaitingForPass = false;
-    private String pendingInput = null;
-
-    private static GuiInput INSTANCE = new GuiInput();
+    private final static GuiInput INSTANCE = new GuiInput();
 
     public static GuiInput getInstance() {
         return INSTANCE;
@@ -27,56 +24,110 @@ public class GuiInput implements InputInterface {
     public static void handleButtonInput(String text) {
         GuiInput instance = getInstance();
         synchronized (instance) {
-            // 只有在pendingInput为null时才写入，防止丢失输入
-            if (instance.pendingInput == null) {
-                instance.pendingInput = text;
-                instance.notifyAll();
-            }
+            System.out.println("[DEBUG] handleButtonInput 收到: " + text);
+            instance.pendingQueue.offer(text);
+            instance.notifyAll();
         }
     }
 
     @Override
     public InputInformation getInput() {
+        System.out.println("[DEBUG] getInput() called, isReadingFromFile=" + isReadingFromFile);
         if (!isReadingFromFile) {
-            // 等待ButtonManager返回输入字符串
             String input = waitForInput();
-            rawInput = input;
-            if (rawInput.length() >= 8 && rawInput.substring(0, 8).toLowerCase().equals("playback")) {
-                isReadingFromFile = fileReader.openFile(rawInput.substring(9));
+            System.out.println("[DEBUG] getInput() waitForInput返回: " + input);
+            String rawInput = input;
+            InputType infoType = InputParseUtil.determineType(rawInput);
+            if (infoType == InputType.PLAYBACK) {
+                // JavaFX 模式下弹出文件选择器
+                final String[] filePath = {null};
+                final Object lock = new Object();
+                javafx.application.Platform.runLater(() -> {
+                    javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
+                    fileChooser.setTitle("请选择一个.cmd文件");
+                    fileChooser.getExtensionFilters().add(
+                        new javafx.stage.FileChooser.ExtensionFilter("命令文件", "*.cmd")
+                    );
+                    javafx.stage.Window window = null;
+                    try {
+                        window = javafx.stage.Window.getWindows().stream().filter(javafx.stage.Window::isShowing).findFirst().orElse(null);
+                    } catch (Exception e) {
+                        // ignore
+                    }
+                    java.io.File selectedFile = fileChooser.showOpenDialog(window);
+                    if (selectedFile != null) {
+                        filePath[0] = selectedFile.getAbsolutePath();
+                    }
+                    synchronized (lock) {
+                        lock.notifyAll();
+                    }
+                });
+                synchronized (lock) {
+                    boolean fileChosen = false;
+                    while (!fileChosen) {
+                        try {
+                            lock.wait();
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                        }
+                        fileChosen = true;
+                    }
+                }
+                if (filePath[0] == null) {
+                    System.out.println("[DEBUG] 用户取消了文件选择，恢复普通输入");
+                    isReadingFromFile = false;
+                    return getInput();
+                }
+                boolean opened = fileReader.openLocalFile(filePath[0]);
+                if (!opened) {
+                    System.out.println("[DEBUG] 选择的文件无法打开或不存在，仅支持本地文件，请重新选择");
+                    // 只允许本地文件，失败时重新弹出选择器
+                    return getInput();
+                }
+                isReadingFromFile = true;
+                System.out.println("[DEBUG] getInput() 进入文件读取模式");
+                rawInput = "playback " + filePath[0];
             }
+
+            InputInformation inputInfo = InputInformationFactory.create(infoType, rawInput);
+            System.out.println("[DEBUG] InputInformation: " + inputInfo.toString());
+            return inputInfo;
         } else {
             try {
+                System.out.println("[DEBUG] getInput() 文件模式，读取一行...");
                 java.util.concurrent.TimeUnit.MILLISECONDS.sleep(100);
-                rawInput = fileReader.getOneRawString();
-                System.out.println(rawInput); // 在控制台上显示这个输入
+                String rawInput = fileReader.getOneRawString();
+                System.out.println("[DEBUG] getInput() 文件读取: " + rawInput);
                 java.util.concurrent.TimeUnit.MILLISECONDS.sleep(30);
                 isReadingFromFile = !fileReader.isEndOfFile();
+                InputType infoType = InputParseUtil.determineType(rawInput);
+                InputInformation inputInfo = InputInformationFactory.create(infoType, rawInput);
+                System.out.println("[DEBUG] InputInformation: " + inputInfo.toString());
+                return inputInfo;
             } catch (InterruptedException e) {
                 System.err.println("Thread sleep err! Exiting...");
                 System.exit(1);
+                return null;
             }
         }
-        InputType infoType = InputParseUtil.determineType(rawInput);
-        InputInformation inputInfo = InputInformationFactory.create(infoType, rawInput);
-        System.out.println("[DEBUG] InputInformation: " + inputInfo.toString());
-        return inputInfo;
     }
 
     public synchronized String waitForInput() {
-        while (pendingInput == null) {
+        System.out.println("[DEBUG] waitForInput 阻塞等待输入...");
+        while (pendingQueue.isEmpty()) {
             try {
                 wait();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
         }
-        String input = pendingInput;
-        pendingInput = null;
+        String input = pendingQueue.poll();
+        System.out.println("[DEBUG] waitForInput 收到输入: " + input);
         if (isBombMode) {
-            return "@" + input;
-        } else {
-            return input;
+            isBombMode = false;
+            return InputParseUtil.isCoordinate(input) ? "@" + input : input;
         }
+        return input;
     }
 
     public static void toggleBombMode() {
@@ -85,10 +136,6 @@ public class GuiInput implements InputInterface {
 
     public boolean isBombMode() {
         return isBombMode;
-    }
-
-    public boolean isWaitingForPass() {
-        return isWaitingForPass;
     }
 
 }

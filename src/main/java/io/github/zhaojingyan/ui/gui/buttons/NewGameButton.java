@@ -1,28 +1,16 @@
 package io.github.zhaojingyan.ui.gui.buttons;
 
 import io.github.zhaojingyan.ui.gui.GuiInput;
+import javafx.scene.control.Button;
 
-public class NewGameButton extends CustomButton {
+public class NewGameButton extends Button {
 
-    private NewGameButton(String gameName, ButtonManager buttonManager) {
+    public NewGameButton(String gameName) {
         super(gameName);
         setMinWidth(80);
-
+        setStyle("-fx-font-size: 13px; -fx-font-weight: bold; -fx-font-family: 'monospaced', 'Consolas', 'Menlo', 'Courier', monospace; -fx-background-insets: 0; -fx-background-radius: 6; -fx-cursor: hand;");
         setOnAction(event -> {
             GuiInput.handleButtonInput(gameName);
-            buttonManager.refreshAllButtons();
         });
-    }
-
-    public static NewGameButton create(String gameName, ButtonManager buttonManager) {
-        NewGameButton button = new NewGameButton(gameName, buttonManager);
-        buttonManager.addButton(button);
-        return button;
-    }
-
-    @Override
-    public void updateAppearance() {
-        // 保持和 GameSwitchButton 一致的圆角和基础样式
-        setStyle("-fx-background-insets: 0; -fx-background-radius: 6; -fx-cursor: hand;");
     }
 }

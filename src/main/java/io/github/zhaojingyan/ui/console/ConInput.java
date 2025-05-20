@@ -1,7 +1,10 @@
 package io.github.zhaojingyan.ui.console;
 
+import java.io.File;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
+
+import javax.swing.JFileChooser;
 
 import io.github.zhaojingyan.model.enums.InputType;
 import io.github.zhaojingyan.model.input.InputInformation;
@@ -29,7 +32,40 @@ public class ConInput implements InputInterface {
             while (!scanner.hasNextLine()) {}
             rawInput = scanner.nextLine();
             if(rawInput.length() >= 8 && rawInput.substring(0,8).toLowerCase().equals("playback")){
-                isReadingFromFile = fileReader.openFile(rawInput.substring(9));
+                String filePath = rawInput.length() > 9 ? rawInput.substring(9).trim() : "";
+                boolean fileOpened = false;
+                if (!filePath.isEmpty()) {
+                    fileOpened = fileReader.openFile(filePath);
+                }
+                if (!fileOpened) {
+                    // 弹出文件选择器
+                    ConInput self = this;
+                    javax.swing.SwingUtilities.invokeLater(() -> {
+                        JFileChooser fileChooser = new JFileChooser();
+                        fileChooser.setDialogTitle("请选择一个.cmd文件");
+                        int result = fileChooser.showOpenDialog(null);
+                        if (result == JFileChooser.APPROVE_OPTION) {
+                            File selectedFile = fileChooser.getSelectedFile();
+                            fileReader.openFile(selectedFile.getAbsolutePath());
+                            synchronized (self) {
+                                isReadingFromFile = true;
+                                self.notifyAll();
+                            }
+                        }
+                    });
+                    // 等待用户选择
+                    synchronized (this) {
+                        while (!isReadingFromFile) {
+                            try {
+                                wait();
+                            } catch (InterruptedException e) {
+                                Thread.currentThread().interrupt();
+                            }
+                        }
+                    }
+                } else {
+                    isReadingFromFile = true;
+                }
             }
         }
         else{

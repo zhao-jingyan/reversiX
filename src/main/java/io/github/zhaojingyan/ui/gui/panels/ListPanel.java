@@ -12,10 +12,12 @@ import javafx.scene.layout.VBox;
 
 public class ListPanel extends VBox implements GamePanel {
     private final ListView<String> gameListView;
-    private ObservableList<String> gameListData;
+    private final ObservableList<String> gameListData;
+    // 用于防止死循环的当前游戏号缓存
+    private int lastSelectedGame = -1;
 
     public ListPanel() {
-        setSpacing(8);
+        setSpacing(3);
         setStyle("");
         setAlignment(Pos.TOP_CENTER);
         setMinHeight(0);
@@ -33,9 +35,9 @@ public class ListPanel extends VBox implements GamePanel {
         gameListView.getSelectionModel().selectedIndexProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null && newVal.intValue() >= 0) {
                 int gameNum = newVal.intValue() + 1;
-                // 模拟GameSwitchButton点击逻辑
-                GuiInput.handleButtonInput(String.valueOf(gameNum));
-                io.github.zhaojingyan.ui.gui.buttons.ButtonManager.getInstance().refreshAllButtons();
+                if (lastSelectedGame != gameNum) {
+                    GuiInput.handleButtonInput(String.valueOf(gameNum));
+                }
             }
         });
         getChildren().addAll(title, gameListView);
@@ -54,12 +56,30 @@ public class ListPanel extends VBox implements GamePanel {
     public void render(OutputInformation output) {
         gameListData.clear();
         var gameList = output.getGlobalInfo().getGameList();
+        int currentGame = output.getGlobalInfo().getCurrentGameNumber();
         for (int i = 0; i < gameList.length; i++) {
             int gameNum = i + 1;
             String gameName = gameList[i].toString();
             gameListData.add("Game " + gameNum + ": " + gameName);
         }
-        // 可选：自动选中当前游戏
-        // gameListView.getSelectionModel().select(...);
+        // 自动选中当前游戏并高亮
+        if (currentGame > 0 && currentGame <= gameList.length) {
+            lastSelectedGame = currentGame;
+            gameListView.getSelectionModel().select(currentGame - 1);
+        }
+        // 超过12个时出现滑块，否则自适应高度
+        int visibleCount = gameListData.size();
+        if (visibleCount > 12) {
+            gameListView.setFixedCellSize(32);
+            int showCount = 12;
+            gameListView.setPrefHeight(showCount * 32 + 2);
+            gameListView.setMinHeight(showCount * 32 + 2);
+            gameListView.setMaxHeight(showCount * 32 + 2);
+        } else {
+            gameListView.setFixedCellSize(32);
+            gameListView.setPrefHeight(visibleCount > 0 ? visibleCount * 32 + 2 : 0);
+            gameListView.setMinHeight(visibleCount > 0 ? visibleCount * 32 + 2 : 0);
+            gameListView.setMaxHeight(visibleCount > 0 ? visibleCount * 32 + 2 : 0);
+        }
     }
 }

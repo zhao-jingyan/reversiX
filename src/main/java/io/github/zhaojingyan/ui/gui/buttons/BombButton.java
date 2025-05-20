@@ -1,35 +1,31 @@
 package io.github.zhaojingyan.ui.gui.buttons;
 
 import io.github.zhaojingyan.ui.gui.GuiInput;
+import javafx.scene.control.Button;
 
-public class BombButton extends CustomButton {
+public class BombButton extends Button {
 
-    
     /**
      * 创建炸弹按钮
      */
-    private BombButton(ButtonManager buttonManager) {
+    public BombButton() {
         super("");
         setMinWidth(80);
+        setStyle("-fx-font-size: 13px; -fx-background-color: #eee; -fx-text-fill: #333; -fx-font-weight: bold; -fx-font-family: 'monospaced', 'Consolas', 'Menlo', 'Courier', monospace; -fx-background-insets: 0; -fx-background-radius: 6; -fx-cursor: hand;");
+        setText("Use Bomb");
+        setVisible(false);
         setOnAction(event -> {
             GuiInput.toggleBombMode();
-            buttonManager.refreshAllButtons();
+            updateAppearance();
         });
     }
 
-    public static BombButton create(ButtonManager buttonManager) {
-        BombButton button = new BombButton(buttonManager);
-        buttonManager.addButton(button);
-        return button;
-    }
-    
-    @Override
     public void updateAppearance() {
-        if (io.github.zhaojingyan.ui.gui.GuiInput.getInstance().isBombMode()) {
-            setStyle("-fx-background-color: #ff6666; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-insets: 0; -fx-background-radius: 6; -fx-cursor: hand;");
+        if (GuiInput.getInstance().isBombMode()) {
+            setStyle("-fx-font-size: 13px; -fx-background-color: #ff6666; -fx-text-fill: #fff; -fx-font-weight: bold; -fx-font-family: 'monospaced', 'Consolas', 'Menlo', 'Courier', monospace; -fx-background-insets: 0; -fx-background-radius: 6; -fx-cursor: hand;");
             setText("Bomb Activated");
         } else {
-            setStyle("-fx-background-insets: 0; -fx-background-radius: 6; -fx-cursor: hand;");
+            setStyle("-fx-font-size: 13px; -fx-background-color: #eee; -fx-text-fill: #333; -fx-font-weight: bold; -fx-font-family: 'monospaced', 'Consolas', 'Menlo', 'Courier', monospace; -fx-background-insets: 0; -fx-background-radius: 6; -fx-cursor: hand;");
             setText("Use Bomb");
         }
     }
