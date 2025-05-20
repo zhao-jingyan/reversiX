@@ -1,5 +1,7 @@
 package io.github.zhaojingyan.ui.gui.buttons;
 
+import io.github.zhaojingyan.ui.gui.GuiInput;
+
 /**
  * 退出游戏按钮，样式统一，便于事件绑定
  */
@@ -10,7 +12,7 @@ public class QuitButton extends CustomButton {
         setStyle("-fx-background-insets: 0; -fx-background-radius: 6; -fx-cursor: hand;");
         setOnAction(event -> {
             // 这里直接处理退出逻辑，比如调用buttonManager.quitGame()等
-            buttonManager.getString(text);
+            GuiInput.handleButtonInput(text);
             buttonManager.refreshAllButtons();
         });
     }

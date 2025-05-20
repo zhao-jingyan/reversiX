@@ -33,8 +33,16 @@ public class NewGameInformation implements InputInformation {
     public void handle(boolean isWaitingForPass, Board board, PlayerSymbol currentSymbol, GameMode gameMode) throws GameException {
 
     }
+
     @Override
     public void preHandle() throws GameException {
         GameManager.getInstance().createGame("Bill_Black", "Walt_White", (GameMode) this.getInfo());
+    }
+
+    @Override
+    public String toString() {
+        return "NewGameInformation{" +
+                "mode=" + mode +
+                '}';
     }
 }

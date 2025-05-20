@@ -4,6 +4,7 @@ import io.github.zhaojingyan.model.output.OutputInformation;
 import io.github.zhaojingyan.ui.gui.buttons.BombButton;
 import io.github.zhaojingyan.ui.gui.buttons.ButtonManager;
 import io.github.zhaojingyan.ui.gui.buttons.PassButton;
+import io.github.zhaojingyan.ui.gui.buttons.PlayBackButton;
 import io.github.zhaojingyan.ui.gui.buttons.QuitButton;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -17,6 +18,7 @@ public class InfoPanel extends VBox implements GamePanel {
     private final BombButton bombButton;
     private final PassButton passButton;
     private final QuitButton quitButton;
+    private final PlayBackButton playBackButton;
 
     public InfoPanel() {
         setSpacing(8);
@@ -33,6 +35,8 @@ public class InfoPanel extends VBox implements GamePanel {
         whiteInfoLabel.setStyle("-fx-font-size: 13px; -fx-text-fill: #111; -fx-font-family: 'monospaced', 'Consolas', 'Menlo', 'Courier', monospace;");
         roundLabel = new Label();
         roundLabel.setStyle("-fx-font-size: 13px; -fx-text-fill: #444; -fx-font-family: 'monospaced', 'Consolas', 'Menlo', 'Courier', monospace;");
+        playBackButton = PlayBackButton.create();
+        playBackButton.setStyle("-fx-font-size: 13px; -fx-background-color: #f55; -fx-text-fill: #fff; -fx-font-weight: bold; -fx-font-family: 'monospaced', 'Consolas', 'Menlo', 'Courier', monospace;");
         bombButton = BombButton.create(ButtonManager.getInstance());
         bombButton.setStyle("-fx-font-size: 13px; -fx-background-color: #f55; -fx-text-fill: #fff; -fx-font-weight: bold; -fx-font-family: 'monospaced', 'Consolas', 'Menlo', 'Courier', monospace;");
         bombButton.setVisible(false);
@@ -41,7 +45,7 @@ public class InfoPanel extends VBox implements GamePanel {
         passButton.setVisible(false);
         quitButton = QuitButton.create(ButtonManager.getInstance());
         quitButton.setStyle("-fx-font-size: 13px; -fx-font-weight: bold; -fx-font-family: 'monospaced', 'Consolas', 'Menlo', 'Courier', monospace;");
-        getChildren().addAll(gameIdLabel, blackInfoLabel, whiteInfoLabel, roundLabel, bombButton, passButton, quitButton);
+        getChildren().addAll(gameIdLabel, blackInfoLabel, whiteInfoLabel, roundLabel, playBackButton, bombButton, passButton, quitButton);
     }
 
     public void setGameId(String gameId) {

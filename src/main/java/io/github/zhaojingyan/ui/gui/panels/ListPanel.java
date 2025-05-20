@@ -1,6 +1,7 @@
 package io.github.zhaojingyan.ui.gui.panels;
 
 import io.github.zhaojingyan.model.output.OutputInformation;
+import io.github.zhaojingyan.ui.gui.GuiInput;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -33,7 +34,7 @@ public class ListPanel extends VBox implements GamePanel {
             if (newVal != null && newVal.intValue() >= 0) {
                 int gameNum = newVal.intValue() + 1;
                 // 模拟GameSwitchButton点击逻辑
-                io.github.zhaojingyan.ui.gui.buttons.ButtonManager.getInstance().getString(String.valueOf(gameNum));
+                GuiInput.handleButtonInput(String.valueOf(gameNum));
                 io.github.zhaojingyan.ui.gui.buttons.ButtonManager.getInstance().refreshAllButtons();
             }
         });

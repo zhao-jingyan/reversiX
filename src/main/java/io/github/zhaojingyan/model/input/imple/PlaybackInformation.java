@@ -35,4 +35,9 @@ public class PlaybackInformation implements InputInformation{
     public void preHandle() throws GameException {
         // No action needed for playback
     }
+
+    @Override
+    public String toString() {
+        return "PlaybackInformation{}";
+    }
 }

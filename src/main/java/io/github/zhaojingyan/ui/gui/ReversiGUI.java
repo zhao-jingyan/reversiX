@@ -48,6 +48,13 @@ public class ReversiGUI extends Application {
             newGamePanel = new NewGamePanel();
             newGamePanel.render(output);
 
+            // 新增：监听按钮输入并打印InputInformation
+            new Thread(() -> {
+                GuiInput guiInput = GuiInput.getInstance(); // 使用单例，保证输入响应
+                while (true) {
+                    guiInput.getInput();
+                }
+            }, "InputDebugThread").start();
 
             infoPanel.setMinHeight(boardPanel.getMinHeight());
             infoPanel.setPrefHeight(boardPanel.getPrefHeight());

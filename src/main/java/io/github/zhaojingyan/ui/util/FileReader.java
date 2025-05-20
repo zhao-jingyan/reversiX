@@ -1,4 +1,4 @@
-package io.github.zhaojingyan.ui.console;
+package io.github.zhaojingyan.ui.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;

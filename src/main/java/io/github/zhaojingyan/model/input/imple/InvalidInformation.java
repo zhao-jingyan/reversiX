@@ -34,4 +34,9 @@ public class InvalidInformation implements InputInformation {
     public void preHandle() throws GameException {
         throw new GameException(GameErrorCode.INVALID_INPUT, "Invalid input");
     }
+
+    @Override
+    public String toString() {
+        return "InvalidInformation{}";
+    }
 }

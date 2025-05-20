@@ -15,4 +15,5 @@ public interface InputInformation {
     void handle(boolean isWaitingForPass, Board board, PlayerSymbol currentSymbol, GameMode gameMode) throws GameException;
 
     void preHandle() throws GameException;
+
 }

@@ -33,4 +33,9 @@ public class QuitInformation implements InputInformation {
     public void preHandle() throws GameException {
         // No action needed for quit
     }
+
+    @Override
+    public String toString() {
+        return "QuitInformation{}";
+    }
 }

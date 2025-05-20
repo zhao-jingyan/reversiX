@@ -1,5 +1,6 @@
 package io.github.zhaojingyan.ui.gui.buttons;
 
+import io.github.zhaojingyan.ui.gui.GuiInput;
 public final class CellButton extends CustomButton {
     private final String coord;
 
@@ -13,7 +14,7 @@ public final class CellButton extends CustomButton {
         // 关键：去除按钮的凸起/阴影/边框圆角等视觉效果，完全平面
         setStyle("-fx-background-radius: 0; -fx-background-insets: 0; -fx-padding: 0; -fx-border-radius: 0; -fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-box-shadow: none; -fx-effect: none; -fx-background-color: transparent;");
         this.setOnAction(event -> {
-            buttonManager.getString(coord);
+            GuiInput.handleButtonInput(coord);
             buttonManager.refreshAllButtons();
         });
     }

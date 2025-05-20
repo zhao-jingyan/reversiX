@@ -1,15 +1,15 @@
 package io.github.zhaojingyan.ui.gui.buttons;
 
+import io.github.zhaojingyan.ui.gui.GuiInput;
+
 public class NewGameButton extends CustomButton {
-    private final String gameName;
 
     private NewGameButton(String gameName, ButtonManager buttonManager) {
         super(gameName);
-        this.gameName = gameName;
         setMinWidth(80);
 
         setOnAction(event -> {
-            buttonManager.getString(gameName);
+            GuiInput.handleButtonInput(gameName);
             buttonManager.refreshAllButtons();
         });
     }

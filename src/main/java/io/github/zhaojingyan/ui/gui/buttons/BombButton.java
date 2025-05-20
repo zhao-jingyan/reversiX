@@ -1,15 +1,18 @@
 package io.github.zhaojingyan.ui.gui.buttons;
 
+import io.github.zhaojingyan.ui.gui.GuiInput;
+
 public class BombButton extends CustomButton {
+
     
     /**
      * 创建炸弹按钮
      */
     private BombButton(ButtonManager buttonManager) {
-        super("@");
+        super("");
         setMinWidth(80);
         setOnAction(event -> {
-            buttonManager.toggleBombMode();
+            GuiInput.toggleBombMode();
             buttonManager.refreshAllButtons();
         });
     }
@@ -22,7 +25,7 @@ public class BombButton extends CustomButton {
     
     @Override
     public void updateAppearance() {
-        if (ButtonManager.getInstance().isBombMode()) {
+        if (io.github.zhaojingyan.ui.gui.GuiInput.getInstance().isBombMode()) {
             setStyle("-fx-background-color: #ff6666; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-insets: 0; -fx-background-radius: 6; -fx-cursor: hand;");
             setText("Bomb Activated");
         } else {

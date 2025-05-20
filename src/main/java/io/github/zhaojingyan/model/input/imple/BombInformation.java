@@ -57,4 +57,11 @@ public class BombInformation implements InputInformation {
     public void preHandle() throws GameException {
         GameManager.getInstance().updateCurrentGame(this);
     }
+
+    @Override
+    public String toString() {
+        return "BombInformation{" +
+                "bomb=[" + bomb[0] + ", " + bomb[1] + "]" +
+                '}';
+    }
 }

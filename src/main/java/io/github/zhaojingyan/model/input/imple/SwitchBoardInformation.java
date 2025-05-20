@@ -45,4 +45,11 @@ public class SwitchBoardInformation implements InputInformation {
                     "Game " + this.getInfo() + " does not exist");
         }
     }
+
+    @Override
+    public String toString() {
+        return "SwitchBoardInformation{" +
+                "boardNumber=" + boardNumber +
+                '}';
+    }
 }

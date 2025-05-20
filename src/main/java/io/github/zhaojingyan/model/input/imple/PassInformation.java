@@ -36,4 +36,9 @@ public class PassInformation implements InputInformation {
     public void preHandle() throws GameException {
         GameManager.getInstance().updateCurrentGame(this);
     }
+
+    @Override
+    public String toString() {
+        return "PassInformation{}";
+    }
 }

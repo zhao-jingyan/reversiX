@@ -59,4 +59,11 @@ public class MoveInformation implements InputInformation {
         GameManager.getInstance().updateCurrentGame(this);
     }
 
+    @Override
+    public String toString() {
+        return "MoveInformation{" +
+                "move=[" + move[0] + ", " + move[1] + "]" +
+                '}';
+    }
+
 }
