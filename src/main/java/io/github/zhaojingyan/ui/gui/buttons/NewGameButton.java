@@ -22,6 +22,7 @@ public class NewGameButton extends CustomButton {
 
     @Override
     public void updateAppearance() {
-        //null
+        // 保持和 GameSwitchButton 一致的圆角和基础样式
+        setStyle("-fx-background-insets: 0; -fx-background-radius: 6; -fx-cursor: hand;");
     }
 }

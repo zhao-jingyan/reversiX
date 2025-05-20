@@ -8,8 +8,8 @@ import io.github.zhaojingyan.model.enums.GameErrorCode;
 import io.github.zhaojingyan.model.enums.GameMode;
 import io.github.zhaojingyan.model.enums.PlayerSymbol;
 import io.github.zhaojingyan.model.input.InputInformation;
-import io.github.zhaojingyan.model.rule.Rule;
-import io.github.zhaojingyan.model.rule.RuleFactory;
+import io.github.zhaojingyan.model.service.rule.Rule;
+import io.github.zhaojingyan.model.service.rule.RuleFactory;
 
 public class Game implements Serializable {
     private static final long serialVersionUID = 1L;

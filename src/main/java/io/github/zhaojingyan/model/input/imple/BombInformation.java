@@ -18,8 +18,8 @@ public class BombInformation implements InputInformation {
 
     public static BombInformation create(String input) {
         int[] coordinates = new int[2];
-        coordinates[1] = Integer.parseInt(String.valueOf(input.charAt(1)), 16) - 1;
-        coordinates[0] = input.charAt(2) - 'A';
+        coordinates[0] = Integer.parseInt(String.valueOf(input.charAt(1)), 16) - 1; // 行
+        coordinates[1] = input.charAt(2) - 'A'; // 列
         return new BombInformation(coordinates);
     }
 
@@ -36,8 +36,8 @@ public class BombInformation implements InputInformation {
     @Override
     public void handle(boolean isWaitingForPass, Board board, PlayerSymbol currentSymbol, GameMode gameMode) throws GameException {
         int[] coordinate = getInfo();
-        int x = coordinate[1];
-        int y = coordinate[0];
+        int x = coordinate[0]; // 行
+        int y = coordinate[1]; // 列
         if (board.isOutOfBoard(coordinate) || gameMode != GameMode.GOMOKU) {
             throw new GameException(GameErrorCode.INVALID_INPUT,"Invalid input");
         }

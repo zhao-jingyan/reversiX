@@ -1,4 +1,4 @@
-package io.github.zhaojingyan.model.rule.imple;
+package io.github.zhaojingyan.model.service.rule.imple;
 
 import java.io.Serializable;
 
@@ -8,7 +8,7 @@ import io.github.zhaojingyan.model.enums.PieceStatus;
 import io.github.zhaojingyan.model.enums.PlayerSymbol;
 import io.github.zhaojingyan.model.input.InputInformation;
 import io.github.zhaojingyan.model.input.imple.MoveInformation;
-import io.github.zhaojingyan.model.rule.Rule;
+import io.github.zhaojingyan.model.service.rule.Rule;
 
 public class ReversiRule implements Rule, Serializable {
     private static final long serialVersionUID = 1L;

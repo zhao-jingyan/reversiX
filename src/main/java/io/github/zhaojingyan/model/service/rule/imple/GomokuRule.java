@@ -1,4 +1,4 @@
-package io.github.zhaojingyan.model.rule.imple;
+package io.github.zhaojingyan.model.service.rule.imple;
 
 import java.io.Serializable;
 import java.util.Random;
@@ -9,7 +9,7 @@ import io.github.zhaojingyan.model.enums.PieceStatus;
 import io.github.zhaojingyan.model.enums.PlayerSymbol;
 import io.github.zhaojingyan.model.input.InputInformation;
 import io.github.zhaojingyan.model.input.imple.MoveInformation;
-import io.github.zhaojingyan.model.rule.Rule;
+import io.github.zhaojingyan.model.service.rule.Rule;
 
 public class GomokuRule implements Rule, Serializable {
     private static final long serialVersionUID = 1L;
@@ -90,10 +90,11 @@ public class GomokuRule implements Rule, Serializable {
             for (int j = 0; j < board.getCol(); j++)
                 board.setValid(new int[] { i, j }, true);
         // randomInit(board);
-        board.setPiece(new int[] { 5, 2 }, PieceStatus.OBSTACLE, null); // 3f
-        board.setPiece(new int[] { 6, 7 }, PieceStatus.OBSTACLE, null); // 8g
-        board.setPiece(new int[] { 5, 8 }, PieceStatus.OBSTACLE, null); // 9f
-        board.setPiece(new int[] { 10, 11 }, PieceStatus.OBSTACLE, null); // ck
+        // 障碍物坐标全部改为new int[]{列, 行}，以适配console渲染（setPixel(列, 行, ...)）
+        board.setPiece(new int[] { 2, 5 }, PieceStatus.OBSTACLE, null); // f3
+        board.setPiece(new int[] { 7, 6 }, PieceStatus.OBSTACLE, null); // g8
+        board.setPiece(new int[] { 8, 5 }, PieceStatus.OBSTACLE, null); // f9
+        board.setPiece(new int[] { 11, 10 }, PieceStatus.OBSTACLE, null); // kc
     }
 
     @Override

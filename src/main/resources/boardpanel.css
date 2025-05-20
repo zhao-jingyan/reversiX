@@ -1,0 +1,45 @@
+/* boardpanel.css - BoardPanel棋盘样式 */
+
+.board-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #222;
+    -fx-alignment: center;
+    -fx-font-size: 13px;
+}
+
+.board-cell-bg {
+    -fx-background-color: #fff8dc;
+    -fx-border-color: #000;
+    -fx-border-width: 1;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-padding: 0;
+}
+
+.cell-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-padding: 0;
+    -fx-background-insets: 0;
+}
+
+.game-btn {
+    -fx-font-size: 13px;
+    -fx-background-color: #f5f5f5; /* 统一灰白色背景 */
+    -fx-text-fill: #222;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+    -fx-min-width: 120px;
+    -fx-border-color: #888;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 6;
+    -fx-font-weight: bold;
+    -fx-effect: null;
+}
+
+.game-btn:hover, .game-btn:focused {
+    -fx-background-color: #ffe066; /* 高亮为黄色 */
+    -fx-border-color: #000; /* 黑色边框 */
+    -fx-text-fill: #222;
+}

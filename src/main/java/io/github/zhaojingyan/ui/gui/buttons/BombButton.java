@@ -24,10 +24,10 @@ public class BombButton extends CustomButton {
     public void updateAppearance() {
         if (ButtonManager.getInstance().isBombMode()) {
             setStyle("-fx-background-color: #ff6666; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-insets: 0; -fx-background-radius: 6; -fx-cursor: hand;");
-            setText("炸弹模式激活");
+            setText("Bomb Activated");
         } else {
             setStyle("-fx-background-insets: 0; -fx-background-radius: 6; -fx-cursor: hand;");
-            setText("使用炸弹");
+            setText("Use Bomb");
         }
     }
 }

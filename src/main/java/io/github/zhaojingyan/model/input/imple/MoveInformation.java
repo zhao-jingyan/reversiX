@@ -18,8 +18,8 @@ public class MoveInformation implements InputInformation {
 
     public static MoveInformation create(String input) {
         int[] coordinates = new int[2];
-        coordinates[1] = Integer.parseInt(String.valueOf(input.charAt(0)), 16) - 1;
-        coordinates[0] = input.charAt(1) - 'A';
+        coordinates[0] = Integer.parseInt(String.valueOf(input.charAt(0)), 16) - 1; // 行
+        coordinates[1] = input.charAt(1) - 'A'; // 列
         return new MoveInformation(coordinates);
     }
 
@@ -36,18 +36,18 @@ public class MoveInformation implements InputInformation {
     @Override
     public void handle(boolean isWaitingForPass, Board board, PlayerSymbol currentSymbol, GameMode gameMode) throws GameException {
         int[] coordinate = getInfo();
-        int x = coordinate[1];
-        int y = coordinate[0];
+        int x = coordinate[0]; // 行
+        int y = coordinate[1]; // 列
         if (board.isOutOfBoard(coordinate)) {
             throw new GameException(GameErrorCode.INVALID_INPUT,"Invalid input");
         }
         if (!board.isValid(coordinate)) {
             if (!board.isEmpty(coordinate))
-            throw new GameException(GameErrorCode.CONFLICTING_MOVE, "Conflicting move! ["
-                + (char) (x < 9 ? '1' + x : 'A' + (x - 9)) + (char) ('A' + y) + "] is already occupied");
+                throw new GameException(GameErrorCode.CONFLICTING_MOVE, "Conflicting move! ["
+                    + (char) (x < 9 ? '1' + x : 'A' + (x - 9)) + (char) ('A' + y) + "] is already occupied");
             else
-            throw new GameException(GameErrorCode.ILLEGAL_MOVE, "Illegal move! [" + (char) (x < 9 ? '1' + x : 'A' + (x - 9))
-                + (char) ('A' + y) + "] is not a valid position");
+                throw new GameException(GameErrorCode.ILLEGAL_MOVE, "Illegal move! [" + (char) (x < 9 ? '1' + x : 'A' + (x - 9))
+                    + (char) ('A' + y) + "] is not a valid position");
         } 
         else {
             board.setPiece(coordinate, currentSymbol.SymbolToStatus(),null);
