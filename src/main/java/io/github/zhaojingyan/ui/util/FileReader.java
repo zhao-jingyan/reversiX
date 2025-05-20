@@ -6,6 +6,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+
+import javafx.application.Platform;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 public class FileReader {
     private String[] file;
@@ -63,6 +68,43 @@ public class FileReader {
             System.err.println("Error reading local file: " + e.getMessage());
             return false;
         }
+    }
+
+    /**
+     * 用 JavaFX FileChooser 弹窗选择文件，返回绝对路径。控制台/GUI 通用。
+     */
+    public static String pickFileWithJavaFX(String title, String... extensions) {
+        final String[] result = new String[1];
+        final CountDownLatch latch = new CountDownLatch(1);
+        Runnable fxTask = () -> {
+            try {
+                FileChooser fileChooser = new FileChooser();
+                fileChooser.setTitle(title != null ? title : "请选择文件");
+                if (extensions != null && extensions.length > 0) {
+                    fileChooser.getExtensionFilters().add(
+                        new FileChooser.ExtensionFilter("文件", extensions)
+                    );
+                }
+                java.io.File file = fileChooser.showOpenDialog(new Stage());
+                result[0] = (file != null) ? file.getAbsolutePath() : null;
+            } finally {
+                latch.countDown();
+            }
+        };
+        if (Platform.isFxApplicationThread()) {
+            fxTask.run();
+        } else {
+            try {
+                Platform.startup(() -> {}); // 若未启动则启动
+            } catch (IllegalStateException ignore) {}
+            Platform.runLater(fxTask);
+        }
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        return result[0];
     }
 
     public String getOneRawString(){

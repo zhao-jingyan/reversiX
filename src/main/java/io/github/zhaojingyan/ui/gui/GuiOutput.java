@@ -1,5 +1,6 @@
 package io.github.zhaojingyan.ui.gui;
 
+import io.github.zhaojingyan.App;
 import io.github.zhaojingyan.model.enums.InputType;
 import io.github.zhaojingyan.model.enums.OutputType;
 import io.github.zhaojingyan.model.input.InputInformation;
@@ -120,6 +121,7 @@ public class GuiOutput extends Application implements OutputInterface {
 
             // 检查是否为QUIT，若是则关闭窗口并退出进程
             if (output.getOutputType() == OutputType.QUIT) {
+                GameManager.getInstance().save(App.getFilePath());
                 System.exit(0);
             }
         });

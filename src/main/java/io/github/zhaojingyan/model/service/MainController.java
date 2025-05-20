@@ -49,7 +49,6 @@ public class MainController {
             if (GameManager.getInstance().isCurrentGameOver()) {
                 outputType = OutputType.GAME_OVER;
             }
-            // outputType = OutputType.ALL_GAMES_OVER; // 已移除 ALL_GAMES_OVER
         }
     }
 
