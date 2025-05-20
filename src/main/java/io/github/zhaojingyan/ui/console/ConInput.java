@@ -32,10 +32,9 @@ public class ConInput implements InputInterface {
                 rawInput = scanner.nextLine();
                 if (rawInput.length() >= 8 && rawInput.substring(0, 8).toLowerCase().equals("playback")) {
                     String filePath = rawInput.length() > 9 ? rawInput.substring(9).trim() : "";
-                    boolean fileOpened = false;
                     if (!filePath.isEmpty()) {
                         // 有参数时只查资源目录
-                        fileOpened = fileReader.openFile(filePath);
+                        boolean fileOpened = fileReader.openFile(filePath);
                         if (!fileOpened) {
                             System.out.println("[Error] Resource file not found: " + filePath + ". Please check the testcmds/ directory.");
                             return InputInformationFactory.create(InputType.INVALID, rawInput);
