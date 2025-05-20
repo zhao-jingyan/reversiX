@@ -7,7 +7,7 @@ import io.github.zhaojingyan.model.output.OutputInformation;
 
 
 public class OutputBuilder {
-        protected static OutputInformation create(OutputType type, GameManager gameManager) {
+        public static OutputInformation create(OutputType type, GameManager gameManager) {
         Game game = gameManager.getCurrentGame();
         GameManager gameManagerInstance = GameManager.getInstance();
 

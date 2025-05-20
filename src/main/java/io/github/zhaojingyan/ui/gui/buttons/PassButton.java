@@ -1,28 +1,31 @@
 package io.github.zhaojingyan.ui.gui.buttons;
 
-import io.github.zhaojingyan.model.enums.InputType;
-import io.github.zhaojingyan.model.input.InputInformation;
-import io.github.zhaojingyan.model.input.InputInformationFactory;
-
-/**
- * Pass按钮，用于玩家跳过回合
- */
 public final class PassButton extends CustomButton {
-    
-    /**
-     * 创建Pass按钮
-     */
-    public PassButton() {
-        super("Pass");
+    private PassButton(ButtonManager buttonManager) {
+        super("pass");
         setMinWidth(80);
-        updateInputInfo();
+
+        setOnAction(event -> {
+            // 这里直接处理pass逻辑，比如调用buttonManager.pass()等
+            buttonManager.getString(text);
+            buttonManager.refreshAllButtons();
+        });
     }
-    
-    /**
-     * 更新输入信息
-     */
-    public void updateInputInfo() {
-        InputInformation inputInfo = InputInformationFactory.create(InputType.PASS, "PASS");
-        setInputInfo(inputInfo);
+
+    public static PassButton create(ButtonManager buttonManager) {
+        PassButton button = new PassButton(buttonManager);
+        buttonManager.addButton(button);
+        return button;
+    }
+
+    @Override
+    public void updateAppearance() {
+        boolean canPass = ButtonManager.getInstance().isWaitingForPass();
+        setDisable(!canPass);
+        if (canPass) {
+            setStyle("-fx-background-color: #ffe066; -fx-border-color: #333; -fx-border-width: 2; -fx-font-weight: bold; -fx-background-insets: 0; -fx-background-radius: 6; -fx-cursor: hand;");
+        } else {
+            setStyle("-fx-background-insets: 0; -fx-background-radius: 6; -fx-cursor: not-allowed; -fx-opacity: 0.5;");
+        }
     }
 }
