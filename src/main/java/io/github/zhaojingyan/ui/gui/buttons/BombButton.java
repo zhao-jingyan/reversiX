@@ -11,7 +11,7 @@ public class BombButton extends Button {
     public BombButton() {
         super("");
         setMinWidth(80);
-        setStyle("-fx-font-size: 13px; -fx-background-color: #eee; -fx-text-fill: #333; -fx-font-weight: bold; -fx-font-family: 'monospaced', 'Consolas', 'Menlo', 'Courier', monospace; -fx-background-insets: 0; -fx-background-radius: 6; -fx-cursor: hand;");
+        setStyle("-fx-font-size: 13px; -fx-font-weight: bold; -fx-font-family: 'monospaced', 'Consolas', 'Menlo', 'Courier', monospace; -fx-background-insets: 0; -fx-background-radius: 6; -fx-cursor: hand;");
         setText("Use Bomb");
         setVisible(false);
         setOnAction(event -> {
@@ -25,7 +25,7 @@ public class BombButton extends Button {
             setStyle("-fx-font-size: 13px; -fx-background-color: #ff6666; -fx-text-fill: #fff; -fx-font-weight: bold; -fx-font-family: 'monospaced', 'Consolas', 'Menlo', 'Courier', monospace; -fx-background-insets: 0; -fx-background-radius: 6; -fx-cursor: hand;");
             setText("Bomb Activated");
         } else {
-            setStyle("-fx-font-size: 13px; -fx-background-color: #eee; -fx-text-fill: #333; -fx-font-weight: bold; -fx-font-family: 'monospaced', 'Consolas', 'Menlo', 'Courier', monospace; -fx-background-insets: 0; -fx-background-radius: 6; -fx-cursor: hand;");
+            setStyle("-fx-font-size: 13px; -fx-font-weight: bold; -fx-font-family: 'monospaced', 'Consolas', 'Menlo', 'Courier', monospace; -fx-background-insets: 0; -fx-background-radius: 6; -fx-cursor: hand;");
             setText("Use Bomb");
         }
     }
