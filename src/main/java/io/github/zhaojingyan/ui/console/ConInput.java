@@ -8,6 +8,7 @@ import io.github.zhaojingyan.model.input.InputInformation;
 import io.github.zhaojingyan.model.input.InputInformationFactory;
 import io.github.zhaojingyan.ui.interfaces.InputInterface;
 import io.github.zhaojingyan.ui.util.FileReader;
+import io.github.zhaojingyan.ui.util.InputParseUtil;
 
 public class ConInput implements InputInterface {
 
@@ -33,20 +34,24 @@ public class ConInput implements InputInterface {
                     String filePath = rawInput.length() > 9 ? rawInput.substring(9).trim() : "";
                     boolean fileOpened = false;
                     if (!filePath.isEmpty()) {
+                        // 有参数时只查资源目录
                         fileOpened = fileReader.openFile(filePath);
-                    }
-                    if (!fileOpened) {
-                        // 用 JavaFX FileChooser 选择文件
-                        String chosen = io.github.zhaojingyan.ui.util.FileReader.pickFileWithJavaFX("请选择一个.cmd文件", "*.cmd");
+                        if (!fileOpened) {
+                            System.out.println("[Error] Resource file not found: " + filePath + ". Please check the testcmds/ directory.");
+                            return InputInformationFactory.create(InputType.INVALID, rawInput);
+                        } else {
+                            isReadingFromFile = true;
+                        }
+                    } else {
+                        // 无参数时直接弹出文件选择器
+                        String chosen = FileReader.pickFileWithJavaFX("Please select a .cmd file", "*.cmd");
                         if (chosen != null) {
                             fileReader.openLocalFile(chosen);
                             isReadingFromFile = true;
                         } else {
-                            System.out.println("Cancelled file selection.");
+                            System.out.println("[Info] No file selected, operation cancelled.");
                             return InputInformationFactory.create(InputType.INVALID, rawInput);
                         }
-                    } else {
-                        isReadingFromFile = true;
                     }
                 }
             } else {
@@ -64,7 +69,7 @@ public class ConInput implements InputInterface {
             break;
         }
         // 第二步：判断输入类型
-        InputType infoType = io.github.zhaojingyan.ui.util.InputParseUtil.determineType(rawInput);
+        InputType infoType = InputParseUtil.determineType(rawInput);
         // 第三步：根据输入类型创建对应的信息对象
         return InputInformationFactory.create(infoType, rawInput);
     }
