@@ -5,9 +5,10 @@ import java.util.concurrent.TimeUnit;
 
 import io.github.zhaojingyan.model.enums.InputType;
 import io.github.zhaojingyan.model.input.InputInformation;
-import io.github.zhaojingyan.model.input.InputInformationFactory;
+import io.github.zhaojingyan.model.input.imple.InputInformationFactory;
 import io.github.zhaojingyan.ui.interfaces.InputInterface;
-
+import io.github.zhaojingyan.ui.util.FileReader;
+import io.github.zhaojingyan.ui.util.InputParseUtil;
 
 public class ConInput implements InputInterface {
 
@@ -25,76 +26,55 @@ public class ConInput implements InputInterface {
     @Override
     public InputInformation getInput() {
         // 第一步：读取输入
-        if(!isReadingFromFile){
-            while (!scanner.hasNextLine()) {}
-            rawInput = scanner.nextLine();
-            if(rawInput.length() >= 8 && rawInput.substring(0,8).toLowerCase().equals("playback")){
-                isReadingFromFile = fileReader.openFile(rawInput.substring(9));
+        while (true) {
+            if (!isReadingFromFile) {
+                while (!scanner.hasNextLine()) {
+                }
+                rawInput = scanner.nextLine();
+                if (rawInput.length() >= 8 && rawInput.substring(0, 8).toLowerCase().equals("playback")) {
+                    String filePath = rawInput.length() > 9 ? rawInput.substring(9).trim() : "";
+                    if (!filePath.isEmpty()) {
+                        // Use the unified openFile method with isResource flag
+                        boolean fileOpened = fileReader.openFile(filePath, true);
+                        if (!fileOpened) {
+                            return InputInformationFactory.create(InputType.INVALID, rawInput);
+                        } else {
+                            isReadingFromFile = true;
+                        }
+                    } else {
+                        // Use the unified openFile method for local files
+                        String chosen = FileReader.pickFileWithJavaFX("Please select a .cmd file", "*.cmd");
+                        if (chosen != null) {
+                            boolean fileOpened = fileReader.openFile(chosen, false);
+                            if (!fileOpened) {
+                                return InputInformationFactory.create(InputType.INVALID, rawInput);
+                            } else {
+                                isReadingFromFile = true;
+                            }
+                        } else {
+                            return InputInformationFactory.create(InputType.INVALID, rawInput);
+                        }
+                    }
+                }
+            } else {
+                try {
+                    TimeUnit.MILLISECONDS.sleep(1000);
+                    rawInput = fileReader.getOneRawString();
+                    System.out.println(rawInput); // 在控制台上显示这个输入
+                    TimeUnit.MILLISECONDS.sleep(300);
+                    isReadingFromFile = !fileReader.isEndOfFile();
+                } catch (InterruptedException e) {
+                    System.err.println("Thread sleep err! Exiting...");
+                    System.exit(1);
+                }
             }
+            break;
         }
-        else{
-            try{
-                TimeUnit.MILLISECONDS.sleep(1000);
-                rawInput = fileReader.getOneRawString();
-                System.out.println(rawInput);   //在控制台上显示这个输入
-                TimeUnit.MILLISECONDS.sleep(300);
-                isReadingFromFile = !fileReader.isEndOfFile();
-            } catch(InterruptedException e) {
-                System.err.println("Thread sleep err! Exiting...");
-                System.exit(1);
-            }
-        }
+
         // 第二步：判断输入类型
-        InputType infoType = determineType(rawInput);
+        InputType infoType = InputParseUtil.determineType(rawInput);
+
         // 第三步：根据输入类型创建对应的信息对象
         return InputInformationFactory.create(infoType, rawInput);
-    }
-
-    // 判断输入类型
-    private static InputType determineType(String input) {
-        if(input.length() > 9 && input.substring(0,9).toLowerCase().equals("playback ")){
-            return InputType.PLAYBACK;
-        }
-        // 检查是否是坐标
-        if(input.length() == 3 && input.charAt(0) == '@'  && isCoordinate(input.substring(1))) {
-            return InputType.BOMB;
-        }
-        else if (isCoordinate(input)) {
-            return InputType.COORDINATES;
-        }
-        // 检查是否是pass
-        else if (input.toLowerCase().equals("pass")) {
-            return InputType.PASS;
-        }
-        // 检查是否是quit
-        else if (input.toLowerCase().equals("quit")) {
-            return InputType.QUIT;
-        }
-        // 检查是否是newgame
-        else if (input.toLowerCase().equals("peace") || input.toLowerCase().equals("reversi")
-                || input.toLowerCase().equals("gomoku")) {
-            return InputType.NEWGAME;
-        }
-        // 检查是否是boardnum
-        else {
-            try {
-                if (Integer.parseInt(input) >= 1) {
-                    return InputType.BOARDNUM;
-                } else {
-                    return InputType.INVALID;
-                }
-            } catch (NumberFormatException e) {
-                return InputType.INVALID;
-            }
-        }
-    }
-
-    private static boolean isCoordinate(String input) {
-        return input.length() == 2 &&
-            ((input.charAt(1) >= 'A' && input.charAt(1) <= 'O') ||
-            (input.charAt(1) >= 'a' && input.charAt(1) <= 'o')) &&
-            ((input.charAt(0) >= '1' && input.charAt(0) <= '9') ||
-            (input.charAt(0) >= 'A' && input.charAt(0) <= 'F') ||
-            (input.charAt(0) >= 'a' && input.charAt(0) <= 'f'));
     }
 }

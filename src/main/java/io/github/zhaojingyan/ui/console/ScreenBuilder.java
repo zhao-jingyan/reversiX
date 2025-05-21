@@ -1,10 +1,9 @@
 package io.github.zhaojingyan.ui.console;
 
+import io.github.zhaojingyan.model.entities.Piece;
 import io.github.zhaojingyan.model.enums.GameMode;
 import io.github.zhaojingyan.model.enums.PlayerSymbol;
-import io.github.zhaojingyan.model.game.Piece;
 import io.github.zhaojingyan.model.output.OutputInformation;
-import io.github.zhaojingyan.model.output.Screen;
 
 public class ScreenBuilder {
 
@@ -17,18 +16,18 @@ public class ScreenBuilder {
         for (Piece[] row : output.getGameInfo().getBoard().getPieceBoard()) {
             for (Piece piece : row) {
                 switch (piece.getStatus()) {
-                    case BLACK -> rawScreen.setPixel(piece.getX() + 1, piece.getY() + 1, '○');
-                    case WHITE -> rawScreen.setPixel(piece.getX() + 1, piece.getY() + 1, '●');
+                    case BLACK -> rawScreen.setPixel(piece.getY() + 1, piece.getX() + 1, '○');
+                    case WHITE -> rawScreen.setPixel(piece.getY() + 1, piece.getX() + 1, '●');
                     case EMPTY -> {
                         if (output.getGameInfo().getBoard().isValid(new int[] { piece.getX(), piece.getY() })
                                 && output.getGameInfo().getGameMode() == GameMode.REVERSI) {
-                            rawScreen.setPixel(piece.getX() + 1, piece.getY() + 1, '+');
+                            rawScreen.setPixel(piece.getY() + 1, piece.getX() + 1, '+');
                         } else {
-                            rawScreen.setPixel(piece.getX() + 1, piece.getY() + 1, '·');
+                            rawScreen.setPixel(piece.getY() + 1, piece.getX() + 1, '·');
                         }
                     }
-                    case OBSTACLE -> rawScreen.setPixel(piece.getX() + 1, piece.getY() + 1, '#');
-                    case BOMB -> rawScreen.setPixel(piece.getX() + 1, piece.getY() + 1, '@');
+                    case OBSTACLE -> rawScreen.setPixel(piece.getY() + 1, piece.getX() + 1, '#');
+                    case BOMB -> rawScreen.setPixel(piece.getY() + 1, piece.getX() + 1, '@');
                 }
             }
         }
