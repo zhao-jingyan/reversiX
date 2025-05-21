@@ -8,7 +8,7 @@ import io.github.zhaojingyan.ui.console.ConOutput;
 public class App {
     private static final String SAVEPATH = System.getProperty("user.dir") + java.io.File.separator + "pj.game";
     public static void main(String[] args) {
-        if (args.length > 0 && args[0].equalsIgnoreCase("gui")) {
+        if (args.length > 0 && args[0].equalsIgnoreCase("-gui")) {
             // GUI模式下也先尝试加载进度
             GameManager.getInstance().load(SAVEPATH);
             javafx.application.Application.launch(io.github.zhaojingyan.ui.gui.GuiOutput.class, args);

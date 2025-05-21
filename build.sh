@@ -2,7 +2,7 @@
 # 自动构建并清理，只保留 fat jar 并重命名
 set -e
 
-JAR_NAME="reversi-2.0.2"
+JAR_NAME="reversi"
 FAT_JAR="target/${JAR_NAME}-jar-with-dependencies.jar"
 FINAL_JAR="target/${JAR_NAME}.jar"
 
