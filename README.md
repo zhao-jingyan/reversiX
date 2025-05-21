@@ -1,5 +1,11 @@
 # OOP PJ REPORT
 
+24302010013 赵敬彦
+## Github
+本项目的github地址为
+[reversi 期中讨论前版本](https://github.com/zhao-jingyan/reversi)
+[reversi 期中讨论后版本](https://github.com/zhao-jingyan/reversiX)
+
 ## 环境
 
 实验环境为 macOS 15.5，使用的IDE为VSCODE，JDK 版本为 OpenJDK 23.0.1。
