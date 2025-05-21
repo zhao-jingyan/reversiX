@@ -1,7 +1,7 @@
 # OOP PJ REPORT
 
 ## 环境
----
+
 实验环境为 macOS 15.5，使用的IDE为VSCODE，JDK 版本为 OpenJDK 23.0.1。
 ```
 (base) zhaojingyan@MacBook reversi % java --version
@@ -11,7 +11,6 @@ OpenJDK 64-Bit Server VM (build 23.0.1+11-39, mixed mode, sharing)
 ```
 ## 编译运行
 
----
 ### 编译
 在根目录下运行
 
@@ -48,6 +47,7 @@ PJ实现了console和gui两种版本的游戏，编译后均可以启动，只�
 即可启动图形化版本游戏
 
 ## 代码结构
+
 model层的代码没有发生大的重写，只是微调了包结构和部分函数的可见性以进行更好的封装。
 
 我们先来分析最顶层的，最抽象的结构
