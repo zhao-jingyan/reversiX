@@ -9,10 +9,12 @@ import io.github.zhaojingyan.model.service.GameException;
 public interface InputInformation {
     // 获取输出类型
     OutputType getOutputType();
+
     // 获取信息
     Object getInfo();
 
-    void handle(boolean isWaitingForPass, Board board, PlayerSymbol currentSymbol, GameMode gameMode) throws GameException;
+    void handle(boolean isWaitingForPass, Board board, PlayerSymbol currentSymbol, GameMode gameMode)
+            throws GameException;
 
     void preHandle() throws GameException;
 

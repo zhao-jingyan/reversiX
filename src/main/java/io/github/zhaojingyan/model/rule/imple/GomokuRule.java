@@ -1,4 +1,4 @@
-package io.github.zhaojingyan.model.service.rule.imple;
+package io.github.zhaojingyan.model.rule.imple;
 
 import java.io.Serializable;
 import java.util.Random;
@@ -9,7 +9,7 @@ import io.github.zhaojingyan.model.enums.PieceStatus;
 import io.github.zhaojingyan.model.enums.PlayerSymbol;
 import io.github.zhaojingyan.model.input.InputInformation;
 import io.github.zhaojingyan.model.input.imple.MoveInformation;
-import io.github.zhaojingyan.model.service.rule.Rule;
+import io.github.zhaojingyan.model.rule.Rule;
 
 public class GomokuRule implements Rule, Serializable {
     private static final long serialVersionUID = 1L;

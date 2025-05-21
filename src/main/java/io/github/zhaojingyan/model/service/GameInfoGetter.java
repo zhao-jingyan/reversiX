@@ -1,12 +1,11 @@
-package io.github.zhaojingyan.model.output;
+package io.github.zhaojingyan.model.service;
 
 import io.github.zhaojingyan.model.entities.Board;
 import io.github.zhaojingyan.model.entities.Player;
 import io.github.zhaojingyan.model.enums.GameMode;
 import io.github.zhaojingyan.model.enums.PlayerSymbol;
-import io.github.zhaojingyan.model.service.Game;
 
-public class GameInfo {
+public class GameInfoGetter {
 
     private final Board board;
     private final String player1Name;
@@ -20,7 +19,7 @@ public class GameInfo {
     private final boolean isWaitingForPass;
     private final GameMode gameMode;
 
-    public GameInfo(Game game) {
+    public GameInfoGetter(Game game) {
         this.gameMode = game.getGameMode();
         this.board = game.getBoard();
         this.player1Name = game.getP1Name();
@@ -35,19 +34,60 @@ public class GameInfo {
     }
 
     // Getter方法
-    public Board getBoard() { return board; }
-    public String getPlayer1Name() { return player1Name; }
-    public String getPlayer2Name() { return player2Name; }
-    public int getCurrentGameNumber() { return currentGameNumber; }
-    public int getCurrentRound() { return currentRound; }
-    public int getWhite() { return white; }
-    public int getBlack() { return black; }
-    public int getWhiteBomb() { return board.getWhiteBomb(); }
-    public int getBlackBomb() { return board.getBlackBomb(); }
-    public PlayerSymbol getWinner() { return winner; }
-    public String getChargePlayerName() { return chargePlayer.getName(); }
-    public PlayerSymbol getChargeSymbol() { return chargePlayer.getSymbol(); }
-    public boolean isWaitingForPass() { return isWaitingForPass;}
-    public GameMode getGameMode() { return gameMode; }
+    public Board getBoard() {
+        return board;
+    }
+
+    public String getPlayer1Name() {
+        return player1Name;
+    }
+
+    public String getPlayer2Name() {
+        return player2Name;
+    }
+
+    public int getCurrentGameNumber() {
+        return currentGameNumber;
+    }
+
+    public int getCurrentRound() {
+        return currentRound;
+    }
+
+    public int getWhite() {
+        return white;
+    }
+
+    public int getBlack() {
+        return black;
+    }
+
+    public int getWhiteBomb() {
+        return board.getWhiteBomb();
+    }
+
+    public int getBlackBomb() {
+        return board.getBlackBomb();
+    }
+
+    public PlayerSymbol getWinner() {
+        return winner;
+    }
+
+    public String getChargePlayerName() {
+        return chargePlayer.getName();
+    }
+
+    public PlayerSymbol getChargeSymbol() {
+        return chargePlayer.getSymbol();
+    }
+
+    public boolean isWaitingForPass() {
+        return isWaitingForPass;
+    }
+
+    public GameMode getGameMode() {
+        return gameMode;
+    }
 
 }

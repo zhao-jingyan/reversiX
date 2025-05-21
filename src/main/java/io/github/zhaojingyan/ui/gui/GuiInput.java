@@ -4,7 +4,7 @@ import java.util.Queue;
 
 import io.github.zhaojingyan.model.enums.InputType;
 import io.github.zhaojingyan.model.input.InputInformation;
-import io.github.zhaojingyan.model.input.InputInformationFactory;
+import io.github.zhaojingyan.model.input.imple.InputInformationFactory;
 import io.github.zhaojingyan.ui.interfaces.InputInterface;
 import io.github.zhaojingyan.ui.util.InputParseUtil;
 
@@ -24,7 +24,6 @@ public class GuiInput implements InputInterface {
     public static void handleButtonInput(String text) {
         GuiInput instance = getInstance();
         synchronized (instance) {
-            System.out.println("[DEBUG] handleButtonInput 收到: " + text);
             instance.pendingQueue.offer(text);
             instance.notifyAll();
         }
@@ -32,10 +31,8 @@ public class GuiInput implements InputInterface {
 
     @Override
     public InputInformation getInput() {
-        System.out.println("[DEBUG] getInput() called, isReadingFromFile=" + isReadingFromFile);
         if (!isReadingFromFile) {
             String input = waitForInput();
-            System.out.println("[DEBUG] getInput() waitForInput返回: " + input);
             String rawInput = input;
             InputType infoType = InputParseUtil.determineType(rawInput);
             if (infoType == InputType.PLAYBACK) {
@@ -44,9 +41,9 @@ public class GuiInput implements InputInterface {
                 final Object lock = new Object();
                 javafx.application.Platform.runLater(() -> {
                     javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
-                    fileChooser.setTitle("请选择一个.cmd文件");
+                    fileChooser.setTitle("please select a command file");
                     fileChooser.getExtensionFilters().add(
-                        new javafx.stage.FileChooser.ExtensionFilter("命令文件", "*.cmd")
+                        new javafx.stage.FileChooser.ExtensionFilter("command", "*.cmd")
                     );
                     javafx.stage.Window window = null;
                     try {
@@ -74,35 +71,28 @@ public class GuiInput implements InputInterface {
                     }
                 }
                 if (filePath[0] == null) {
-                    System.out.println("[DEBUG] 用户取消了文件选择，恢复普通输入");
                     isReadingFromFile = false;
                     return getInput();
                 }
-                boolean opened = fileReader.openLocalFile(filePath[0]);
+                boolean opened = fileReader.openFile(filePath[0], false);
                 if (!opened) {
-                    System.out.println("[DEBUG] 选择的文件无法打开或不存在，仅支持本地文件，请重新选择");
                     // 只允许本地文件，失败时重新弹出选择器
                     return getInput();
                 }
                 isReadingFromFile = true;
-                System.out.println("[DEBUG] getInput() 进入文件读取模式");
                 rawInput = "playback " + filePath[0];
             }
 
             InputInformation inputInfo = InputInformationFactory.create(infoType, rawInput);
-            System.out.println("[DEBUG] InputInformation: " + inputInfo.toString());
             return inputInfo;
         } else {
             try {
-                System.out.println("[DEBUG] getInput() 文件模式，读取一行...");
                 java.util.concurrent.TimeUnit.MILLISECONDS.sleep(100);
                 String rawInput = fileReader.getOneRawString();
-                System.out.println("[DEBUG] getInput() 文件读取: " + rawInput);
                 java.util.concurrent.TimeUnit.MILLISECONDS.sleep(30);
                 isReadingFromFile = !fileReader.isEndOfFile();
                 InputType infoType = InputParseUtil.determineType(rawInput);
                 InputInformation inputInfo = InputInformationFactory.create(infoType, rawInput);
-                System.out.println("[DEBUG] InputInformation: " + inputInfo.toString());
                 return inputInfo;
             } catch (InterruptedException e) {
                 System.err.println("Thread sleep err! Exiting...");
@@ -113,7 +103,6 @@ public class GuiInput implements InputInterface {
     }
 
     public synchronized String waitForInput() {
-        System.out.println("[DEBUG] waitForInput 阻塞等待输入...");
         while (pendingQueue.isEmpty()) {
             try {
                 wait();
@@ -122,7 +111,6 @@ public class GuiInput implements InputInterface {
             }
         }
         String input = pendingQueue.poll();
-        System.out.println("[DEBUG] waitForInput 收到输入: " + input);
         if (isBombMode) {
             isBombMode = false;
             return InputParseUtil.isCoordinate(input) ? "@" + input : input;

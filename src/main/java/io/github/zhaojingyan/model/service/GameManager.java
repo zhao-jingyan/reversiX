@@ -39,7 +39,7 @@ public final class GameManager implements Serializable {
 
     // 游戏管理
     public void createGame(String p1Name, String p2Name, GameMode gameMode) {
-        Game game = new Game(games.size() + 1,gameMode, p1Name, p2Name);
+        Game game = new Game(games.size() + 1, gameMode, p1Name, p2Name);
         games.put(game.getGameNumber(), game);
     }
 
@@ -64,7 +64,8 @@ public final class GameManager implements Serializable {
             System.out.println("Game state saved successfully.");
         } catch (Exception e) {
             System.err.println("Failed to save game state: " + e.getMessage());
-            System.err.println("Please check file permissions or object serializability. The program will continue running.");
+            System.err.println(
+                    "Please check file permissions or object serializability. The program will continue running.");
         }
     }
 
@@ -91,11 +92,23 @@ public final class GameManager implements Serializable {
     }
 
     // Getters
-    public static GameManager getInstance() { return instance; }
-    public Game getCurrentGame() { return currentGame; }
-    public boolean isCurrentGameOver() { return currentGame.isOver(); }
-    public int getTotalGames() { return games.size(); }
-    public GameMode[] getGameList() {
+    public static GameManager getInstance() {
+        return instance;
+    }
+
+    protected Game getCurrentGame() {
+        return currentGame;
+    }
+
+    protected boolean isCurrentGameOver() {
+        return currentGame.isOver();
+    }
+
+    protected int getTotalGames() {
+        return games.size();
+    }
+
+    protected GameMode[] getGameList() {
         GameMode[] gameModes = new GameMode[games.size()];
         int index = 0;
         for (Game game : games.values())

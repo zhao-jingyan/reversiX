@@ -4,7 +4,7 @@ import io.github.zhaojingyan.App;
 import io.github.zhaojingyan.model.enums.InputType;
 import io.github.zhaojingyan.model.enums.OutputType;
 import io.github.zhaojingyan.model.input.InputInformation;
-import io.github.zhaojingyan.model.input.InputInformationFactory;
+import io.github.zhaojingyan.model.input.imple.InputInformationFactory;
 import io.github.zhaojingyan.model.output.OutputInformation;
 import io.github.zhaojingyan.model.service.GameException;
 import io.github.zhaojingyan.model.service.GameManager;
@@ -51,7 +51,7 @@ public class GuiOutput extends Application implements OutputInterface {
         } catch (GameException e) {
         }
 
-        primaryStage.setTitle("Reversi 棋盘测试");
+        primaryStage.setTitle("Reversi Game");
         primaryStage.setScene(scene);
         primaryStage.show();
 
@@ -74,7 +74,6 @@ public class GuiOutput extends Application implements OutputInterface {
             infoPanel.getPassButton().setDisable(!output.getGameInfo().isWaitingForPass());
             infoPanel.render(output);
 
-
             ListPanel listPanel = new ListPanel();
             listPanel.render(output);
             NewGamePanel newGamePanel = new NewGamePanel();
@@ -84,7 +83,8 @@ public class GuiOutput extends Application implements OutputInterface {
             infoPanel.setPrefHeight(boardPanel.getPrefHeight());
             infoPanel.setMaxHeight(boardPanel.getMaxHeight());
             // 不要设置listPanel高度，交给render动态控制
-            // listPanel.setPanelHeight(boardPanel.getMinHeight(), boardPanel.getPrefHeight(), boardPanel.getMaxHeight());
+            // listPanel.setPanelHeight(boardPanel.getMinHeight(),
+            // boardPanel.getPrefHeight(), boardPanel.getMaxHeight());
             newGamePanel.setMinHeight(boardPanel.getMinHeight());
             newGamePanel.setPrefHeight(boardPanel.getPrefHeight());
             newGamePanel.setMaxHeight(boardPanel.getMaxHeight());
@@ -130,7 +130,8 @@ public class GuiOutput extends Application implements OutputInterface {
     private static String buildGameOver(OutputInformation output) {
         StringBuilder gameOver = new StringBuilder();
         gameOver.append("Game Over!\n");
-        if (output.getGameInfo() != null && output.getGameInfo().getGameMode() != null && output.getGameInfo().getGameMode().toString().equals("REVERSI")) {
+        if (output.getGameInfo() != null && output.getGameInfo().getGameMode() != null
+                && output.getGameInfo().getGameMode().toString().equals("REVERSI")) {
             gameOver.append(String.format("Player[%s ●]: %d\n", output.getGameInfo().getPlayer1Name(),
                     output.getGameInfo().getBlack()));
             gameOver.append(String.format("Player[%s ○]: %d\n", output.getGameInfo().getPlayer2Name(),
@@ -144,7 +145,8 @@ public class GuiOutput extends Application implements OutputInterface {
                     gameOver.append(String.format("Player[%s ○] wins!\n", output.getGameInfo().getPlayer2Name()));
                 case TIE ->
                     gameOver.append("It's a tie!\n");
-                case VOID -> {}
+                case VOID -> {
+                }
             }
         }
         return gameOver.toString();
@@ -157,6 +159,5 @@ public class GuiOutput extends Application implements OutputInterface {
 
     public static void main(String[] args) {
         launch(args);
-        // 不要在这里直接调用MainController.gameLoop()
     }
 }

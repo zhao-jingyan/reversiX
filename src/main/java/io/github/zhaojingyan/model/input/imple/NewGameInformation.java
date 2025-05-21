@@ -15,7 +15,7 @@ public class NewGameInformation implements InputInformation {
         this.mode = mode;
     }
 
-    public static NewGameInformation create(String input) {
+    protected static NewGameInformation create(String input) {
         return new NewGameInformation(GameMode.valueOf(input.toUpperCase()));
     }
 
@@ -30,7 +30,8 @@ public class NewGameInformation implements InputInformation {
     }
 
     @Override
-    public void handle(boolean isWaitingForPass, Board board, PlayerSymbol currentSymbol, GameMode gameMode) throws GameException {
+    public void handle(boolean isWaitingForPass, Board board, PlayerSymbol currentSymbol, GameMode gameMode)
+            throws GameException {
 
     }
 

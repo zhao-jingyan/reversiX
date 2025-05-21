@@ -1,6 +1,8 @@
 package io.github.zhaojingyan.ui.util;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -21,12 +23,15 @@ public class FileReader {
         currentline = 0;
     }
 
-    public boolean openFile(String fileName) {
+    public boolean openFile(String path, boolean isResource) {
         file = null;
         currentline = 0;
-        try (InputStream is = getClass().getClassLoader().getResourceAsStream("testcmds/" + fileName)) {
+        try {
+            InputStream is = isResource
+                ? getClass().getClassLoader().getResourceAsStream("testcmds/" + path)
+                : new FileInputStream(new File(path));
             if (is == null) {
-                System.err.println("Error: Resource not found - " + fileName);
+                System.err.println("Error: File not found - " + path);
                 return false;
             }
 
@@ -41,31 +46,7 @@ public class FileReader {
             file = lines.toArray(String[]::new);
             return true;
         } catch (IOException e) {
-            System.err.println("Error reading resource: " + e.getMessage());
-            return false;
-        }
-    }
-
-    // 新增：支持直接读取本地文件
-    @SuppressWarnings("CollectionsToArray")
-    public boolean openLocalFile(String filePath) {
-        file = null;
-        currentline = 0;
-        java.io.File localFile = new java.io.File(filePath);
-        if (!localFile.exists() || !localFile.isFile()) {
-            System.err.println("Error: Local file not found - " + filePath);
-            return false;
-        }
-        try (java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.FileReader(localFile))) {
-            java.util.List<String> lines = new java.util.ArrayList<>();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                lines.add(line);
-            }
-            file = lines.toArray(new String[0]);
-            return true;
-        } catch (java.io.IOException e) {
-            System.err.println("Error reading local file: " + e.getMessage());
+            System.err.println("Error reading file: " + e.getMessage());
             return false;
         }
     }
@@ -79,13 +60,13 @@ public class FileReader {
         Runnable fxTask = () -> {
             try {
                 FileChooser fileChooser = new FileChooser();
-                fileChooser.setTitle(title != null ? title : "请选择文件");
+                fileChooser.setTitle(title != null ? title : "Choose");
                 if (extensions != null && extensions.length > 0) {
                     fileChooser.getExtensionFilters().add(
-                        new FileChooser.ExtensionFilter("文件", extensions)
+                        new FileChooser.ExtensionFilter("file", extensions)
                     );
                 }
-                java.io.File file = fileChooser.showOpenDialog(new Stage());
+                File file = fileChooser.showOpenDialog(new Stage());
                 result[0] = (file != null) ? file.getAbsolutePath() : null;
             } finally {
                 latch.countDown();

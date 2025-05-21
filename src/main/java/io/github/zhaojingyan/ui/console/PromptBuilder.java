@@ -51,9 +51,10 @@ public class PromptBuilder {
                 gameOver.append(String.format("Player[%s ○] wins!\n\n", output.getGameInfo().getPlayer1Name()));
             case WHITE ->
                 gameOver.append(String.format("Player[%s ●] wins!\n\n", output.getGameInfo().getPlayer2Name()));
-            case TIE -> 
+            case TIE ->
                 gameOver.append("It's a tie!\n\n");
-            case VOID -> {}
+            case VOID -> {
+            }
         }
         return gameOver.toString();
     }

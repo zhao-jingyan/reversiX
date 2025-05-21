@@ -7,13 +7,13 @@ import io.github.zhaojingyan.model.enums.PlayerSymbol;
 import io.github.zhaojingyan.model.input.InputInformation;
 import io.github.zhaojingyan.model.service.GameException;
 
-public class PlaybackInformation implements InputInformation{
+public class PlaybackInformation implements InputInformation {
 
     private PlaybackInformation() {
 
     }
 
-    public static PlaybackInformation create() {
+    protected static PlaybackInformation create() {
         return new PlaybackInformation();
     }
 
@@ -28,7 +28,8 @@ public class PlaybackInformation implements InputInformation{
     }
 
     @Override
-    public void handle(boolean isWaitingForPass, Board board, PlayerSymbol currentSymbol, GameMode gameMode) throws GameException{
+    public void handle(boolean isWaitingForPass, Board board, PlayerSymbol currentSymbol, GameMode gameMode)
+            throws GameException {
     }
 
     @Override

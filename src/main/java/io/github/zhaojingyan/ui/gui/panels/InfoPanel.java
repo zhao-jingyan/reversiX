@@ -10,7 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
-public class InfoPanel extends VBox implements GamePanel {
+public class InfoPanel extends VBox {
     private final Label gameIdLabel;
     private final Label blackInfoLabel;
     private final Label whiteInfoLabel;
@@ -29,11 +29,11 @@ public class InfoPanel extends VBox implements GamePanel {
         gameIdLabel = new Label();
         gameIdLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #333; -fx-font-family: 'monospaced', 'Consolas', 'Menlo', 'Courier', monospace;");
         blackInfoLabel = new Label();
-        blackInfoLabel.setStyle("-fx-font-size: 13px; -fx-text-fill: #111; -fx-font-family: 'monospaced', 'Consolas', 'Menlo', 'Courier', monospace;");
+        blackInfoLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 13px; -fx-text-fill: #111; -fx-font-family: 'monospaced', 'Consolas', 'Menlo', 'Courier', monospace;");
         whiteInfoLabel = new Label();
-        whiteInfoLabel.setStyle("-fx-font-size: 13px; -fx-text-fill: #111; -fx-font-family: 'monospaced', 'Consolas', 'Menlo', 'Courier', monospace;");
+        whiteInfoLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 13px; -fx-text-fill: #111; -fx-font-family: 'monospaced', 'Consolas', 'Menlo', 'Courier', monospace;");
         roundLabel = new Label();
-        roundLabel.setStyle("-fx-font-size: 13px; -fx-text-fill: #444; -fx-font-family: 'monospaced', 'Consolas', 'Menlo', 'Courier', monospace;");
+        roundLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 13px; -fx-text-fill: #444; -fx-font-family: 'monospaced', 'Consolas', 'Menlo', 'Courier', monospace;");
         playBackButton = new PlayBackButton();
         bombButton = new BombButton();
         passButton = new PassButton();
@@ -111,7 +111,6 @@ public class InfoPanel extends VBox implements GamePanel {
         return quitButton;
     }
 
-    @Override
     public void render(OutputInformation output) {
         var gameInfo = output.getGameInfo();
         // 游戏编号
@@ -121,11 +120,11 @@ public class InfoPanel extends VBox implements GamePanel {
         String chargeName = gameInfo.getChargePlayerName();
         // 棋子/炸弹数
         if (gameInfo.getGameMode().name().equalsIgnoreCase("REVERSI")) {
-            blackInfo = String.format("%s ● %s  : %d",
+            blackInfo = String.format("%s ● %s ● %d",
                 chargeName.equals(gameInfo.getPlayer1Name()) ? "> " : "  ",
                 gameInfo.getPlayer1Name(),
                 gameInfo.getBlack());
-            whiteInfo = String.format("%s ○ %s  : %d",
+            whiteInfo = String.format("%s ○ %s ○ %d",
                 chargeName.equals(gameInfo.getPlayer2Name()) ? "> " : "  ",
                 gameInfo.getPlayer2Name(),
                 gameInfo.getWhite());

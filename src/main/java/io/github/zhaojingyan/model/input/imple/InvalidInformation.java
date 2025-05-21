@@ -12,7 +12,7 @@ public class InvalidInformation implements InputInformation {
     private InvalidInformation() {
     }
 
-    public static InvalidInformation create() {
+    protected static InvalidInformation create() {
         return new InvalidInformation();
     }
 

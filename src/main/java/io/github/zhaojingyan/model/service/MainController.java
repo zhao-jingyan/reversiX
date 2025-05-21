@@ -5,8 +5,6 @@ import io.github.zhaojingyan.model.input.InputInformation;
 import io.github.zhaojingyan.ui.interfaces.InputInterface;
 import io.github.zhaojingyan.ui.interfaces.OutputInterface;
 
-
-
 public class MainController {
     private static final MainController instance = new MainController();
     private static OutputType outputType;
@@ -57,4 +55,3 @@ public class MainController {
     }
 
 }
-

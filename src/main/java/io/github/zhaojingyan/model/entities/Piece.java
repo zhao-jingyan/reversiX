@@ -21,13 +21,24 @@ public class Piece implements Serializable {
     }
 
     // 棋子操作
-    public void setPiece(PieceStatus status) { this.status = status; }
+    public void setPiece(PieceStatus status) {
+        this.status = status;
+    }
+
     public void flip() {
         status = status.opp();
     }
 
     // Getters
-    public PieceStatus getStatus() { return status; }
-    public int getX() { return x; }
-    public int getY() { return y; }
+    public PieceStatus getStatus() {
+        return status;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
 }

@@ -8,7 +8,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class BoardPanel extends GridPane implements GamePanel {
+public class BoardPanel extends GridPane {
     private final int boardSize;
     private static final int CELL_SIZE = 25;
     private final int cellSize;
@@ -56,8 +56,9 @@ public class BoardPanel extends GridPane implements GamePanel {
         }
         // 绘制左侧和上方坐标
         for (int i = 0; i < boardSize; i++) {
-            Label colLabel = new Label(String.valueOf((char)('A' + i)));
-            colLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #222; -fx-alignment: center; -fx-font-size: 13px; -fx-font-family: 'monospaced', 'Consolas', 'Menlo', 'Courier', monospace;");
+            Label colLabel = new Label(String.valueOf((char) ('A' + i)));
+            colLabel.setStyle(
+                    "-fx-font-weight: bold; -fx-text-fill: #222; -fx-alignment: center; -fx-font-size: 13px; -fx-font-family: 'monospaced', 'Consolas', 'Menlo', 'Courier', monospace;");
             colLabel.setMinSize(cellSize, cellSize);
             colLabel.setPrefSize(cellSize, cellSize);
             colLabel.setMaxSize(cellSize, cellSize);
@@ -66,7 +67,8 @@ public class BoardPanel extends GridPane implements GamePanel {
             this.add(colLabel, i + 1, 0);
             String hex = Integer.toHexString(i + 1).toUpperCase();
             Label rowLabel = new Label(hex);
-            rowLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #222; -fx-alignment: center; -fx-font-size: 13px; -fx-font-family: 'monospaced', 'Consolas', 'Menlo', 'Courier', monospace;");
+            rowLabel.setStyle(
+                    "-fx-font-weight: bold; -fx-text-fill: #222; -fx-alignment: center; -fx-font-size: 13px; -fx-font-family: 'monospaced', 'Consolas', 'Menlo', 'Courier', monospace;");
             rowLabel.setMinSize(cellSize, cellSize);
             rowLabel.setPrefSize(cellSize, cellSize);
             rowLabel.setMaxSize(cellSize, cellSize);
@@ -102,7 +104,6 @@ public class BoardPanel extends GridPane implements GamePanel {
     /**
      * 根据OutputInformation渲染棋盘上的棋子和标记
      */
-    @Override
     public void render(OutputInformation output) {
         io.github.zhaojingyan.model.entities.Piece[][] pieceBoard = output.getGameInfo().getBoard().getPieceBoard();
         var board = output.getGameInfo().getBoard();
@@ -112,7 +113,8 @@ public class BoardPanel extends GridPane implements GamePanel {
                 int x = piece.getX(), y = piece.getY();
                 CellButton btn = cellButtons[x][y];
                 btn.setGraphic(null); // 清除旧图形
-                btn.setStyle("-fx-background-color: transparent; -fx-background-radius: 0; -fx-border-radius: 0; -fx-padding: 0; -fx-background-insets: 0;");
+                btn.setStyle(
+                        "-fx-background-color: transparent; -fx-background-radius: 0; -fx-border-radius: 0; -fx-padding: 0; -fx-background-insets: 0;");
                 switch (piece.getStatus()) {
                     case BLACK -> {
                         javafx.scene.shape.Circle circle = new javafx.scene.shape.Circle(cellSize * 0.35);
@@ -127,17 +129,19 @@ public class BoardPanel extends GridPane implements GamePanel {
                         btn.setGraphic(circle);
                     }
                     case OBSTACLE -> {
-                        javafx.scene.shape.Rectangle rect = new javafx.scene.shape.Rectangle(cellSize * 0.7, cellSize * 0.7);
+                        javafx.scene.shape.Rectangle rect = new javafx.scene.shape.Rectangle(cellSize * 0.7,
+                                cellSize * 0.7);
                         rect.setFill(javafx.scene.paint.Color.GRAY);
                         btn.setGraphic(rect);
                     }
                     case BOMB -> {
-                        javafx.scene.shape.Rectangle rect = new javafx.scene.shape.Rectangle(cellSize * 0.7, cellSize * 0.7);
+                        javafx.scene.shape.Rectangle rect = new javafx.scene.shape.Rectangle(cellSize * 0.7,
+                                cellSize * 0.7);
                         rect.setFill(javafx.scene.paint.Color.RED);
                         btn.setGraphic(rect);
                     }
                     case EMPTY -> {
-                        boolean isValid = board.isValid(new int[]{piece.getX(), piece.getY()});
+                        boolean isValid = board.isValid(new int[] { piece.getX(), piece.getY() });
                         boolean isReversi = gameMode != null && gameMode.name().equalsIgnoreCase("REVERSI");
                         if (isValid && isReversi) {
                             javafx.scene.shape.Circle dot = new javafx.scene.shape.Circle(cellSize * 0.12);

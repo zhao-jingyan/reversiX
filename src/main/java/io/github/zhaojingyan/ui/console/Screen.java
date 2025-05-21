@@ -2,19 +2,19 @@ package io.github.zhaojingyan.ui.console;
 
 import java.io.IOException;
 
-public class Screen {
+public final class Screen {
     private int width;
     private int height;
     private char[][] buffer;
 
-    public Screen(int width, int height) {
+    protected Screen(int width, int height) {
         this.width = width;
         this.height = height;
         this.buffer = new char[height][width];
         clearBuffer();
     }
 
-    private void clearBuffer() {
+    protected void clearBuffer() {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 buffer[i][j] = ' ';
@@ -22,7 +22,7 @@ public class Screen {
         }
     }
 
-    public void display() {
+    protected void display() {
         clear();
         System.out.flush();
         for (int i = 0; i < height; i++) {
@@ -52,7 +52,7 @@ public class Screen {
             this.height = height2;
         }
     }
-    
+
     private static void clear() {
         try {
             // 获取操作系统名称
@@ -68,7 +68,7 @@ public class Screen {
         }
     }
 
-    public static Screen mergeScreens(Screen leftScreen, Screen rightScreen) {
+    protected static Screen mergeScreens(Screen leftScreen, Screen rightScreen) {
         int height = Math.max(leftScreen.getHeight(), rightScreen.getHeight());
 
         // 调整每个屏幕的高度以匹配最大高度
@@ -88,40 +88,45 @@ public class Screen {
         return mergedScreen;
     }
 
-    public void extend(){
+    protected void extend() {
         char[][] newBuffer = new char[height][width * 2];
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-            newBuffer[i][j * 2] = buffer[i][j];
-            newBuffer[i][j * 2 + 1] = ' ';
+                newBuffer[i][j * 2] = buffer[i][j];
+                newBuffer[i][j * 2 + 1] = ' ';
             }
         }
         buffer = newBuffer;
         width *= 2;
     }
 
-    public int getWidth() { return width;}
-    public int getHeight() { return height;}
+    private int getWidth() {
+        return width;
+    }
+
+    private int getHeight() {
+        return height;
+    }
+
     public void setPixel(int x, int y, char c) {
         if (x >= 0 && x < width && y >= 0 && y < height) {
             buffer[y][x] = c;
         }
     }
 
-    public void setRow(int index, String row) {
+    protected void setRow(int index, String row) {
         if (index >= 0 && index < height) {
             for (int i = 0; i < width && i < row.length(); i++) {
                 buffer[index][i] = row.charAt(i);
             }
         }
     }
-    
-    public String getRow(int index) {
+
+    private String getRow(int index) {
         if (index >= 0 && index < height) {
             return new String(buffer[index]);
         }
         return null;
     }
-
 
 }

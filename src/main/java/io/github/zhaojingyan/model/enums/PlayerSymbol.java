@@ -6,7 +6,7 @@ public enum PlayerSymbol {
     TIE,
     VOID;
 
-    public PieceStatus SymbolToStatus(){
+    public PieceStatus SymbolToStatus() {
         switch (this) {
             case BLACK -> {
                 return PieceStatus.BLACK;

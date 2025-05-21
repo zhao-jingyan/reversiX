@@ -1,13 +1,13 @@
 package io.github.zhaojingyan.ui.console;
 
-
 import io.github.zhaojingyan.model.output.OutputInformation;
-import io.github.zhaojingyan.ui.interfaces.OutputInterface;
 import io.github.zhaojingyan.model.service.GameException;
+import io.github.zhaojingyan.ui.interfaces.OutputInterface;
 
 public class ConOutput implements OutputInterface {
     private final ScreenBuilder screenBuilder = new ScreenBuilder();
     private final PromptBuilder promptBuilder = new PromptBuilder();
+
     public ConOutput() {
     }
 
@@ -20,7 +20,7 @@ public class ConOutput implements OutputInterface {
         screens[3] = screenBuilder.constructGameListPanel(output);
         screens[0].extend();
         Screen outputScreen = new Screen(0, 0);
-        for(Screen item : screens) {
+        for (Screen item : screens) {
             outputScreen = Screen.mergeScreens(outputScreen, item);
         }
         outputScreen.display();

@@ -10,7 +10,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
-public class ListPanel extends VBox implements GamePanel {
+public class ListPanel extends VBox  {
     private final ListView<String> gameListView;
     private final ObservableList<String> gameListData;
     // 用于防止死循环的当前游戏号缓存
@@ -27,7 +27,7 @@ public class ListPanel extends VBox implements GamePanel {
         title.setStyle("-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #222; -fx-padding: 0 0 8 0; -fx-font-family: 'monospaced', 'Consolas', 'Menlo', 'Courier', monospace;");
         gameListData = FXCollections.observableArrayList();
         gameListView = new ListView<>(gameListData);
-        gameListView.setStyle("-fx-font-size: 13px; -fx-font-family: 'monospaced', 'Consolas', 'Menlo', 'Courier', monospace;");
+        gameListView.setStyle("-fx-font-size: 13px; -fx-font-weight: bold; -fx-font-family: 'monospaced', 'Consolas', 'Menlo', 'Courier', monospace;");
         gameListView.setPrefHeight(200);
         gameListView.setMinWidth(80); // 允许更小宽度，便于HBox动态分配
         gameListView.setMaxWidth(Double.MAX_VALUE); // 允许最大宽度自适应
@@ -52,7 +52,6 @@ public class ListPanel extends VBox implements GamePanel {
         gameListView.setMaxHeight(max);
     }
 
-    @Override
     public void render(OutputInformation output) {
         gameListData.clear();
         var gameList = output.getGlobalInfo().getGameList();

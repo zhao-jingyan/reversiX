@@ -11,7 +11,7 @@ public class QuitInformation implements InputInformation {
     private QuitInformation() {
     }
 
-    public static QuitInformation create() {
+    protected static QuitInformation create() {
         return new QuitInformation();
     }
 
@@ -26,7 +26,8 @@ public class QuitInformation implements InputInformation {
     }
 
     @Override
-    public void handle(boolean isWaitingForPass, Board board, PlayerSymbol currentSymbol, GameMode gameMode) throws GameException{
+    public void handle(boolean isWaitingForPass, Board board, PlayerSymbol currentSymbol, GameMode gameMode)
+            throws GameException {
     }
 
     @Override

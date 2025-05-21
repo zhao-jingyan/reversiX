@@ -5,7 +5,7 @@ import io.github.zhaojingyan.ui.gui.buttons.NewGameButton;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
-public class NewGamePanel extends VBox implements GamePanel {
+public class NewGamePanel extends VBox {
     public NewGamePanel() {
         setSpacing(10);
         setStyle("");
@@ -18,7 +18,6 @@ public class NewGamePanel extends VBox implements GamePanel {
         );
     }
 
-    @Override
     public void render(OutputInformation output) {
         this.getChildren().clear();
         Label title = new Label("New Game");

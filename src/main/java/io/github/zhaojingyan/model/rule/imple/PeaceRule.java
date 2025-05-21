@@ -1,4 +1,4 @@
-package io.github.zhaojingyan.model.service.rule.imple;
+package io.github.zhaojingyan.model.rule.imple;
 
 import java.io.Serializable;
 
@@ -6,7 +6,7 @@ import io.github.zhaojingyan.model.entities.Board;
 import io.github.zhaojingyan.model.enums.GameMode;
 import io.github.zhaojingyan.model.enums.PlayerSymbol;
 import io.github.zhaojingyan.model.input.InputInformation;
-import io.github.zhaojingyan.model.service.rule.Rule;
+import io.github.zhaojingyan.model.rule.Rule;
 
 public class PeaceRule implements Rule, Serializable {
     private static final long serialVersionUID = 1L;
@@ -25,14 +25,14 @@ public class PeaceRule implements Rule, Serializable {
     public void initializeBoard(Board board) {
         for (int i = 0; i < board.getRow(); i++) {
             for (int j = 0; j < board.getCol(); j++) {
-                board.setValid(new int[]{i,j}, true);
+                board.setValid(new int[] { i, j }, true);
             }
         }
     }
 
     @Override
     public void updateBoard(Board board, InputInformation information, PlayerSymbol currentSymbol) {
-        
+
     }
 
     @Override
@@ -48,7 +48,7 @@ public class PeaceRule implements Rule, Serializable {
 
     @Override
     public PlayerSymbol getWinner(Board board) {
-        //no winner in peace game
+        // no winner in peace game
         return PlayerSymbol.VOID;
     }
 }

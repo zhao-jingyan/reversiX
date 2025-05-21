@@ -1,12 +1,12 @@
 package io.github.zhaojingyan.model.enums;
 
 public enum InputType {
-    COORDINATES, 
+    COORDINATES,
     BOMB,
-    PASS, 
-    NEWGAME, 
-    BOARDNUM, 
-    QUIT, 
+    PASS,
+    NEWGAME,
+    BOARDNUM,
+    QUIT,
     INVALID,
     PLAYBACK
 }

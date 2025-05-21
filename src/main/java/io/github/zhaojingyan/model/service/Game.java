@@ -8,8 +8,8 @@ import io.github.zhaojingyan.model.enums.GameErrorCode;
 import io.github.zhaojingyan.model.enums.GameMode;
 import io.github.zhaojingyan.model.enums.PlayerSymbol;
 import io.github.zhaojingyan.model.input.InputInformation;
-import io.github.zhaojingyan.model.service.rule.Rule;
-import io.github.zhaojingyan.model.service.rule.RuleFactory;
+import io.github.zhaojingyan.model.rule.Rule;
+import io.github.zhaojingyan.model.rule.RuleFactory;
 
 public class Game implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -23,7 +23,7 @@ public class Game implements Serializable {
     private boolean isWaitingForPass;
     private PlayerSymbol winner;
 
-    protected Game(int gameNumber,GameMode gameMode, String p1, String p2) {
+    protected Game(int gameNumber, GameMode gameMode, String p1, String p2) {
         this.gameNumber = gameNumber;
         this.gamerule = RuleFactory.createRule(gameMode);
         this.playerController = new PlayerController(p1, p2);
@@ -40,31 +40,60 @@ public class Game implements Serializable {
         if (isOver)
             throw new GameException(GameErrorCode.GAME_ALREADY_OVER, "This game is already over!");
         // 处理passInformation
-        else{
+        else {
             inputInformation.handle(isWaitingForPass, board, playerController.getCurrentSymbol(), getGameMode());
             ruleUpdate(board, inputInformation);
             round++;
         }
     }
-    
-    //extracted ruleUpdate
+
+    // extracted ruleUpdate
     private void ruleUpdate(Board board, InputInformation inputInformation) {
-        gamerule.updateBoard(board,inputInformation,playerController.getCurrentSymbol());
+        gamerule.updateBoard(board, inputInformation, playerController.getCurrentSymbol());
         isWaitingForPass = gamerule.shouldPass();
         isOver = gamerule.isOver(board);
         winner = gamerule.getWinner(board);
         playerController.changeSpot();
     }
 
-    //Getters
-    public int getGameNumber() { return gameNumber; }
-    public boolean isOver() { return isOver; }
-    public boolean isWaitingForPass() { return isWaitingForPass; }
-    public PlayerSymbol getWinner() { return winner; }
-    public GameMode getGameMode() { return gamerule.getGameMode(); }
-    public Board getBoard() { return board; }
-    public int getRound() { return round; }
-    public String getP1Name() { return playerController.getPlayer1().getName(); }
-    public String getP2Name() { return playerController.getPlayer2().getName(); }
-    public Player getChargePlayer() { return playerController.getChargePlayer(); }
+    // Getters
+    protected int getGameNumber() {
+        return gameNumber;
+    }
+
+    protected boolean isOver() {
+        return isOver;
+    }
+
+    protected boolean isWaitingForPass() {
+        return isWaitingForPass;
+    }
+
+    protected PlayerSymbol getWinner() {
+        return winner;
+    }
+
+    protected GameMode getGameMode() {
+        return gamerule.getGameMode();
+    }
+
+    protected Board getBoard() {
+        return board;
+    }
+
+    protected int getRound() {
+        return round;
+    }
+
+    protected String getP1Name() {
+        return playerController.getPlayer1().getName();
+    }
+
+    protected String getP2Name() {
+        return playerController.getPlayer2().getName();
+    }
+
+    protected Player getChargePlayer() {
+        return playerController.getChargePlayer();
+    }
 }

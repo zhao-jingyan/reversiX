@@ -6,8 +6,8 @@ import io.github.zhaojingyan.model.enums.PlayerSymbol;
 
 public class Player implements Serializable {
     private static final long serialVersionUID = 1L;
-    private final String name;            // 玩家名称
-    private final PlayerSymbol symbol;  // 执棋
+    private final String name; // 玩家名称
+    private final PlayerSymbol symbol; // 执棋
 
     // 构造函数
     public Player(String name, PlayerSymbol piecetype) {
@@ -16,7 +16,11 @@ public class Player implements Serializable {
     }
 
     // Getters
-    public String getName() { return name; }
-    public PlayerSymbol getSymbol() { return symbol; }
-}
+    public String getName() {
+        return name;
+    }
 
+    public PlayerSymbol getSymbol() {
+        return symbol;
+    }
+}

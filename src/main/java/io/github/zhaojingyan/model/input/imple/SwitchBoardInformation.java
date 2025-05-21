@@ -16,7 +16,7 @@ public class SwitchBoardInformation implements InputInformation {
         this.boardNumber = boardNumber;
     }
 
-    public static SwitchBoardInformation create(String input) {
+    protected static SwitchBoardInformation create(String input) {
         return new SwitchBoardInformation(Integer.parseInt(input));
     }
 

@@ -1,4 +1,4 @@
-package io.github.zhaojingyan.model.service.rule;
+package io.github.zhaojingyan.model.rule;
 
 import io.github.zhaojingyan.model.entities.Board;
 import io.github.zhaojingyan.model.enums.GameMode;
@@ -11,7 +11,7 @@ public interface Rule {
 
     void initializeBoard(Board board);
 
-    void updateBoard(Board board, InputInformation info,PlayerSymbol currentSymbol);
+    void updateBoard(Board board, InputInformation info, PlayerSymbol currentSymbol);
 
     boolean shouldPass();
 
