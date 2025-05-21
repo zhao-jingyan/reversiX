@@ -112,19 +112,25 @@ public class GuiOutput extends Application implements OutputInterface {
             hbox.getChildren().clear();
             hbox.getChildren().addAll(boardBox, rightBox);
 
-            // Settlement info in English
-            if (output.getOutputType() == OutputType.GAME_OVER) {
-                statusLabel.setText(buildGameOver(output));
-            } else {
-                statusLabel.setText("");
+            switch (output.getOutputType()) {
+                case QUIT:
+                    GameManager.getInstance().save(App.getFilePath());
+                    System.exit(0);
+                case GAME_OVER:
+                    statusLabel.setText(buildGameOver(output));
+                    statusLabel.setStyle("-fx-font-size: 18px; -fx-padding: 10 0 0 20; -fx-text-fill: rgb(0, 0, 0);");
+                    break;
+                case INVALID_INPUT:
+                    statusLabel.setText("INVALID!");
+                    statusLabel.setStyle("-fx-font-size: 18px; -fx-padding: 10 0 0 20; -fx-text-fill: rgb(224, 21, 21);");
+                    break;
+                default:
+                    statusLabel.setText("");
+                    break;
             }
 
-            // 检查是否为QUIT，若是则关闭窗口并退出进程
-            if (output.getOutputType() == OutputType.QUIT) {
-                GameManager.getInstance().save(App.getFilePath());
-                System.exit(0);
-            }
         });
+
     }
 
     private static String buildGameOver(OutputInformation output) {

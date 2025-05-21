@@ -87,9 +87,8 @@ public class GuiInput implements InputInterface {
             return inputInfo;
         } else {
             try {
-                java.util.concurrent.TimeUnit.MILLISECONDS.sleep(100);
+                java.util.concurrent.TimeUnit.MILLISECONDS.sleep(1000);
                 String rawInput = fileReader.getOneRawString();
-                java.util.concurrent.TimeUnit.MILLISECONDS.sleep(30);
                 isReadingFromFile = !fileReader.isEndOfFile();
                 InputType infoType = InputParseUtil.determineType(rawInput);
                 InputInformation inputInfo = InputInformationFactory.create(infoType, rawInput);
